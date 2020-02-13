@@ -8,36 +8,6 @@
 
 English | [中文](README_CN.md)
 
-Welcome to the official source code repository for Ontology!
-
-Ontology is dedicated to developing a high-performance blockchain infrastructure, which is customizable to different business requirements. 
-
-Prerequisites for getting started with development on the Ontology networks are:
-
-- Mainstream coding and development experience
-- Understanding of your business scenario/requirements
-- No need for previous blockchain engineering experience
-
-The Ontology core tech team, the community, and the ecosystem can all support you in development. MainNet, TestNet, Docker image for Ontology, SmartX, and Ontology Explorer combined make it easy to start.
-
-Ontology makes getting started easier!
-
-Ontology MainNet has been launched on Jun 30, 2018. <br>
-And new features are still rapidly under development. The master branch may be unstable, but stable versions can be found under the [release page](https://github.com/ontio/multi-chain/releases).
-
-We openly welcome developers to Ontology.
-
-## Features 
-
-- Scalable lightweight universal smart contract
-- Scalable WASM contract support
-- Crosschain interactive protocol (processing)
-- Multiple encryption algorithm support
-- Highly optimized transaction processing speed
-- P2P link layer encryption (optional module)
-- Multiple consensus algorithm support (VBFT/DBFT/RBFT/SBFT/PoW)
-- Quick block generation time
-
 ## Contributions
 
 Please open a pull request with a signed commit. We appreciate your help! You can also send your code as email to the developer mailing list. You're welcome to join the Ontology mailing list or developer forum.
