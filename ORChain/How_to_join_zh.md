@@ -22,6 +22,10 @@ CreateCrossChainTx
 
 创建跨链交易，该接口主要用于业务智能合约在需要跨链功能时调用。构造一笔跨链交易，此交易具有唯一的自增ID，并将交易参数写入merkle tree。相关代码可以参考：https://github.com/siovanus/ontology/tree/master/smartcontract/service/native/cross_chain/cross_chain_manager
 
+### 模块和接口之间的关系：
+
+![module](/resources/module.png)
+
 ProcessCrossChainTx
 
 处理跨链交易，该接口用于该链接受来自其他链的跨链交易，由relayer同步跨链交易的merkle proof时调用。接口按照高度找到该跨链交易的merkle root（存在于区块头中），验证该跨链交易的真实性，验证通过则解析跨链参数，调用目标链上的业务合约。相关代码可以参考：https://github.com/siovanus/ontology/tree/master/smartcontract/service/native/cross_chain/cross_chain_manager
