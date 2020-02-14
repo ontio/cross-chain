@@ -1,7 +1,7 @@
-<h1 align="center">Ontology Cross Chain - ethereum cross chain specification</h1>
+<h1 align="center">Ontology Cross Chain - ethereum relayer manual</h1>
 <h4 align="center">Version 1.0 </h4>
 
-English | [中文](ethereum cross chain specification_CN.md)
+English | [中文](ethereum relayer manual_CN.md)
 
 ## Background
 
