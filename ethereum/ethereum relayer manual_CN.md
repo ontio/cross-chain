@@ -16,6 +16,7 @@
 ## 配置
 
 以下是ethereum relayer的全部配置
+```
 {
   "MultiChainConfig":{
     "RestURL":"http://172.168.3.73:40336",
@@ -35,6 +36,7 @@
     "CapitalPassword": "123456"
   }
 }
+```
 配置包括两部分，中继链相关配置和以太相关配置。
 
 中继链配置项有：
