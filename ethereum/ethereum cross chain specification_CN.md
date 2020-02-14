@@ -25,7 +25,7 @@
 
 以太区块头同步到中继链需要首先指定一个以太同步初始区块头，从这个区块头开始同步后续的以太区块头。所以包括同步初始区块头和同步区块头。
 以太同步区块头到中继链：
-![](https://github.com/blockchain-develop/cross-chain/blob/master/ethereum/pic/sync%20header1.png)
+![](https://github.com/blockchain-develop/cross-chain/blob/master/ethereum/pic/sync%20header2.png)
 
 以太同步区块头到中继链需要一个一个区块头进行，中继链使用了以太的轻客户端原理来验证以太区块头的正确性，包括以太区块头的POW。
 
@@ -36,7 +36,7 @@
 中继链区块头同步到以太也一样需要首先指定一个中继链初始区块头，从这个区块头开始同步中继链区块头，也包括同步初始区块头和同步区块头。
 
 中继链区块头同步到以太链：
-![](https://github.com/blockchain-develop/cross-chain/blob/master/ethereum/pic/sync%20header2.png)
+![](https://github.com/blockchain-develop/cross-chain/blob/master/ethereum/pic/sync%20header1.png)
 
 中继链区块头同步到以太有些不一样，并不需要一个一个区块头同步，只有需要区块头才被同步。什么是需要的区块头呢？有发生验证节点变更的区块头和包含跨链到以太交易的区块头，需要同步到以太。因为中继链是具备终局性的区块链。
 
@@ -50,6 +50,25 @@
 ### 从中继链跨链到以太
 
 监听中继链0300000000000000000000000000000000000000合约的跨链到以太事件，提交跨链以太事件以及其merkel proof到以太来验证事件。在BTC到以太的跨链中，提交跨链以太事件以及其merkel proof到以太的跨链管理合约verifyAndExecuteTx的来完成。
+
+## 以太跨链工作流程
+
+以以太到BTC的跨链为例来介绍以太跨链工作流程：
+![](https://github.com/blockchain-develop/cross-chain/blob/master/ethereum/pic/cross%20progress.jpg)
+
+1. 用户发送跨链交易到以太，如以太账户A转账1个eth给Target Chain的账户B
+
+2. 以太链会锁定账户A的1个eth，生成跨链到Target Chain的跨链交易，会生成该跨链交易的merkel proof
+
+3. eth relayer会一直同步以太区块头到中继链，同时一直在监听ethereum chain的跨链事件，在以太生成了跨链交易后，relayer会提交该跨链交易以及其merkel proof到中继链
+
+4. 中继链有以太的区块头信息和以太跨链交易的merkel proof，可以验证该跨链交易的有效性
+
+5. 如果有效，那么中继链会生成跨链到Target Chain的跨链交易，也会生成该跨链交易的merkel proof
+
+6. Target Chain的relayer一直监听中继链上需要跨链到Target Chain的跨链交易，一但有，则同步中继链的区块头到Target Chain,同时提交跨链到Target Chain的跨链交易以及其merkel proof到Target Chain
+
+7. Target Chain验证跨链交易，如果有效，则执行交易，如释放1eth到账户B
 
 ## 许可证
 
