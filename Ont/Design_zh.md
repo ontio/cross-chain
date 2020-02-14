@@ -20,9 +20,9 @@
 
 ## 本体和中继链之间的跨链交易
 
-![cross_tx](resources/ont2relay.png)
+![ont2relay](resources/ont2relay.png)
 
-![cross_tx](resources/relay2ont.png)
+![relay2ont](resources/relay2ont.png)
 
 用户在业务合约上发起跨链交易，调用跨链管理合约的跨链接口，跨链管理合约处理跨链请求，分配唯一自增ID，储存跨链请求并构造merkle tree，将树根写入区块头，并生成跨链交易的merkle proof，由relayer将区块头和proof提交到中继链。中继链验证merkle proof的合法性，验证通过则将验证后的信息存下来，并构造新的merkle tree，将树根写入中继链的区块头中，并生成跨链信息的merkle proof，由relayer将区块头和proof提交到目标链。
 
