@@ -15,7 +15,7 @@ Alice、Bob和Carl三个人决定开展BTC跨链业务，能将BTC转移到以�
 
 ### 1 比特币到目标链
 
-<img src="./pic/btc2target.png" style="zoom:45%;" />
+![](/Users/zou/go/src/github.com/ontio/cross-chain/btc/pic/from.png)
 
 ​	如上图，将BTC跨链发送到目标链，大体可分为以上六步，而用户需用做的只有第一步，选择自己信任的多签地址，发送特殊的比特币交易，其余由整个跨链生态系统完成。
 
@@ -23,7 +23,7 @@ Alice、Bob和Carl三个人决定开展BTC跨链业务，能将BTC转移到以�
 
 #### 1.1 发送交易
 
-<img src="./pic/cctx.png" alt="cctx" style="zoom:77%;" />
+![](./pic/cctx.png)
 
 ​	用户所要做的只是向比特币网络发送一笔比特币转账交易，整个跨链系统会完成剩余的工作，当然这个交易需要按照协议规定的格式构造，并且携带目标链的信息，比如链ID、用户在目标链上的地址等，上图中展示了交易的构造格式：
 
@@ -53,7 +53,7 @@ Alice、Bob和Carl三个人决定开展BTC跨链业务，能将BTC转移到以�
 
 ### 3. 目标链到比特币
 
-<img src="./pic/to.png" alt="target2btc" style="zoom:50%;" />
+![](./pic/to.png)
 
 上图中展示了BTC从目标链回到比特币需要经过的流程。红色的是目标链Relayer，青色的是多签（Alice他们）启动的工具，能监听联盟链并对交易进行签名，绿色的是比特币的Relayer。
 
