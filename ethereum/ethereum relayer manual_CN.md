@@ -40,27 +40,37 @@
 配置包括两部分，中继链相关配置和以太相关配置。
 
 中继链配置项有：
+```
 RestURL                                  -           中继链的节点URL
 EntranceContractAddress                  -           中继链的跨链管理合约
 WalletFile&WalletPwd                     -           中继链的钱包以及账户
 GasPrice&GasLimit                        -           中继链的gas配置
+```
 
 以太配置项有：
+```
 RestURL                                  -           以太节点的URL
 LockerContractAddress                    -           以太跨链管理合约
 PrivateKey&Signer                        -           以上准备好的以太账户
+```
 
 ## 运行
 
 启动参数主要包括两项：
+```
 --ethereum             -    指定从以太的哪个高度开始，一般指定为以太当前的最新高度
 --alliance             -    指定从中继链的哪个高度开始，一般指定为0，如果不是0，指定的区块头需要包括验证节点信息
+```
 
 启动：
+```
 ./eth_relayer --ethereum 7318671 --alliance 0
+```
 
 也可以从后台启动或者使用启动脚本启动： (但需要修改启动脚本中启动参数)
+```
 ./eth_relayer_start.sh
+```
 
 ## 许可证
 
