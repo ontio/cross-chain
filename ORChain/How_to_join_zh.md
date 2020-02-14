@@ -24,7 +24,7 @@ CreateCrossChainTx
 
 ### 模块和接口之间的关系：
 
-![module](/resources/module.png)
+![module](resources/module.png)
 
 ProcessCrossChainTx
 
