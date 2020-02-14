@@ -43,3 +43,24 @@ ProcessCrossChainTx
 ### 本链跨链交易merkle tree的构造和验证方式
 
 提交本链跨链交易merkle tree的构造和验证方式，使得中继链能够验证其跨链交易。
+
+## 注册本链到中继链
+
+准备工作完成之后，就可以将本链注册到中继链上去了，注册接口如下：
+
+方法名： "registerSideChain"
+
+参数：
+```go
+type RegisterSideChainParam struct {
+	Address      string    //注册该链所用的本体钱包地址，只有该地址有修改注册信息的权限
+	ChainId      uint64    //该链的链ID
+	Router       uint64    //该链的路由协议，目前已实现的协议有1:btc, 2:eth, 3:ont，同构链可以采用已有协议，异构链则需要根据上面提交的信息新增路由协议
+	Name         string    //链的名称
+	BlocksToWait uint64    //终局所需要的确认区块数
+}
+```
+
+如果本链是已有路由协议的同构链，则选择已有的路由协议，异构链则可以升级中继链新增路由协议，随着跨链生态越来越完善，路由协议将会覆盖越来越多的链。
+
+注册完成之后等待跨链理事会审核即可成功加入。
