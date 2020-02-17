@@ -1,7 +1,7 @@
 <h1 align="center">Ontology Cross Chain - ethereum cross chain specification</h1>
 <h4 align="center">Version 1.0 </h4>
 
-[English](ethereum cross chain specification.md) | 中文
+[English](ethereum_cross_chain_specification.md) | 中文
 
 以太跨链到其他链或者其他链跨链到以太都是通过中继链进行，在这里主要介绍以太和中继链的技术规范，包括以太跨链到中继链以及中继链跨链到以太。
 
