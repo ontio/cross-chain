@@ -1,4 +1,9 @@
-# 如何加入比特币跨链生态：Relayer篇
+<h1 align="center">如何加入比特币跨链生态：Relayer篇</h1>
+<h4 align="center">Version 1.0 </h4>
+
+[English]() | [中文](./README_CN.md)
+
+## 引言
 
 在跨链生态中，Relayer起到了举足轻重的作用，它会转发跨链交易和区块头，实现中继链与外界的信息交互，可以说是生态的对外沟通的媒介。
 
