@@ -1,7 +1,7 @@
 <h1 align="center">Ontology Cross Chain - ethereum relayer manual</h1>
 <h4 align="center">Version 1.0 </h4>
 
-[English](ethereum relayer manual.md) | 中文
+[English](ethereum_relayer_manual.md) | 中文
 
 以太跨链到其他链或者其他链跨链到以太都是通过中继链进行，以太和中继链之间交互需要relayer来完成区块头同步和跨链交易提交，包括从以太到中继链的区块头同步和跨链交易提交，从中继链到以太的区块头同步和跨链交易的提交。
 
