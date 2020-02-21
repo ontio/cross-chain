@@ -17,7 +17,7 @@ go build -o btctool main.go
 
 ## 运行GUI
 
-​	现在已经提供GUI版本的工具，请点击[下载](https://github.com/zouxyan/btctool/releases/download/0.0.1/btctool-macos)。
+现在已经提供GUI版本的工具，请点击[下载](https://github.com/zouxyan/btctool/releases/download/0.1/btctool-macos)。
 
 ​	下载GUI版本的工具后，双击之后显示如下。在最上方选择功能，填入对应的信息，则可实现相应功能，发送跨链交易。
 

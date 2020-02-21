@@ -5,39 +5,32 @@
 
 ## 引言
 
-下面以用户的角度，讲述如何实现自己BTC的跨链转移。
+​	下面以用户的角度，讲述如何实现自己BTC的跨链转移。
 
-以下以比特币测试网为例。
+​	以下以比特币测试网为例。
 
 ## 准备工作
 
-首先，某些组织可能开展了你感兴趣的跨链业务，你需要挑选其中一个，并获取其比特币多签地址和目标链的BTC代币合约地址；然后，获取跨链交易构造工具，或者按照协议自己构造交易；最后，生成自己在目标链的地址，用于接收跨链来的比特币。
+​	首先，某些组织可能开展了你感兴趣的跨链业务，你需要挑选其中一个，并获取其比特币多签地址和目标链的BTC代币合约地址；然后，获取跨链交易构造工具，或者按照协议自己构造交易；最后，生成自己在目标链的地址，用于接收跨链来的比特币。
 
 ## 发送跨链交易
 
-在工具上填入需要的信息，并通过工具构造跨链交易，工具的使用请[移步](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)。
-
-将工具显示的交易通过任何工具广播出去，比如该[网站](https://tbtc.bitaps.com/broadcast)。
-
-剩下的就是等待交易的六个确认，然后不久就能看到目标链的账户中多了对应数额的BTC代币。
+​	在工具上填入需要的信息，并通过工具构造跨链交易，工具的使用请[移步](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)。将工具显示的交易通过任何工具广播出去，比如该[网站](https://tbtc.bitaps.com/broadcast)。剩下的就是等待交易的六个确认，然后不久就能看到目标链的账户中多了对应数额的BTC代币。
 
 ## 实例1：BTC到以太坊
 
 在这里我们以BTC到以太坊测试网为例。Alice、Bob和Carl开展了BTC跨链业务，我决定尝试一下。
 
-他们的以太坊BTC合约：
-
-多签地址：
-
-我的BTC地址：
+- 他们的以太坊BTC合约（称为EBTC）：`0xa389c761307bde552e0329ae0915ee998da61095`
+- 多签地址：`tb1qy94qnjuwu5w6r2g74z2z25khjdkgs6ssk5rjnyqrvcvpds8f7x9shrfspn`
+- 我的BTC地址：`mpCNjy4QYAmw8eumHJRbVtt6bMDVQvPpFn`
 
 ### BTC到以太
 
 #### 1. 跨链准备
 
-1. **获取BTC**：首先用户需要具备一个比特币测试网地址，这可以通过比特币客户端等获得，注意保留好私钥，在进行之前先在[BTC测试网水龙头](https://testnet-faucet.mempool.co/)中获取测试网比特币；
-2. **获得以太坊地址**：用户需要一个以太坊的地址，用来在以太坊上接收跨链后的比特币，跨链到以太坊的BTC会被一比一映射到一种ERC20代币；
-3. **获得以太坊BTC合约地址**：用户需要得到以太坊的BTC映射合约地址，这在以太坊上是唯一的，在Ropsten测试网上是“”。
+1. **获取BTC**：在进行之前先在[BTC测试网水龙头](https://testnet-faucet.mempool.co/)中获取测试网比特币；
+2. **获取ETH**：我要获取一定的ETH，方便支付调用合约的Gas，这里使用的是[Ropsten](https://teth.bitaps.com/)；
 
 #### 2. 发送交易
 
@@ -45,7 +38,7 @@
 
 ### BTC返回比特币
 
-
+详情请见[这里](https://github.com/ontio/cross-chain/blob/master/ethereum/how_to_cross_on_ethereum_CN.md)
 
 ## 实例2：BTC到本体
 
@@ -53,11 +46,11 @@
 
 #### 1. 准备工作
 
-1. **获取BTC**：首先用户需要具备一个比特币测试网地址，这可以通过比特币客户端等获得，注意保留好私钥，在进行之前先在[BTC测试网水龙头](https://coinfaucet.eu/en/btc-testnet)中获取测试网比特币；
+1. **获取BTC**：在进行之前先在[BTC测试网水龙头](https://coinfaucet.eu/en/btc-testnet)中获取测试网比特币；
 
-2. **获得本体地址**：用户需要一个本体的地址，用来在目标链上接收跨链后的比特币，跨链到ONT的BTC会被一比一映射到一种[OEP4](https://github.com/ontio/OEPs/blob/master/OEPS/OEP-4.mediawiki)代币；
+2. **获得本体地址**：需要一个本体的地址，用来在目标链上接收跨链后的比特币，跨链到ONT的BTC会被一比一映射到一种[OEP4](https://github.com/ontio/OEPs/blob/master/OEPS/OEP-4.mediawiki)代币；
 
-3. **获得合约地址**：这里使用合约[BTCX](https://github.com/zouxyan/btc_crosschain_demo)(hash:)，用户也可以使用[smartx](https://smartx.ont.io/)自行编译、部署或调用合约，详情见[教程](https://ontio.github.io/documentation/Smart_Contract_Deployment_en.html)。
+3. **获得合约地址**：这里使用合约[OBTC](https://github.com/zouxyan/btc_crosschain_demo)(hash:)，用户也可以使用[smartx](https://smartx.ont.io/)自行编译、部署或调用合约，详情见[教程](https://ontio.github.io/documentation/Smart_Contract_Deployment_en.html)。
 
 4. **准备工具**：为了确定BTC跨链成功，建议使用Chrome插件[Cyano Wallet](https://chrome.google.com/webstore/detail/cyano-wallet/dkdedlpgdmmkkfjabffeganieamfklkm)，导入用户的ONT账户。为了连接到ONT的测试网络，请进行如下配置：
 
@@ -65,11 +58,11 @@
 
      <img src="./pic/cyano-login.png" alt="cyano-login" style="zoom: 77%;" />
 
-   - 点击右上角的设置按钮(小齿轮)，按图片中红框内信息配置本体测试网（138.91.6.125），点击最下方的Save按钮，即可连接到本体测试网络；
+   - 点击右上角的设置按钮(小齿轮)，按图片中红框内信息配置本体测试网（），点击最下方的Save按钮，即可连接到本体测试网络；
 
      <img src="./pic/cyano-confignet.png" alt="cyano-confignet" style="zoom:77%;" />
 
-   - 配置网络完成后，需要添加BTC映射的合约地址，还是点击设置按钮，然后选择图中红框的**OEP-4 TOKENS**，然后单击ADD按钮，将合约地址输入到script hash中，点击CONFIRM，即可看到BTCX的合约已经被添加了，点击BACK，然后点击SAVE；
+   - 配置网络完成后，需要添加BTC映射的合约地址，还是点击设置按钮，然后选择图中红框的**OEP-4 TOKENS**，然后单击ADD按钮，将合约地址输入到script hash中，点击CONFIRM，即可看到OBTC的合约已经被添加了，点击BACK，然后点击SAVE；
 
      <img src="./pic/cyano-configoep4.png" alt="cyano-configoep4" style="zoom:77%;" />
 
@@ -77,15 +70,15 @@
 
 ​	由于OP_RETURN中的信息需要实现特定的序列化方式，所以这里提供一个构造跨链交易的工具，[下载工具])并在终端直接使用即可，详细使用方法见[介绍]()。
 
-​	交易发送完毕后，只需等待一段时间，即可在Cyano上看到BTCX（BTC映射）的余额增加了，现在用户可以在ONT链上交易自己的比特币了（先得有ONG），本体的交易处理速度更快，更适合高频的BTC交易，或者为BTC编写智能合约，当然用户可以把自己的BTC从ONT链上转回BTC链上。
+​	交易发送完毕后，只需等待一段时间，即可在Cyano上看到OBTC（BTC映射）的余额增加了，现在用户可以在ONT链上交易自己的比特币了（先得有ONG），本体的交易处理速度更快，更适合高频的BTC交易，或者为BTC编写智能合约，当然用户可以把自己的BTC从ONT链上转回BTC链上。
 
 <img src="./pic/cyano-btcx.png" alt="cyano-btcx" style="zoom:77%;" />
 
 ### BTC返回比特币
 
-在这里用户需要调用自己写的合约中的方法，比如BTCX的lock方法，调用管理合约的`createCrossChainTx`方法，把BTCX代币锁到合约里，管理合约会创建跨链的证明，然后就会进入后续流程。
+​	在这里用户需要调用自己写的合约中的方法，比如OBTC的lock方法，调用管理合约的`createCrossChainTx`方法，把OBTC代币锁到合约里，管理合约会创建跨链的证明，然后就会进入后续流程。
 
-​	依然以本体链为例，用户可以通过[smartx](https://smartx.ont.io/)调用本体的BTC映射合约，将BTC转回比特币网络，比如使用上文中的[BTCX](https://github.com/zouxyan/btc_crosschain_demo)合约，smartx的使用教程在[此](https://ontio.github.io/documentation/)，调用BTCX的`lock`方法即可。
+​	依然以本体链为例，用户可以通过[smartx](https://smartx.ont.io/)调用本体的BTC映射合约，将BTC转回比特币网络，比如使用上文中的[OBTC](https://github.com/zouxyan/btc_crosschain_demo)合约，smartx的使用教程在[此](https://ontio.github.io/documentation/)，调用OBTC的`lock`方法即可。
 
 ​	除此之外，用户还可以使用本体链的[SDK](https://github.com/ontio/ontology-go-sdk)部署和调用智能合约，示例如下。
 

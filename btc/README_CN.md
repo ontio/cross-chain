@@ -20,7 +20,7 @@
 
 ### 1 比特币到目标链
 
-<div align=center><img width="600" height="440" src="./pic/from_en.png"/></div>
+<div align=center><img width="600" height="440" src="./pic/from.png"/></div>
 
 ​	
 
@@ -65,7 +65,7 @@
 
 ### 3. 目标链到比特币
 
-<div align=center><img width="600" height="530" src="./pic/to_en.png"/></div>
+<div align=center><img width="600" height="530" src="./pic/to.png"/></div>
 
 ​	上图中展示了BTC从目标链回到比特币需要经过的流程。红色的是目标链Relayer，青色的是商家（Alice他们）启动的签名工具，能监听中继链并对交易进行签名，绿色的是比特币的Relayer。
 
