@@ -1,29 +1,33 @@
-<h1 align="center">本体跨链设计</h1>
+<h1 align="center">Design of Ontology Cross Chain</h1>
 
-## 概述
+English | [中文](README_CN.md)
 
-本指南主要介绍本体链上的资产，包括ont，ong以及所有的oep4资产如何跨链到eth链上，也会介绍btc资产跨链到本体链之后如何再转回到比特币网络。目前有两种方式可以实现跨链操作，一种是通过smartx界面工具进行跨链交易，另一种是通过sdk来进行跨链交易的构造。
+## Abstract
 
-## 跨链是如何实现的
+This document introduces how to transfer ontology asset, include ont, ong and all oep4, to Ethereum network. It also introduces how to transfer btcx asset on ontology back to Bitcoin network. Now there are two ways to achieve cross chain operation, first we can send cross chain transactions through smartx, second we can make and send cross chain transactions through sdk.
 
-资产跨链的含义是，用户把资产在原链上锁定，之后在目标链上发行映射资产，同时可以在目标链上申请提现，最后在原链上解锁的过程。要实现该过程，则需要目标链可以验证原链上发生的行为，即验证原链上确实锁定了一定数量的原资产。
+## How to achieve cross chain
 
-非资产类的信息跨链也是同样的过程，需要目标链验证原链上的信息变化，从而做出相应的变化。
+The definition of asset cross chain is, users lock a number of asset on origin chain, then a number of asset-vouchers on destination chain will be given to the users, and vice versa. To achieve this process, destination chain must can verify the fact occurred on origin chain, it means verify users lock a number of asset on origin chain.
 
-这种验证过程目前都是通过merkle证明的形式实现的，即原链将其上发生的行为存储下来，并构造一颗merkle tree，然后将merkle tree的树根写入区块头，并生成该行为的merkle proof。目标链同步并验证原链的区块头，对于原链上提交的merkle proof，找到其对应的合法区块头，通过merkle root验证proof的合法性，从而确定原链上发生的行为。
+The process of any information cross chain also need destination chain verify the fact of origin chain.
 
-## 本体和中继链之间的区块头同步
+To achieve this verification process, we use merkle proof. We store the facts on origin chain, create a merkle tree for all the facts, put root hash to its block header, and generate merkle proof of the facts. Relayers synchronize block headers and merkle proof of origin chain to destination chain, destination chain verify the headers, parse root hash and verify the proof of the facts.
+
+## Block header synchronization between ontology and relay chain
 
 ![header_sync](resources/header_sync.png)
 
-本体链和中继链采用了相似的共识治理模型，网络每隔一定数量的区块更换一次共识节点，即在一个共识周期内，验证者集合保持不变。因此，区块头同步过程不需要同步所有区块，只需要同步关键区块（即切换验证者集合的周期切换区块）和跨链交易发生的区块即可，这样的设计大大减少了区块头的同步数量。同步的区块头存储于区块头同步合约中，当前链的其它任何合约都可以从该合约中读取同步的区块头。
+Ontology and relayer chain use similar governance module, the whole network change its consensus nodes each several blocks, it means in a consensus epoch, the set of validators keep unchanged. So we need not synchronizing all block headers, only block headers contain consensus node changing or cross chain transactions are enough, this design can reduce most header synchronizations.
 
-## 本体和中继链之间的跨链交易
+The synced block headers are stored in header sync contract, any other contract can read these headers.
+
+## Cross chain transactions between ontology and relay chain
 
 ![ont2relay](resources/ont2relay.png)
 
 ![relay2ont](resources/relay2ont.png)
 
-用户在业务合约上发起跨链交易，调用跨链管理合约的跨链接口，跨链管理合约处理跨链请求，分配唯一自增ID，储存跨链请求并构造merkle tree，将树根写入区块头，并生成跨链交易的merkle proof，由relayer将区块头和proof提交到中继链。中继链验证merkle proof的合法性，验证通过则将验证后的信息存下来，并构造新的merkle tree，将树根写入中继链的区块头中，并生成跨链信息的merkle proof，由relayer将区块头和proof提交到目标链。
+Users send cross chain trasactions through business contract, business contract invoke cross chain API of cross chain manager contract. Cross chain manager contract handles cross chain transactions, assign unique ID for each transaction, store transactions and create merkle tree, put root hash into block header, generate merkle proof for the transactions. Relayer synchronize block headers and merkle proof to relayer chain, relayer chain verify headers and merkle proof, store cross chain information and create new merkle tree, put root hash into block header, generate merkle proof of these cross chain information. Relayer will synchronize header and proof to destination chain.
 
-目标链的跨链管理合约验证中继链merkle proof的合法性，验证通过则说明原链上的跨链信息合法，目标链的跨链管理合约会调用相应的业务合约，执行目标链上的业务内容。
+Destination chain verify proof of relaye chain, parse cross chain information, cross chain manager contract will invoke business contract with parameters according to verified cross chain information, execute business logic in business contract.
