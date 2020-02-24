@@ -1,7 +1,7 @@
 <h1 align="center">BTC跨链交易构造工具</h1>
 <h4 align="center">Version 1.0 </h4>
 
-[English](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md) | [中文](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual_CN.md)
+[English](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)| 中文
 
 ## 引言
 
@@ -17,11 +17,11 @@ go build -o btctool main.go
 
 ## 运行GUI
 
-现在已经提供GUI版本的工具，请点击[下载](https://github.com/zouxyan/btctool/releases/download/0.1/btctool-macos)。
+​	现在已经提供GUI版本的工具，请点击[下载](https://github.com/zouxyan/btctool/releases/download/0.0.1/btctool-macos)。
 
 ​	下载GUI版本的工具后，双击之后显示如下。在最上方选择功能，填入对应的信息，则可实现相应功能，发送跨链交易。
 
-<div align=center><img width="410" height="422" src="./pic/gui.png"/></div>
+<div align=center><img width="600" height="422" src="./pic/gui.png"/></div>
 
 ​	界面最上方包含了几个功能，单击选择即可，功能如下：
 
@@ -59,7 +59,7 @@ go build -o btctool main.go
 
    <div align=center><img width="430" height="180" src="./pic/param.png"/></div>
 
-3. 最后点击按钮，获得结果。测试网工具，会显示交易的十六进制字符串，用户只需复制字符串然后广播即可，私网则会通过参数中比特币全节点的RPC接口自动发送交易。比如：
+2. 最后点击按钮，获得结果。测试网工具，会显示交易的十六进制字符串，用户只需复制字符串然后广播即可，私网则会通过参数中比特币全节点的RPC接口自动发送交易。比如：
 
    <div align=center><img width="470" height="144" src="./pic/res.png"/></div>
 
@@ -69,7 +69,7 @@ go build -o btctool main.go
 
 ​	对于准备开展跨链业务的商户来说，他们需要先把自己在目标链上的合约和多签Redeem脚本进行注册，然后才算是加入跨链生态，因为中继链会验证每笔交易的多签和合约之间的绑定关系。
 
-<div align=center><img width="380" height="400" src="./pic/sign.png"/></div>
+<div align=center><img width="580" height="400" src="./pic/sign.png"/></div>
 
 ​	如上填入WIF格式的私钥，需要绑定的目标合约和多签Redeem脚本，点击“签名”即可，结果会在下面显示，商户需要记下自己的签名，汇总每个人的签名后，再向中继链注册。
 
@@ -77,7 +77,7 @@ go build -o btctool main.go
 
 ​	只有在中继链注册过的多签脚本和合约才能实现跨链。如下，填入参数，点击注册即可，结果栏会显示中继链的交易哈希。
 
-<div align=center><img width="380" height="420" src="./pic/register.png"/></div>
+<div align=center><img width="580" height="420" src="./pic/register.png"/></div>
 
 参数的介绍如下：
 
@@ -95,7 +95,19 @@ go build -o btctool main.go
 
 ​	在启动多签签名工具之前，需要生成加密的比特币私钥文件，这里使用了中继链的加密方式。如下图，只需要填入对应的参数，即可生成对应的加密钱包文件。
 
-<div align=center><img width="380" height="420" src="./pic/encrypt.png"/></div>
+<div align=center><img width="580" height="420" src="./pic/encrypt.png"/></div>
+
+### 5. 生成私钥
+
+​	通过工具可以生成比特币私钥，并显示公钥以及地址。网络类型可以填test、regtest和main，分别对应测试网、私网和主网。
+
+<div align=center><img width="600" height="420" src="./pic/getprivk.png"/></div>
+
+### 6. 生成多签赎回脚本
+
+​	填入网络类型、参与多签的人的公钥（用“,”隔开）和要求的签名数目，点击获取即可得到Redeem脚本，各种形式的多签地址都是从Redeem脚本生成的。推荐使用P2WSH地址，可以有效降低交易手续费。
+
+<div align=center><img width="600" height="450" src="./pic/redeem.png"/></div>
 
 ## 命令行运行
 
@@ -181,3 +193,22 @@ go build -o btctool main.go
 ```
 
 ​	填入私钥和用来加密私钥的密码即可。
+
+### 6. 生成私钥
+
+```
+./btctool -gui=0 -tool=getprivk -net=test 
+```
+
+​	指定工具和网络类型即可。
+
+### 7. 生成多签赎回脚本
+
+```
+./btctool -gui=0 -tool=getredeem -net=test -require=2 -pubks=037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b91735054,037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b91735054
+2020/02/24 19:17:21.387310 [INFO ] GID 1, your redeem is 5221037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b9173505421037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b9173505452ae
+your P2SH address is 2NDMFTruE6Y5rKkFNzG7ERQnEVGfvJwFx1m
+your P2WSH address is tb1q3frdrpmh7tlejtc8a0s9pg2tnvp2qm09gnapx2k5rs5m6j2cy8rsa2kwv4
+```
+
+​	收集多签参与者的公钥，填写对应参数，pubks指定公钥，用","分隔，require指定多签脚本要求的最少签名数目。工具会返回redeem的Hex形式，以及对应的多签P2SH和P2WSH地址。

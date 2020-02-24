@@ -1,7 +1,7 @@
 <h1 align="center">比特币跨链生态</h1>
 <h4 align="center">Version 1.0 </h4>
 
-[English](https://github.com/ontio/cross-chain/blob/master/btc/README.md) | [中文](https://github.com/ontio/cross-chain/blob/master/btc/README_CN.md)
+[English](https://github.com/ontio/cross-chain/blob/master/btc/README.md) | 中文
 
 ## 引言
 

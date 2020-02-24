@@ -2,7 +2,7 @@
 
 <h4 align="center">Version 1.0 </h4>
 
-[English](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide.md) | [中文](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide_CN.md)
+[English](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide.md) | 中文
 
 ## 引言
 
@@ -60,15 +60,15 @@
   4. **准备工具**：为了确定BTC跨链成功，建议使用Chrome插件[Cyano Wallet](https://chrome.google.com/webstore/detail/cyano-wallet/dkdedlpgdmmkkfjabffeganieamfklkm)，导入用户的ONT账户。为了连接到ONT的测试网络，请进行如下配置：
   
      - 首先，导入或者创建钱包，钱包的使用方法请[移步](https://dev-docs.ont.io/#/docs-cn/cyano/01-chrome-wallet)或者观看[使用教程中文](https://www.youtube.com/watch?v=u_MtHccKaNQ)、[教程英文](https://www.youtube.com/watch?v=S2qk-Gkrs9s)；
-      
+     
        <div align=center><img width="300" height="400" src="./pic/cyano-login.png"/></div>
-      
+     
      - 点击右上角的设置按钮(小齿轮)，按图片中红框内信息配置本体测试网（），点击最下方的Save按钮，即可连接到本体测试网络；
-      
+     
        <div align=center><img width="300" height="400" src="./pic/cyano-confignet.png"/></div>
-      
+     
        
-      
+     
      - 配置网络完成后，需要添加BTC映射的合约地址，还是点击设置按钮，然后选择图中红框的**OEP-4 TOKENS**，然后单击ADD按钮，将合约地址输入到script hash中，点击CONFIRM，即可看到OBTC的合约已经被添加了，点击BACK，然后点击SAVE；
        
        <div align=center><img width="300" height="400" src="./pic/cyano-configoep4.png"/></div>
