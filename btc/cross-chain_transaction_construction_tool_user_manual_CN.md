@@ -1,7 +1,7 @@
 <h1 align="center">BTC跨链交易构造工具</h1>
 <h4 align="center">Version 1.0 </h4>
 
-[English]() | [中文](./README_CN.md)
+[English](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md) | [中文](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual_CN.md)
 
 ## 引言
 
