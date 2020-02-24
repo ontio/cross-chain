@@ -1,7 +1,7 @@
 <h1 align="center">多签签名工具</h1>
 <h4 align="center">Version 1.0 </h4>
 
-[English]() | [中文](./README_CN.md)
+[English](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide.md) | [中文](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide_CN.md)
 
 ## 引言
 
