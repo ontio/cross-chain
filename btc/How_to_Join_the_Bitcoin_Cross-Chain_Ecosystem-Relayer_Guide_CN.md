@@ -11,7 +11,7 @@
 
 ## 架构
 
-<img src="/Users/zou/go/src/github.com/ontio/cross-chain/btc/pic/relayer.png" style="zoom:50%;" />
+<div align=center><img width="380" height="200" src="./pic/relayer.png"/></div>
 
 ​	比特币Relayer实现了比特币网络的监听，能识别并转发跨链交易，向中继链提交区块头，并获取收益，同时监听中继链，广播中继链构造的跨链交易，是实现比特币跨链的关键部分。
 

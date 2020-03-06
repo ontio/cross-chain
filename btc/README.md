@@ -9,7 +9,7 @@ English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/README_C
 
 ​	怎么算是BTC跨链到以太坊呢？下图简单介绍了跨链生态对于用户来说完成的事情。
 
-<div align=center><img width="600" height="200" src="./pic/desc.png"/></div>
+<div align=center><img width="800" height="200" src="./pic/desc_en.png"/></div>
 
 ​	在跨链之前，你需要确定商家及其业务是值得信任的。跨链实际上就是将比特币网络中的BTC原封不动地转移到其他链上，在其他链上的BTC具备和跨链前完全一致的属性，具有相同的价值，BTC在目标链上以代币（智能合约）的形式存在，比如ERC20。
 
