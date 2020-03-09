@@ -8,3 +8,4 @@ English | [中文](ethereum_cross_chain_specification_CN.md)
 ## License
 
 The Ontology library is licensed under the GNU Lesser General Public License v3.0, read the LICENSE file in the root directory of the project for details.
+

@@ -1,4 +1,4 @@
-<h1 align="center">Ontology Cross Chain - ethereum relayer manual</h1>
+<h1 align="center">How to Deploy Crosschain on Ethereum</h1>
 <h4 align="center">Version 1.0 </h4>
 
 [English](how_to_deploy_crosschain_on_ethereum.md) | 中文
