@@ -6,19 +6,21 @@
 
 ## 引言
 
-​	跨链用户指的是有需求将BTC从比特币网络转移到其他链的人或组织，他们需要找到提供跨链服务的商户，获取商户的多签等信息，用户需要信任商户。  	
+跨链用户指的是有需求将BTC从比特币网络转移到其他链的人或组织，他们需要找到提供跨链服务的商户，获取商户的多签等信息，用户需要信任商户。  	
 
-​	本文档将以跨链用户的角度，讲述如何实现自己BTC的跨链转移。比如你需要将自己的1BTC转到某条链上，你需要做的准备工作以及具体的操作步骤。以下以测试网为例。
+本文档将以跨链用户的角度，讲述如何实现自己BTC的跨链转移。比如你需要将自己的1BTC转到某条链上，你需要做的准备工作以及具体的操作步骤。
 
-  ## 准备工作
+## 准备工作
 
-  ​	首先，某些组织可能开展了你感兴趣的跨链业务，你需要挑选其中一个，并获取其比特币多签地址和目标链的BTC代币合约地址；然后，获取跨链交易构造工具，或者按照协议自己构造交易；最后，生成自己在目标链的地址，用于接收跨链来的比特币。
+首先，某些组织可能开展了你感兴趣的跨链业务，你需要挑选其中一个，并获取其比特币多签地址和目标链的BTC代币合约地址；然后，获取跨链交易构造工具，或者按照协议自己构造交易；最后，生成自己在目标链的地址，用于接收跨链来的比特币。
 
 ## 操作实例
 
-  ​	在工具上填入需要的信息，并通过工具构造跨链交易，工具的使用请[移步](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)。将工具显示的交易通过任何工具广播出去，比如该[网站](https://tbtc.bitaps.com/broadcast)。剩下的就是等待交易的六个确认，然后不久就能看到目标链的账户中多了对应数额的BTC代币。
+在这里我们以测试网BTC到以太坊测试网为例。
 
-​	我选择了信任的测试商户，他们的信息如下表。
+在工具上填入需要的信息，并通过工具构造跨链交易，工具的使用请[移步](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)。将工具显示的交易通过任何工具广播出去，比如该[网站](https://tbtc.bitaps.com/broadcast)。剩下的就是等待交易的六个确认，然后不久就能看到目标链的账户中多了对应数额的BTC代币。
+
+我选择了信任的测试商户，他们的信息如下表。
 
 | 信息            | 地址                                                         |
 | --------------- | ------------------------------------------------------------ |
@@ -28,18 +30,16 @@
 
 ### 实例1：BTC到以太坊
 
-  在这里我们以测试网BTC到以太坊测试网为例。
-
 #### 1. BTC到以太
 
 ##### 1.1. 跨链准备
 
-    1. **获取BTC**：准备好一个比特币地址，在进行之前先在[BTC测试网水龙头](https://testnet-faucet.mempool.co/)中获取测试网比特币；
-    2. **获取ETH**：准备好一个以太坊地址，要获取一定的ETH，方便支付调用合约的Gas，这里使用的是[Ropsten](https://teth.bitaps.com/)；
+  1. **获取BTC**：准备好一个比特币地址，在进行之前先在[BTC测试网水龙头](https://testnet-faucet.mempool.co/)中获取测试网比特币；
+  2. **获取ETH**：准备好一个以太坊地址，要获取一定的ETH，方便支付调用合约的Gas，这里使用的是[Ropsten](https://teth.bitaps.com/)；
 
 ##### 1.2. 发送交易
 
-  ​	依然通过[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)发送即可，教程见工具文档。发送完毕后可以通过[以太坊浏览器](https://ropsten.etherscan.io/)查看账户在合约里的BTC代币数目。
+通过[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)发送即可，教程见工具文档。发送完毕后可以通过[以太坊浏览器](https://ropsten.etherscan.io/)查看账户在合约里的BTC代币数目。
 
 #### 2. BTC返回比特币
 
@@ -77,17 +77,17 @@
 
 ##### 1.2. 发送交易
 
-  	依旧使用[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)构造并发送跨链交易。交易发送完毕后，需要等待比特币的六个区块确认，即可在Cyano上看到OBTC（BTC映射）的余额增加了，现在用户可以在ONT链上交易自己的比特币了（先得有ONG），本体的交易处理速度更快，更适合高频的BTC交易，或者为BTC编写智能合约，当然用户可以把自己的BTC从ONT链上转回BTC链上。
+使用[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)构造并发送跨链交易。交易发送完毕，比特币的六个区块确认之后，即可在Cyano上看到OBTC（BTC映射）的余额增加了，现在用户可以在ONT链上交易自己的比特币了（先得有ONG），本体的交易处理速度更快，更适合高频的BTC交易，或者为BTC编写智能合约，当然用户可以把自己的BTC从ONT链上转回BTC链上。
 
 <div align=center><img width="300" height="400" src="./pic/cyano-btcx.png"/></div>
 
 #### 2. BTC返回比特币
 
-  ​	在这里用户需要调用自己写的合约中的方法，比如OBTC的lock方法，调用管理合约的`createCrossChainTx`方法，把OBTC代币锁到合约里，管理合约会创建跨链的证明，然后就会进入后续流程。
+要转回BTC，用户需要调用OBTC合约中的lock方法，填写对应的参数。
 
-  ​	依然以本体链为例，用户可以通过[smartx](https://smartx.ont.io/)调用本体的BTC映射合约，将BTC转回比特币网络，比如使用上文中的[OBTC](https://github.com/zouxyan/btc_crosschain_demo)合约，smartx的使用教程在[此](https://ontio.github.io/documentation/)，调用OBTC的`lock`方法即可。
+以本体链为例，用户可以通过[smartx](https://smartx.ont.io/)调用本体的BTC映射合约，将BTC转回比特币网络，将上文中的[OBTC](https://github.com/zouxyan/btc_crosschain_demo)合约代码复制到smartx的编辑器中，编译并调用即可，详细可见smartx的[使用教程](https://ontio.github.io/documentation/)。
 
-  ​	除此之外，用户还可以使用本体链的[SDK](https://github.com/ontio/ontology-go-sdk)部署和调用智能合约，示例如下。
+除此之外，用户还可以使用本体链的[SDK](https://github.com/ontio/ontology-go-sdk)调用智能合约，示例如下。
 
 ```go
   package main
@@ -122,13 +122,6 @@
   		return
   	}
   
-  	_, err = ontSdk.NeoVM.DeployNeoVMSmartContract(0, 21600000, acc, true,
-  		btcxCode, "BTCX", "", "", "", "")
-  	if err != nil {
-  		fmt.Printf("failed to deploy contract: %v", err)
-  		return
-  	}
-  
   	contractAddr, err := utils.GetContractAddress(btcxCode)
   	if err != nil {
   		fmt.Printf("failed to parse address from bytes: %v", err)
@@ -136,7 +129,7 @@
   	}
   
   	_, err = ontSdk.NeoVM.InvokeNeoVMContract(0, 21600000, acc, contractAddr,
-  		[]interface{}{"lock", []interface{}{0, []byte("btc"), 0, acc.Address[:], yourBtcAddr, yourBtcAmount}})
+  		[]interface{}{"lock", []interface{}{1, acc.Address[:], yourBtcAddr, yourBtcAmount}})
   	if err != nil {
   		fmt.Printf("failed to invoke contract: %v", err)
   		return
@@ -145,7 +138,7 @@
   }
 ```
 
-  ​	上述demo中，有一些信息需要使用者自己填入：
+上述demo中，有一些信息需要使用者自己填入：
 
   - 智能合约的avm code，需要编译合约，比如smartx编译之后在右边即可看到avm字节码，或者使用[Neptune](https://github.com/ontio/ontology-python-compiler)编译；
 
@@ -154,9 +147,5 @@
   - ONT节点的Rpc地址，如果使用本体测试网，IP可填138.91.6.125；
 
   - ONT钱包文件的路径以及钱包的密码。
-
-    为了方便用户测试，这里给出测试网BTCX合约的[avm字节码](https://github.com/zouxyan/btc_crosschain_demo)。
-
-    
 
     在合约调用成功之后，用户只需等待一段时间，即可看到BTC在比特币链上到账。

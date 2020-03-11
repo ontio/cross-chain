@@ -5,11 +5,11 @@
 
 ## 引言
 
-​	btctool用于构造跨链用的BTC特定格式的交易，同时实现了向中继链注册多签和合约等功能。
+btctool用于构造跨链用的BTC特定格式的交易，同时实现了向中继链注册多签和合约等功能。
 
 ## 编译
 
-​	进入到项目的cmd目录下，运行下列命令，需要安装golang和相关依赖
+进入到项目的cmd目录下，运行下列命令，需要安装golang和相关依赖
 
 ```go
 go build -o btctool main.go
@@ -17,13 +17,13 @@ go build -o btctool main.go
 
 ## 运行GUI
 
-​	现在已经提供GUI版本的工具，请点击[下载](https://github.com/zouxyan/btctool/releases/download/0.0.1/btctool-macos)。
+现在已经提供GUI版本的工具，请点击[下载](https://github.com/zouxyan/btctool/releases/download/0.0.1/btctool-macos)。
 
-​	下载GUI版本的工具后，双击之后显示如下。在最上方选择功能，填入对应的信息，则可实现相应功能，发送跨链交易。
+下载GUI版本的工具后，双击之后显示如下。在最上方选择功能，填入对应的信息，则可实现相应功能，发送跨链交易。
 
 <div align=center><img width="600" height="422" src="./pic/gui.png"/></div>
 
-​	界面最上方包含了几个功能，单击选择即可，功能如下：
+界面最上方包含了几个功能，单击选择即可，功能如下：
 
 | 功能             | 介绍                                                         |
 | ---------------- | ------------------------------------------------------------ |
@@ -37,7 +37,7 @@ go build -o btctool main.go
 
 ### 1. 构造BTC跨链交易
 
-​	首先选择工具。现在支持比特币测试网和本地私网，比特币测试网包含在当前跨链生态测试中，发送交易后，可以在目标链测试网看到余额变化，如果是本地私网，则需要自行搭建联盟链、目标链等环境，可用作开发测试。选择后，参数会有变化，以下以测试网为例。
+首先选择工具。现在支持比特币测试网和本地私网，比特币测试网包含在当前跨链生态测试中，发送交易后，可以在目标链测试网看到余额变化，如果是本地私网，则需要自行搭建联盟链、目标链等环境，可用作开发测试。选择后，参数会有变化，以下以测试网为例。
 
 1. 然后填写对应参数。如下表，测试网对应需要填入的参数，因为本工具没有实现钱包等复杂功能，所以UTXO的信息需要用户自行填入，可以使用测试网[浏览器](https://tbtc.bitaps.com/)查找自己地址的相关交易，找到未使用的输出即可。如果是拥有测试网全节点或者是私网，不需要指定UTXO，但需要配置节点的RPC信息。
 
@@ -69,15 +69,15 @@ go build -o btctool main.go
 
 ### 2. 为合约签名
 
-​	对于准备开展跨链业务的商户来说，他们需要先把自己在目标链上的合约和多签Redeem脚本进行注册，然后才算是加入跨链生态，因为中继链会验证每笔交易的多签和合约之间的绑定关系。
+对于准备开展跨链业务的商户来说，他们需要先把自己在目标链上的合约和多签Redeem脚本进行注册，然后才算是加入跨链生态，因为中继链会验证每笔交易的多签和合约之间的绑定关系。
 
 <div align=center><img width="580" height="400" src="./pic/sign.png"/></div>
 
-​	如上填入WIF格式的私钥，需要绑定的目标合约和多签Redeem脚本，点击“签名”即可，结果会在下面显示，商户需要记下自己的签名，汇总每个人的签名后，再向中继链注册。
+如上填入WIF格式的私钥，需要绑定的目标合约和多签Redeem脚本，点击“签名”即可，结果会在下面显示，商户需要记下自己的签名，汇总每个人的签名后，再向中继链注册。
 
 ### 3. 注册多签合约
 
-​	只有在中继链注册过的多签脚本和合约才能实现跨链。如下，填入参数，点击注册即可，结果栏会显示中继链的交易哈希。
+只有在中继链注册过的多签脚本和合约才能实现跨链。如下，填入参数，点击注册即可，结果栏会显示中继链的交易哈希。
 
 <div align=center><img width="580" height="420" src="./pic/register.png"/></div>
 
@@ -95,25 +95,25 @@ go build -o btctool main.go
 
 ### 4. 加密私钥
 
-​	在启动多签签名工具之前，需要生成加密的比特币私钥文件，这里使用了中继链的加密方式。如下图，只需要填入对应的参数，即可生成对应的加密钱包文件。
+在启动多签签名工具之前，需要生成加密的比特币私钥文件，这里使用了中继链的加密方式。如下图，只需要填入对应的参数，即可生成对应的加密钱包文件。
 
 <div align=center><img width="580" height="420" src="./pic/encrypt.png"/></div>
 
 ### 5. 生成私钥
 
-​	通过工具可以生成比特币私钥，并显示公钥以及地址。网络类型可以填test、regtest和main，分别对应测试网、私网和主网。
+通过工具可以生成比特币私钥，并显示公钥以及地址。网络类型可以填test、regtest和main，分别对应测试网、私网和主网。
 
 <div align=center><img width="600" height="420" src="./pic/getprivk.png"/></div>
 
 ### 6. 生成多签赎回脚本
 
-​	填入网络类型、参与多签的人的公钥（用“,”隔开）和要求的签名数目，点击获取即可得到Redeem脚本，各种形式的多签地址都是从Redeem脚本生成的。推荐使用P2WSH地址，可以有效降低交易手续费。
+填入网络类型、参与多签的人的公钥（用“,”隔开）和要求的签名数目，点击获取即可得到Redeem脚本，各种形式的多签地址都是从Redeem脚本生成的。推荐使用P2WSH地址，可以有效降低交易手续费。
 
 <div align=center><img width="600" height="450" src="./pic/redeem.png"/></div>
 
 ## 命令行运行
 
-​	btctool可以针对比特币测试网和本地仿真网络，如果使用跨链生态提供的测试网，那么btctool选择测试网即可，如果是在本地运行跨链测试网络，则选择仿真网络。
+btctool可以针对比特币测试网和本地仿真网络，如果使用跨链生态提供的测试网，那么btctool选择测试网即可，如果是在本地运行跨链测试网络，则选择仿真网络。
 
 ### 1. 测试网络：
 
@@ -186,7 +186,7 @@ go build -o btctool main.go
 ./btctool -tool=register_redeem  -allia-rpc=http://orchain:40336  -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae  -sigs=304402207cf1b8bf2d7234c77a84250a79d07a87b9fb09378096d34a5459b79afa414c57022015308108b6ec07df3b286c0fe20fe10b23e77377959d7160c339508ec1759da8,3045022100d6731dd8a0ee9e32423a25ed4638882d9ffcb259cdb03a3f75b8f1e3cd23540c02204d2511f9b748d5e356a9dfe20cfdda49a2de631637cc980ac7416cc7b6954466,3045022100a1e43664faafe50e429ad5c246266122dbc7df835f3758603c390a75019bb581022023d34b4c8bed500ea67ef5e9cbe259d7406487cc06a7da8d0661e9e58a0bbd52,3045022100e9716af38afd49fae2951c87ceec8add41d2915befee4962f3babb4e9b88897302207b870953ca1bde8edf1417ec7cb3e07d9c7862583aae92c9b8c408b746e14987,304402201bf226994026d060ddae579108bd5b1b06aeba4a313be6875b7ccf5482618ba602200ee71faa98c49f6d5120b6e8dc73663838be546cf47ca9c7a7c6bf2e672c8cfa  -wallet=./wallet.dat  -wallet-pwd=pwd  -contractId=2  -gui=0
 ```
 
-​	allia-rpc指的是中继链的RPC地址；wallet是中继链的钱包。其他参数和GUI相同。
+allia-rpc指的是中继链的RPC地址；wallet是中继链的钱包。其他参数和GUI相同。
 
 ### 5. 加密私钥
 
@@ -194,7 +194,7 @@ go build -o btctool main.go
 ./btctool -tool=encrypt_privk -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -btcpwd=pwd -gui=0
 ```
 
-​	填入私钥和用来加密私钥的密码即可。
+填入私钥和用来加密私钥的密码即可。
 
 ### 6. 生成私钥
 
@@ -202,7 +202,7 @@ go build -o btctool main.go
 ./btctool -gui=0 -tool=getprivk -net=test 
 ```
 
-​	指定工具和网络类型即可。
+指定工具和网络类型即可。
 
 ### 7. 生成多签赎回脚本
 
@@ -213,4 +213,4 @@ your P2SH address is 2NDMFTruE6Y5rKkFNzG7ERQnEVGfvJwFx1m
 your P2WSH address is tb1q3frdrpmh7tlejtc8a0s9pg2tnvp2qm09gnapx2k5rs5m6j2cy8rsa2kwv4
 ```
 
-​	收集多签参与者的公钥，填写对应参数，pubks指定公钥，用","分隔，require指定多签脚本要求的最少签名数目。工具会返回redeem的Hex形式，以及对应的多签P2SH和P2WSH地址。
+收集多签参与者的公钥，填写对应参数，pubks指定公钥，用","分隔，require指定多签脚本要求的最少签名数目。工具会返回redeem的Hex形式，以及对应的多签P2SH和P2WSH地址。
