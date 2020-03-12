@@ -16,7 +16,7 @@ To achieve this verification process, we use merkle proof. We store the facts on
 
 ## Block header synchronization between ontology and relay chain
 
-![header_sync](resources/header_sync.png)
+<div align=center><img width="521" height="300" src="resources/hdr_sync.png"/></div>
 
 Ontology and relayer chain use similar governance module, the whole network change its consensus nodes each several blocks, it means in a consensus epoch, the set of validators keep unchanged. So we need not synchronizing all block headers, only block headers contain consensus node changing or cross chain transactions are enough, this design can reduce most header synchronizations.
 
@@ -24,9 +24,9 @@ The synced block headers are stored in header sync contract, any other contract 
 
 ## Cross chain transactions between ontology and relay chain
 
-![ont2relay](resources/ont2relay.png)
+<div align=center><img width="750" height="330" src="resources/ont2orc.png"/></div>
 
-![relay2ont](resources/relay2ont.png)
+<div align=center><img width="750" height="310" src="resources/orc2ont.png"/></div>
 
 Users send cross chain trasactions through business contract, business contract invoke cross chain API of cross chain manager contract. Cross chain manager contract handles cross chain transactions, assign unique ID for each transaction, store transactions and create merkle tree, put root hash into block header, generate merkle proof for the transactions. Relayer synchronize block headers and merkle proof to relayer chain, relayer chain verify headers and merkle proof, store cross chain information and create new merkle tree, put root hash into block header, generate merkle proof of these cross chain information. Relayer will synchronize header and proof to destination chain.
 
