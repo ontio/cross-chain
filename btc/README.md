@@ -1,7 +1,7 @@
 <h1 align="center">Bitcoin Cross Chain Ecosystem</h1>
 <h4 align="center">Version 1.0 </h4>
 
-English | [中文](README_CN.md)
+English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/README_CN.md)
 
 ## Introduction
 
@@ -50,22 +50,23 @@ The cross chain transfer process can be divided into six main steps, where the u
 #### 1.1 Sending Transactions
 
 <div align=center><img width="380" height="400" src="./pic/cctx.png"/></div>
+
 The only thing in this entire process that the user needs to do is sending a transaction to the Bitcoin chain, and the cross chain ecosystem will carry out the rest of the procedure. This transaction, however, must be of the specified format, i.e. it must contain the necessary details such as target chain information, chain ID, the receiver's address on the target chain, etc. The format of a transaction is illustrated by the figure above.
 
 
 - **Input:** Just like a regular BTC transaction, the user needs to create the input using their UTXO. The input amount must include the cross chain transfer amount and the transaction fee;
 
-- **Output:** The protocol includes two important points of output, the transfer amount output to the multi-signature address and the `OP_RETURN` information output contained in the cross contract transaction. Both need to be serialized in sequence as first and second elements respectively. For other points of output, can be used for returning change or other kinds of transfer. 
+- **Output:** The protocol includes two important points of output, the transfer amount output to the multi-signature address and the `OP_RETURN` information output contained in the cross contract transaction. Both need to be serialized in sequence as first and second elements respsectively. For other points of output, can be used for returning change or other kinds of transfer. 
 
-- **OP_RETURN data format:** The one byte of data stored in `OP_RETURN` includes the cross chain label, receiver's target chain account address, chain ID of the target chain and cross chain transaction fee. The chain ID tells the ORChain (the relay chain) where to transfer the BTC. The transaction fee charged here is the processing fee for using the cross chain ecosystem.
+- **OP_RETURN data format:** The one byte of data stored in `OP_RETURN` includes the cross chain label, receiver's target chain account address, chain ID of the target chain, cross chain transaction fee, and the address of the target contract. The target contract represents the token that complements BTC and is deployed on the target chain. For example, an ERC20 contract on Ethereum. The chain ID tells the ORChain (the relay chain) where to transfer the BTC. The transaction fee charged here is the processing fee for using the cross chain ecosystem.
 
 #### 1.2 BTC Relay Transmission
 
-Once the transaction is created and registered on the BTC chain, the BTC relayer monitoring the BTC network picks it up and transmits its corresponding Merkle Proof to the relay chain.
+Once the transaction is created and registered on the BTC chain, the BTC relayer montoring the BTC network picks it up and transmits its corresponding Merkle Proof to the relay chain.
 
 #### 1.3 Relay Chain Consensus
 
-A relay node invoked the contract on the relay chain verifies the transaction and the validity of the merkle proof. The verification process is discussed on a later section. If the verification is successful, that chain transmits the necessary information in the form of an event. This includes the contract and account address on the target chain, cross chain transfer amount, etc. which is then received by a relay node of the target chain.
+A relay node invoked the contract on the relay chain verifies the transaction and the validity of the merkle proof. The verification process is discussed on a later section. If the verification is successful, that chain transmits the necessary information in the form of an event. This includes the contract and account address on the target chain, cross chain transfer amount, etc. which is then  received by a relay node of the target chain.
 
 #### 1.4 Target Chain Relay Transmission
 
@@ -77,12 +78,12 @@ The contract invoked on the target chain will transfer the cross chain BTC to th
 
 ### 2. Bitcoin Block Header Synchronization
 
-The relay chain needs to verify the merkle proof of the BTC transaction in order ensure the validity of the transaction information provided by the relayer. That is why it maintains a corresponding block header. The BTC relayer continuously sends block header information to the relay chain, collecting incentives in the process.
+The relay chain needs to verfiy the merkle proof of the BTC transaction in order ensure the validity of the transaction information provided by the relayer. That is why it maintains a corresponding block header. The BTC relayer continuously sends block header information to the relay chain, collecting incentives in the process.
 
-- **Initializing the relay chain:** The relay chain is initialized with a BTC block header. The height of this block is not fixed, but it has to be the first block of a difficulty adjustment cycle . This block header is referred to as the **Genesis block header** of the relay chain.
+- **Initializing the relay chain:** The relay chain is initialized with a BTC block header. The height of this block is not fixed, but it is generally the current block height when the relay chain is initialized. This block header is referred to as the **Genesis block header** of the relay chain.
 - **Block header transmission:** The relay chain contract provides an API to transmit the block header. The relayer uses the API to send the block headers after the **Genesis** height.
 - **Block header storage:** The smart contract on the relay chain implements a mechanism similar to that of the Bitcoin light client. It can store and verify block headers, maintain the current longest chain, and deal with forks and other abnormal circumstances.
-- **Cross chain transaction verification:** Transactions need to be verified before being transmitted to the target chain. Firstly, the relay chain contract confirms the 6 block policy. The block height is measured with respect to the relay chain block height. Next it confirms whether the transaction adheres to the protocol standard. Finally, it verifies the merkle proof by fetching the BTC transaction using block height and cross-checking whether the merkle roots of the BTC transaction and that of the transaction on the relay chain match.
+- **Cross chain transaction verification:** Transactions need to be verififed before being transmitted to the target chain. Firstly, the relay chain contract confirms the 6 block policy. The block height is measured with respect to the relay chain block height. Next it confirms whether the transaction adheres to the protocol standard. Finally, it verifies the merkle proof by fetching the BTC transaction using block height and cross-checking wheter the merkle roots of the BTC transaction and that of the transaction on the relay chain match.
 
 ### 3. Target Chain to Bitcoin Network
 
@@ -94,4 +95,4 @@ The picture above illustrates the process of BTC being transferred back to the B
 2. The relay chain creates an unsigned transaction which is meant to release the BTC locked in the multi-signature address.
 3. The signature tool used by the vendor monitors the chain for this transaction. This transaction needs to be signed by the individually by the collaborators of the cross chain project. They use the relay chain contract to sign the transaction and transmit it back to the chain. The contract also ensures that signatures are authentic. Once authorized, the transaction is put together and finally sent out as an event.
 4. The Bitcoin relayer monitoring the relay chain's events takes this transaction and broadcasts it to the Bitcoin network.
-5. The user finally receives their BTC in their Bitcoin account. The user bears the transaction costs generated in this process, i.e. processing fees. The processing fee is calculated by the relay chain when creating the transaction, based on the size and nature of the transaction.
+5. The user finally receives their BTC in their Bitcoin account. The user bears the transaction costs generated in this process, i.e. processing fees. The processing fee is calculated by the relay chain when creating the transactoin, based on the size and nature of the transaction.

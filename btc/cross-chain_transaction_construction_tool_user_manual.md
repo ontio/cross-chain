@@ -37,7 +37,7 @@ All the functions in the top tab of the **btctool** have been described below:
 
 ### Creating a Cross Chain BTC Transaction
 
-The **btctool** currently supports cross chain transactions on the test net and the private net. Creating and sending a transaction to the BTC test net will transfer the amount to the target chain's test net account. 
+The **btctool** currently supports cross chain transactions on the test net and the private net. Creating and sending a transaction to the BTC test net will transafer the amount to the target chain's test net account. 
 In case working with a private net configuration, you first need to setup a chain consortium environment and define a target chain, etc. This can be used to carry out testing. Please take note of the changes that need to be made when a network configuration changes. 
 
 A sample cross chain transaction on the test net would involve the following steps:
