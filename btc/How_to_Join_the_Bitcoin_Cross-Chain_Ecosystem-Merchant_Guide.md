@@ -27,15 +27,22 @@ Say there are three business collaborators named Alice, Bob, and Carl. Bitcoin i
 
 ### Vendor Starts a New Service
 
-- **第一步，部署以太坊合约**：将准备好的EBTC合约部署到以太坊上，准备接收比特币，合约模板请见[此]()，修改合约内的Redeem脚本为商家自己的多签脚本即可。
-- **第二步，启动签名工具**：按照[说明](https://github.com/zouxyan/cross-chain/blob/master/btc/redeem_tool_guide.md)，把自己的私钥加密后导入工具，启动工具监听联盟链并提交自己的签名。
-- **第三步，BTC到以太坊**：按照特定的格式[构造交易](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)，发送比特币到多签地址，活跃在跨链生态中的Relayer就会把这些跨链交易转发到联盟链，最终比特币会准确地发送到EBTC指定的账户中了。比如Alice在交易中写入了EBTC合约的地址、自己以太坊的地址和以太坊的chain id，并发送了1BTC到多签地址，在这笔交易拥有6个确认之后，Alice发现自己多了1个EBTC，而发送到多签地址的1BTC则被锁住。
-- **第四步，BTC回比特币**：Alice想把自己的1EBTC转回比特币链，于是直接调用EBTC合约的接口，填入要转回的金额、比特币地址、比特币chain id等信息，一段时间后，发现签名工具对一笔交易进行了签名，这笔交易就是多签用来释放Alice比特币的，同时另外两人的签名工具也会签名，最终这笔交易会被Relayer成功广播到比特币网络中，这时候Alice会看到这笔交易，但是她发现转回来的比特币不足1BTC，因为这笔多签交易的手续费需要Alice支付，这是跨链生态所要求的，不过手续费并不多，Alice表示完全能接受。
-
-经过测试（上述第三、四步商家可以不做），三人开始基于EBTC开发自己的比特币业务合约，他们终于能在以太坊智能合约上实现自己天马行空的想法了，这多亏了跨链生态！
-
-同样地，按照协议开发一本本体或者其他链的合约，它将作为BTC在本体上的映射，与比特币保持一比一的关系，也可以通过修改[模板]()的Redeem脚本后使用，这里称作OBTC。将准备好的OBTC合约部署到本体网络上，可以通过[smartx](https://smartx.ont.io/)其余步骤和以太坊类似。
-
 #### Step 1: Deploying a contract on Ethereum
 
-The EBTC contract is deployed on the Ethereum chain
+The EBTC contract is deployed on the Ethereum chain. This contract is used to receive the transferred BTC. A contract template is avaialble for reference [here](). Vendors can modify the tempalte's redeem script and use the rest of the template as it is.
+
+#### Step 2: Enabling the signing tool
+
+Please follow the instructions described in the [tool guide](https://github.com/zouxyan/cross-chain/blob/master/btc/redeem_tool_guide.md) and import the encrypted private key into the tool to enable it and monitor the consortium chain transactions and carry out the signature process.
+
+#### Step 3: Transferring from BTC to Ethereum
+
+The user creates a transaction in the specified format and sends the BTC to the multi-signature address. An active relayer in the cross chain ecosystem will pick up this transaction and transmit it to the consortium chain. And in the end this equivalent amount will be transferred to the specifed EBTC contract address on the Ethereum chain based on the chain ID when the six block confirmation is established in the Bitcoin network. Say 1 BTC is transferred to the Ethereum chain. 1 EBTC will be transaferred to the Ethereum chain and the 1 BTC will be locked in the multi-signature address on the BTC network.
+
+#### Step 4: BTC transferred back to the Bitcoin network
+
+When the user wants to transfer their BTC back to the Bitcoin network they can directly invoke the EBTC contract's API, provide the information regarding how much amount is to be transferred back, the receiving address, BTC chain ID, etc. Next the signature tool will get the signatures of all the collaborators as per the redeem script and the transaction for releasing the locked BTC assets will be transmitted to the relay chain. An active BTC relayer will broadcast this transaction to the BTC network, and the amount will thus be transferred to the user's BTC account. The user needs to bear a nominal amount of transaction fee for this cross chain transfer. It will be deducted from the transfer amount. The amount is very minimal.
+
+After completing a certain amount of testing, vendors can proceed to provide BTC related services to users by implementing complex logic in the form of smart contracts on Ethereum, which can be made possible using the cross chain ecosystem.
+
+Similary, cross chain services for other chains such as Ontology can also be implemented in the same way. The contract for a cross chain token deployed on the Ontology chain, say OBTC, maintains a one to one equivalence with BTC. This can also be implemented by modifying and personalizing the redeem script of the sample contract [template](). The contract can be deployed using Ontology's [SmartX](https://smartx.ont.io/). The rest of the process is the same as that on Ethereum, as described above.

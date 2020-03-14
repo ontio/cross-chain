@@ -1,53 +1,56 @@
-<h1 align="center">多签签名工具</h1>
+<h1 align="center">Multi-Signature Signing Tool: Redeem Tool Guide</h1>
 <h4 align="center">Version 1.0 </h4>
 
 English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide_CN.md)
 
-## 引言
+## Introduction
 
-​	Alice、Bob和Carl准备好了自己的比特币多签钱包和中继链钱包，正准备开展比特币跨链业务，可是发现他们缺少和中继链交互的工具，需要对中继链返回的交易进行签名，这时候他们就可以用到这个工具啦！
+Say Alice, Bob, and Carl have already created their BTC and relay chain wallets and they are ready to start developing and testing their cross chain service. But they realize that they don't really have a means to communicate with the relay chain, say for actions like receving the cross chain transactions sent by the relay chain or signing them. This is where they can start using this tool.
 
-​	多签签名工具实现了对中继链的监听，会获取中继链返回的需要Alice他们签名的交易，他们每人都启动这样一个工具，监听到对应交易之后就使用自己的私钥自动化签名，这样比特币的跨链流程就完整了。
+The multi-signature signing tool monitors the transactions on the relay chain and fetches the ones that need to be signed by the collaborators, each of whom run this tool individually. The collaborators use their respective private keys to sign the transactions fetched from the relay chain. This completes a cross chain BTC transaction.
 
-## 使用方法
+## Usage Guide
 
-### 1. 准备
+### 1. Setup
 
-​	首先，[下载]()对应的可执行文件，然后准备好注册为中继链Relayer的钱包，用于发送交易。
+Download the executable file using [this]() link, and create a wallet that is to be registered as the relayer on the relay chain. It will be used to create and send transactions.
 
-### 2. 配置
+### 2. Configuration
 
-​	配置信息和对应解释如下，Alice只需要准备好带“*”的配置即可。
+A sample configuration could look something like the following sample.
 
 ```json
 {
-  "AllianceJsonRpcAddress": "http://ip:40336", //中继链地址*
-  "WalletFile": "/path/to/wallet.dat", //中继链钱包文件*
-  "WalletPwd": "pwd", //中继链钱包密码*
-  "BtcWalletPwd": "pwd", //比特币钱包密码*
-  "AlliaObLoopWaitTime": 2, //监听中继链的间隔时间
-  "BtcPrivkFile": "/path/to/btcprivk", //比特币钱包路径*
-  "WatchingKeyToSign": "makeBtcTx", //监听关键字
-  "ConfigBitcoinNet": "test", //比特币网络类型*
-  "ConfigDBPath": "./db", //数据库路径
-  "RestPort": 50071, //REST端口
-  "SleepTime": 10, //网络阻塞等问题的重试时间
-  "AlliaNet": "testnet", //中继链网络类型
-  "CircleToSaveHeight": 300, //每N个中继链高度本地记录一次
-  "MaxReadSize": 5000000, //每次从数据库读取的最大字节数
-  "Redeem": "your redeem in hex", //多签Redeem脚本的十六进制字符串*
-  "SignerAddr": "", //监听签名分离模式，签名的REST地址
-  "ObServerAddr": "" //监听签名分离模式，监听的REST地址
+  "AllianceJsonRpcAddress": "http://ip:40336", //Relay chain address*
+  "WalletFile": "/path/to/wallet.dat", //Relay chain wallet file*
+  "WalletPwd": "pwd", //Relay chain wallet password*
+  "BtcWalletPwd": "pwd", //BTC wallet password*
+  "AlliaObLoopWaitTime": 2, //Time interval for monitoring the relay chain
+  "BtcPrivkFile": "/path/to/btcprivk", //BTC wallet path*
+  "WatchingKeyToSign": "makeBtcTx", //Keyword to be monitored
+  "ConfigBitcoinNet": "test", //BTC network type*
+  "ConfigDBPath": "./db", //DB path
+  "RestPort": 50071, //REST port
+  "SleepTime": 10, //Connection attempt time interval in case of network anomaly
+  "AlliaNet": "testnet", //Relay chain network type
+  "CircleToSaveHeight": 300, //Block interval to record block height, start monitoring from this height the next time relayer is enabled
+  "MaxReadSize": 5000000, //Max. bytes to be fetched from DB in a single read operation
+  "Redeem": "your redeem in hex", //Redeem script hex value*
+  "SignerAddr": "", //REST address of the signer, detached mode signature monitoring 
+  "ObServerAddr": "" //REST address of the observer, detached mode signature monitoring
 }
 ```
 
-​	比特币钱包和中继链钱包采取了同样的格式，可以通过该[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)将私钥转换为钱包，或者通过ORChain转换，priv文件填写你的WIF格式私钥，生成完毕后记得删除：
+> The default configuration settings can be used by only modifying the fields marked with an asterisk*
 
-```
+
+The BTC and relay chain wallets use the same format. Private keys can be converted to wallets using this [tool](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md). The same conversion can be performed using the ORChain (relay chain). You can enter your WIF private key in the `priv` file which can then be used to generate a wallet. Please ensure that you delete the contents of the file after generating the wallet.
+
+```shell
 ./orchain account import -w btcprivk --source ./priv --wif
 ```
 
-### 3. 启动
+### 3. Enabling the tool
 
-​	直接运行脚本`bin/start.sh`，然后查看日志`log/spv.log`以查看运行情况
+Run the `bin/start.sh` shell script to enable the redeem tool. You can refer to the `log/spv.log` file to refer to the execution logs to monitor the operation. 
 

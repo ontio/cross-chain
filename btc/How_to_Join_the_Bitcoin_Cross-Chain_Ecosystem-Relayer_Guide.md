@@ -1,78 +1,79 @@
-<h1 align="center">如何加入比特币跨链生态：Relayer篇</h1>
+<h1 align="center">How to Join the Bitcoin Cross Chain Ecosystem: Relayer Guide</h1>
 <h4 align="center">Version 1.0 </h4>
 
 English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Relayer_Guide_CN.md)
 
-## 引言
+## Introduction
 
-在跨链生态中，Relayer起到了举足轻重的作用，它会转发跨链交易和区块头，实现中继链与外界的信息交互，可以说是生态的对外沟通的媒介。
+Some of the most critical operation on within the cross chain ecosystem is carried out by the relayer. It fowards and cross chain transactions and the block headers, and thus acts as the means of information transfer, a means of communication between the cross chain ecosystem and outside environment. 
 
-下面将介绍如何启动自己的Relayer。
+Here in this guide we will talk about how to enable one's relayer.
 
-## 架构
+## Framework
 
 <div align=center><img width="380" height="200" src="./pic/relayer.png"/></div>
 
-比特币Relayer实现了比特币网络的监听，能识别并转发跨链交易，向中继链提交区块头，并获取收益，同时监听中继链，广播中继链构造的跨链交易，只要有一个Relayer在工作，那么整个比特币跨链生态就可以持续运作。
+The BTC relayer monitors the BTC network for cross chain transactions, and forwards the respective block headers to the to the relay chain if detected, gaining available incentives in the process.
+At the same time, it also monitors for cross chain transactions on the relay chain and broadcasts them to the Bitcoin network. Even if there is only one active relayer at any given point of time, the BTC cross chain ecosystem can continue to function normally.
 
-- **先决条件**：部署Relayer需要提前部署好比特币的[全节点](https://bitcoin.org/en/download)，Relayer需要使用全节点的数据，全节点同步好比特币账本，然后再启动Relayer；
-- **交易转发**：Relayer会持续扫描每个比特币区块，找到跨链交易并从全节点获取交易的梅克尔证明，一同提交给中继链，对还没有足够确认数的交易，Relayer会存储下来，等到中继链维护的比特币区块头达到一定高度，有足够的确认后，再发送给中继链；
-- **区块头同步**：Relayer负责提交比特币区块头到中继链，能处理比特币常见的分叉情况，稳定并正确地向中继链提交区块头；
-- **广播交易**：中继链会构造比特币的返回交易，Relayer会把交易广播到比特币网络中。
+- **Preconditions:** Deploying a relayer first requires a deployed Bitcoin full node. A relayer needs uses the data from the Bitcoin full node. Please synchronize the full node's Bitcoin ledger prior to enabling the relayer.
+- **Forward Transactions:** The relayer constantly scans each BTC block for the cross chain transactions. When detected, it fetches the transaction's merkle root from the full node forwards the transaction along with the merkle root to the relay chain. In case of transactions that aren't confirmed, they are recorded and sent to the relay chain later when the necessary block height is reached.
+- **Block Header Synchronization:** The relayer sends the block header to the relay chain. It is equipped to process and handle normal forks and operate with relative stability, and continue sending the block headers tp the relay chain.
+- **Broadcasting Transactiions:** The BTC relayer creates the tranasctions that are used to send BTC back to the Bitcoin network. The relayer then also broadcasts them to the Bitcoin network.
 
-## 准备
+## Setup
 
-### 1. 申请联盟链钱包
+### 1. Create a consortium chain wallet
 
-申请一个中继链的钱包，如果有本体钱包直接使用即可，二者钱包是通用的。
+First create a relay chain wallet. An Ontology wallet can be also be used in it's place if available.
 
-### 2. 注册Relayer
+### 2. Register a relayer
 
-然后向联盟链注册自己的地址为Relayer 。
+Register your address as the **relayer** on the relay chain.
 
-### 3. 启动一个比特币全节点
+### 3. Enable a Bitcoin full node
 
-要启动Relayer，必须要拥有可用的比特币RPC功能。
+It is necessary to first run a Bitcoin full node before enabling the relayer as it uses the RPC function.
 
-## 启动Relayer
+## Enabling the Relayer
 
-第一步，下载Relayer的可执行文件，解压至特定位置；
+**Step 1:** Download the relayer executable file and extract it in the desired directory.
 
-第二步，更改配置信息，如下：
+**Step 2:** Edit the JSON configuration file. The available settings are:
 
 ```json
 {
   "btc_ob_conf": {
-    "net_type": "test", //比特币的网络类型，比如regtest、test和main
-    "btc_ob_loop_wait_time": 3, //监听比特币网络的间隔时间
-    "btc_json_rpc_address": "http://localhost:18443", //你的比特币全节点的rpc地址*
-    "user": "", //比特币rpc用户名*
-    "pwd": "", //比特币rpc密码*
-    "start_height": 0 //监控比特币起始高度
+    "net_type": "test", //BTC network type, such as regtest, test, and main
+    "btc_ob_loop_wait_time": 3, //BTC network listening time interval 
+    "btc_json_rpc_address": "http://localhost:18443", //BTC full node RPC address*
+    "user": "", //BTC RPC username*
+    "pwd": "", //BTC RPC password*
+    "start_height": 0 //Starting block height for monitoring
   },
   "allia_ob_conf": {
-    "alliance_json_rpc_address": "http://ip:40336", //要连接的中继链地址*
-    "allia_ob_loop_wait_time": 3, //监听中继链的时间间隔
-    "watching_key": "btcTxToRelay", //监听中继链的事件关键词
-    "wallet_file": "relayer_btc/wallet.dat", //你中继链钱包的路径*
-    "wallet_pwd": "", //钱包的密码，也可以在运行时以flag的形式传入*
-    "net_type": "testnet", //网络类型
-    "waiting_cycle": 300 //每多少区块就记录一下高度，下次启动从该高度开始
+    "alliance_json_rpc_address": "http://ip:40336", //Relay chain address*
+    "allia_ob_loop_wait_time": 3, //Relay chain listening time interval
+    "watching_key": "btcTxToRelay", //Keyword to be monitored on the relay chain
+    "wallet_file": "relayer_btc/wallet.dat", //Relay chain wallet path*
+    "wallet_pwd": "", //Wallet password, can be passed in the command line using the flag*
+    "net_type": "testnet", //Network type
+    "waiting_cycle": 300 //Block interval to record block height, start monitoring from this height the next time relayer is enabled
   },
-  "retry_duration": 1, //重试广播交易的时间
-  "retry_times": 0, //重试次数，0代表无穷次
-  "retry_db_path": "relayer_btc/db", //DB路径*
-  "log_level": 0, //日志level, 0代表TRACE、1代表DEBUG、2代表INFO、3代表WARN、4代表ERROR
-  "sleep_time": 10, //当网络出现问题的重试间隔
-  "max_read_size": 5000000, //最多一次从DB中读取的字节数
-  "retry_cci_dura": 5, //重试确认数不足的交易的时间间隔
-  "send_headers_dura": 5 //发送区块头的时间间隔
+  "retry_duration": 1, //Transaction broadcast retry time interval
+  "retry_times": 0, //No. of retries to be attempted, 0 represents no upper bound
+  "retry_db_path": "relayer_btc/db", //DB path*
+  "log_level": 0, //Log level, 0: TRACE, 1: DEBUG, 2: INFO, 3: WARN, 4: Eroor
+  "sleep_time": 10, //Connection attempt time interval in case of network anomaly
+  "max_read_size": 5000000, //Max. bytes to be fetched from DB in a single read operation
+  "retry_cci_dura": 5, //Time interval to retry confirmation for unconfirmed transactions
+  "send_headers_dura": 5 //Time interval for sending block headers
 }
 ```
 
-用户需要更改的仅仅是后面追加“*”的配置。
+> You can use the default settings by modifying the fields marked with an asterisk* at the end
 
-第三步，启动bin目录下的start-btcrelayer.sh。也可以直接通过可执行文件bin/run_btc_relayer直接运行比特币Relayer，比如以下命令：
+**Step 3:** Run the `start-btcrelayer.sh` script in the `bin` directory to start the BTC relayer. The same can be achieved by using the `bin/run_btc_relayer` executable file. The command is as follows:
 
 ```shell
 bin/run_btc_relayer -wallet-pwd="pwd" -conf-file=conf.json
