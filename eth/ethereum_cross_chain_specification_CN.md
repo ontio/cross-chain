@@ -1,7 +1,7 @@
 <h1 align="center">以太坊跨链生态</h1>
 <h4 align="center">Version 1.0 </h4>
 
-[English](ethereum_cross_chain_specification.md) | 中文
+[English](README.md) | 中文
 
 ## 引言
 以太坊是首个将智能合约应用到区块链系统中的公有链，在以太坊发布智能合约后，区块链系统的可扩展性得到了极大的提升，许多的项目方开始借助智能合约发布他们自己的链上应用，区块链系统的可落地性也随之得到了极大的提升。
