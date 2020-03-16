@@ -1,93 +1,91 @@
-<h1 align="center">如何加入比特币跨链生态：用户篇</h1>
+<h1 align="center">How to Join the Bitcoin Cross Chain: User Guide</h1>
 
 <h4 align="center">Version 1.0 </h4>
 
 English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide_CN.md)
 
-## 引言
+## Introduction
 
-跨链用户指的是有需求将BTC从比特币网络转移到其他链的人或组织，他们需要找到提供跨链服务的商户，获取商户的多签等信息，用户需要信任商户。  	
+The term user is used for anyone who wants to transfer their BTC from the Bitcoin network to another chain. They need to find a vendor who provides such a cross chain transfer service. The user will be sending their BTC tokens to the multi-signature address provided to them by the vendor, and so they must first check whether the vendor is reliable. This also encourages vendors to become more trustworthy.
 
-本文档将以跨链用户的角度，讲述如何实现自己BTC的跨链转移。比如你需要将自己的1BTC转到某条链上，你需要做的准备工作以及具体的操作步骤。
+In this document, we will be looking at the cross chain ecosystem from a user's perspective. This is a guide for users that can help understand how to transfer BTC on a cross chain system. There are some things that need to be setup and the following procedure needs to be followed send BTC to another chain.
 
-## 准备工作
+## Initial Setup
 
-首先，某些组织可能开展了你感兴趣的跨链业务，你需要挑选其中一个，并获取其比特币多签地址和目标链的BTC代币合约地址；然后，获取跨链交易构造工具，或者按照协议自己构造交易；最后，生成自己在目标链的地址，用于接收跨链来的比特币。
+Let's say you found a vendor and you are interested in using their services. At this point you need to get their multi-signature BTC address and the contract address of the token deployed on the target chain. Next, you need to use the **btctool** to create a transaction. You can create a transaction using other methods as well, as long as it follows the defined protocol. You also need to create an address on the target chain that will be used to receive the cross chain BTC.
 
-## 操作实例
+## Example Operation
 
-在这里我们以测试网BTC到以太坊测试网为例。
+Let us take a look at an example where we send BTC from the Bitcoin test net to Ethereum.
 
-在工具上填入需要的信息，并通过工具构造跨链交易，工具的使用请[移步](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)。将工具显示的交易通过任何工具广播出去，比如该[网站](https://tbtc.bitaps.com/broadcast)。剩下的就是等待交易的六个确认，然后不久就能看到目标链的账户中多了对应数额的BTC代币。
+Fill in the necessary information to the transaction construction tool. Please refer to [this](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md) guide for more details on how to use the construction tool. Next, use any method of broadcasting transactions to broadcast the transaction created and displayed in the tool. You can use this [website](https://tbtc.bitaps.com/broadcast). Next, you need to wait for the transaction to be confirmed on the Bitcoin network. The transferred BTC amount will be displayed in the receiving address on the target chain.
 
-我选择了信任的测试商户，他们的信息如下表。
+A list of certain verified and trusted vendors is shared below. Their address and other details are available and can be used for testing.
 
-| 信息            | 地址                                                         |
-| --------------- | ------------------------------------------------------------ |
-| 多签地址        | 2NB3HZzhqntJz5cHJcViiR7rkXUUdqhLYkD 或者 tb1qy94qnjuwu5w6r2g74z2z25khjdkgs6ssk5rjnyqrvcvpds8f7x9shrfspn |
-| 以太BTC合约地址 | 0xa389c761307bde552e0329ae0915ee998da61095                   |
-| 本体BTC合约地址 | 待定                                                         |
+|       Information       | Address                                                                                                   |
+| :---------------------: | --------------------------------------------------------------------------------------------------------- |
+| Multi-signature address | `2NB3HZzhqntJz5cHJcViiR7rkXUUdqhLYkD` or `tb1qy94qnjuwu5w6r2g74z2z25khjdkgs6ssk5rjnyqrvcvpds8f7x9shrfspn` |
+|  Ethereum BTC contract  | `0xa389c761307bde552e0329ae0915ee998da61095`                                                              |
+|  Ontology BTC contract  | N/A                                                                                                       |
 
-### 实例1：BTC到以太坊
+### Bitcoin to Ethereum
 
-#### 1. BTC到以太
+#### 1. BTC transferred to Ethereum chain
 
-##### 1.1. 跨链准备
+##### 1.1. Cross chain setup
 
-  1. **获取BTC**：准备好一个比特币地址，在进行之前先在[BTC测试网水龙头](https://testnet-faucet.mempool.co/)中获取测试网比特币；
-  2. **获取ETH**：准备好一个以太坊地址，要获取一定的ETH，方便支付调用合约的Gas，这里使用的是[Ropsten](https://teth.bitaps.com/)；
+1. **Fetching test net BTC:** Create a Bitcoin test net address and ensure that you have sufficient test net tokens before starting the process. This test net [faucet](https://testnet-faucet.mempool.co/) can be used to get test net BTC tokens;
+2. **Fetching test net ETH:** Create an Ethereum test net address and ensure that you have sufficient Gas for contract invocation before starting the process. We use [Ropsten](https://teth.bitaps.com/) in this case;
 
-##### 1.2. 发送交易
+##### 1.2. Creating and sending a transaction
 
-通过[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)发送即可，教程见工具文档。发送完毕后可以通过[以太坊浏览器](https://ropsten.etherscan.io/)查看账户在合约里的BTC代币数目。
+Please refer to this [guide](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md) for detailed instructions on how to use the tool send a transaction. After sending the transaction, use an [Ethereum explorer](https://ropsten.etherscan.io/) to confirm the amount of BTC tokens sent to the contract address specified in the transaction.
 
-#### 2. BTC返回比特币
+#### 2. BTC transferred back to the Bitcoin network
 
-  详情请见[这里](https://github.com/ontio/cross-chain/blob/master/eth/how_to_cross_on_ethereum_CN.md)
+Please refer to [this](https://github.com/ontio/cross-chain/blob/master/eth/how_to_cross_on_ethereum.md) document for details.
 
+### Bitcoin to Ontology
 
+#### 1. BTC transferred to the Ontology chain
 
-### 实例2：BTC到本体
+##### 1.1. Initial Setup
 
-#### 1. BTC到本体
+  1. **Fetch test net BTC:** Create a Bitcoin test net address and ensure that you have sufficient test net tokens before starting the process. This test net [faucet](https://testnet-faucet.mempool.co/) can be used to get test net BTC tokens;
 
-##### 1.1. 准备工作
+  2. **Create an Ontology address:** The process requires an [Ontology](https://ont.io/) address. The BTC transferred to the Ontology chain will be maintained one to one in the form of a [OEP-4](https://github.com/ontio/OEPs/blob/master/OEPS/OEP-4.mediawiki) token;
+   
+  3. **Fetch contract address:** Here we take the [OBTC](https://github.com/zouxyan/btc_crosschain_demo) contract hash as described in the table above.
 
-  1. **获取BTC**：在进行之前先在[BTC测试网水龙头](https://coinfaucet.eu/en/btc-testnet)中获取测试网比特币；
+  4. **Setup:** To ensure the cross chain transaction is carried out successfully, we recommend using the [Cyano Wallet](https://chrome.google.com/webstore/detail/cyano-wallet/dkdedlpgdmmkkfjabffeganieamfklkm) Chrome plugin. Next, follow these steps to login to the wallet using the Ontology account and to switch to Ontology test net:
 
-  2. **获得本体地址**：需要一个[本体](https://ont.io/)的地址，用来在目标链上接收跨链后的比特币，跨链到ONT的BTC会被一比一映射到一种[OEP4](https://github.com/ontio/OEPs/blob/master/OEPS/OEP-4.mediawiki)代币；
+   - First, import an existing wallet or create a new one. For details on how to use the wallet please refer to this [guide](https://dev-docs.ont.io/#/docs-cn/cyano/01-chrome-wallet) or this [video](https://www.youtube.com/watch?v=S2qk-Gkrs9s);
 
-  3. **获得合约地址**：这里使用上面表格中的合约[OBTC](https://github.com/zouxyan/btc_crosschain_demo)(hash:)，
+   <div align=center><img width="300" height="400" src="./pic/cyano-login.png"/></div>
 
-  4. **准备工具**：为了确定BTC跨链成功，建议使用Chrome插件[Cyano Wallet](https://chrome.google.com/webstore/detail/cyano-wallet/dkdedlpgdmmkkfjabffeganieamfklkm)，导入用户的ONT账户。为了连接到ONT的测试网络，请进行如下配置：
+   - Click on the cog in the top right corner of the wallet window and modify the settings as shown in the picture below. Save these settings to connect to the test net;
+     
+   <div align=center><img width="300" height="400" src="./pic/cyano-confignet.png"/></div>
 
-     - 首先，导入或者创建钱包，钱包的使用方法请[移步](https://dev-docs.ont.io/#/docs-cn/cyano/01-chrome-wallet)或者观看[使用教程中文](https://www.youtube.com/watch?v=u_MtHccKaNQ)、[教程英文](https://www.youtube.com/watch?v=S2qk-Gkrs9s)；
+   - After configuring the wallet, the OBTC token contract needs to be added to the wallet. Click on the cog and select the **OEP-4 TOKENS** option. Click on the **ADD** button and enter the contract address to the script hash. Click **CONFIRM** and the OBTC contract will be displayed in the wallet. Go back and save the settings;
 
-       <div align=center><img width="300" height="400" src="./pic/cyano-login.png"/></div>
+   <div align=center><img width="300" height="400" src="./pic/cyano-configoep4.png"/></div>
 
-     - 点击右上角的设置按钮(小齿轮)，按图片中红框内信息配置本体测试网（），点击最下方的Save按钮，即可连接到本体测试网络；
+##### 1.2. Sending a transaction
 
-       <div align=center><img width="300" height="400" src="./pic/cyano-confignet.png"/></div>
+Use the transaction construction [tool](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md) to create and send the cross chain transaction. After the transaction is sent and confirmed on the Bitcoin network, the updated OBTC (mapped BTC) balance will be displayed in the Cyano wallet.
 
-       
-
-     - 配置网络完成后，需要添加BTC映射的合约地址，还是点击设置按钮，然后选择图中红框的**OEP-4 TOKENS**，然后单击ADD按钮，将合约地址输入到script hash中，点击CONFIRM，即可看到OBTC的合约已经被添加了，点击BACK，然后点击SAVE；
-
-       <div align=center><img width="300" height="400" src="./pic/cyano-configoep4.png"/></div>
-
-##### 1.2. 发送交易
-
-使用[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)构造并发送跨链交易。交易发送完毕，比特币的六个区块确认之后，即可在Cyano上看到OBTC（BTC映射）的余额增加了，现在用户可以在ONT链上交易自己的比特币了（先得有ONG），本体的交易处理速度更快，更适合高频的BTC交易，或者为BTC编写智能合约，当然用户可以把自己的BTC从ONT链上转回BTC链上。
+You can now proceed to use these cross chain BTC tokens to carry out transaction on the Ontology chain. Since Ontology supports smart contract and offers very quick transaction times, it is perfectly suited to carry out complex and frequent BTC related transactions. You can also, at any point of time, choose to transfer the BTC back to the Bitcoin network.
 
 <div align=center><img width="300" height="400" src="./pic/cyano-btcx.png"/></div>
 
-#### 2. BTC返回比特币
+#### 2. BTC transferred back to the Bitcoin network
 
-要转回BTC，用户需要调用OBTC合约中的lock方法，填写对应的参数。
+You can use the `lock` method of the OBTC contract to transfer the BTC back by providing the necessary parameters.
 
-以本体链为例，用户可以通过[smartx](https://smartx.ont.io/)调用本体的BTC映射合约，将BTC转回比特币网络，将上文中的[OBTC](https://github.com/zouxyan/btc_crosschain_demo)合约代码复制到smartx的编辑器中，编译并调用即可，详细可见smartx的[使用教程](https://ontio.github.io/documentation/)。
+In case of the Ontology chain being the target chain, the user can use [SmartX](https://smartx.ont.io/) to invoke the OBTC contract and transfer the BTC back to the Bitcoin network. Copy and paste the OBTC contract [code](https://github.com/zouxyan/btc_crosschain_demo) in the editor pane. For detailed instructions on how to use SmartX to compile and invoke a contract, please refer to this [tutorial](https://ontio.github.io/documentation/).
 
-除此之外，用户还可以使用本体链的[SDK](https://github.com/ontio/ontology-go-sdk)调用智能合约，示例如下。
+You may also use Ontology's Golang [SDK](https://github.com/ontio/ontology-go-sdk) to carry out the above contract operations. Here's the sample code:
 
 ```go
   package main
@@ -138,14 +136,14 @@ English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/How_to_J
   }
 ```
 
-上述demo中，有一些信息需要使用者自己填入：
+There are certain fields of information that the user needs to provide for themselves:
 
-  - 智能合约的avm code，需要编译合约，比如smartx编译之后在右边即可看到avm字节码，或者使用[Neptune](https://github.com/ontio/ontology-python-compiler)编译；
+- The smart contract AVM code. The smart contract AVM code can be obtained by compiling the contract code in SmartX, or using the [Neptune](https://github.com/ontio/ontology-python-compiler) compiler;
 
-  - 用户用来接收BTC的地址；
+- The address used to receive the BTC;
 
-  - ONT节点的Rpc地址，如果使用本体测试网，IP可填138.91.6.125；
+- RPC address of the Ontology node. IP can be set to `138.91.6.125` when using the test net;
 
-  - ONT钱包文件的路径以及钱包的密码。
+- Ontology wallet file path and password;
 
-    在合约调用成功之后，用户只需等待一段时间，即可看到BTC在比特币链上到账。
+Once the transaction is successful, the updated BTC balance will be displayed in the specified BTC address on the Bitcoin network.

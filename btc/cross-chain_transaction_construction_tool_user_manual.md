@@ -1,206 +1,206 @@
-<h1 align="center">BTC跨链交易构造工具</h1>
+<h1 align="center">BTC Cross Chain Transaction Construction Tool</h1>
 <h4 align="center">Version 1.0 </h4>
 
 English| [中文](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual_CN.md)
 
-## 引言
+## Introduction
 
-btctool用于构造跨链用的BTC特定格式的交易，同时实现了向中继链注册多签和合约等功能。
+The **btctool** has been built to serve multiple functions which include creating BTC transactions that have been customized for a cross chain environment, while also allowing potential vendors to register their multi-signature **redeem** and their smart contracts on the relay chain.
 
-## 编译
+## Compilation
 
-进入到项目的cmd目录下，运行下列命令，需要安装golang和相关依赖
+After installing the necessary Golang dependencies, please execute the following command under the `cmd` directory.
 
 ```go
 go build -o btctool main.go
 ```
 
-## 运行GUI
+## Running the GUI
 
-现在已经提供GUI版本的工具，请点击[下载](https://github.com/zouxyan/btctool/releases/download/0.0.1/btctool-macos)。
+The GUI supported version of the tool is available for download. Please follow [this](https://github.com/zouxyan/btctool/releases/download/0.0.1/btctool-macos) link.
 
-下载GUI版本的工具后，双击之后显示如下。在最上方选择功能，填入对应的信息，则可实现相应功能，发送跨链交易。
+The main window of the GUI version of the tool is as displayed in the picture below. The tabs on the top are used to select a particular function and provide the respective parameters to implement the corresponding function and send a cross chain transaction.
 
 <div align=center><img width="600" height="422" src="./pic/gui.png"/></div>
 
-界面最上方包含了几个功能，单击选择即可，功能如下：
+All the functions in the top tab of the **btctool** have been described below:
 
-| 功能             | 介绍                                                         |
-| ---------------- | ------------------------------------------------------------ |
-| 测试网           | 测试网指的是对测试网构造BTC跨链交易，填入参数即可，如果拥有测试网全节点，则可以直接让全节点广播，否则需要手动广播交易。 |
-| 本地私网         | 针对本地私网（regtest）构造比特币跨链交易，使用方法类似。    |
-| 为合约签名       | 商家使用多签中自己的比特币私钥对合约和Redeem签名，用于注册Redeem和合约。 |
-| 注册多签合约     | 向中继链注册Redeem和目标链合约。                             |
-| 加密私钥         | 将自己的明文私钥加密，用于商家启动自己的签名工具。           |
-| 生成私钥         | 生成一个全新的私钥，会显示对应的公钥和地址                   |
-| 生成多签赎回脚本 | 输入公钥等参数，生成多签的赎回脚本，并显示多签钱包的地址     |
+|               Function                | Description                                                                                                                                                                                                                                   |
+| :-----------------------------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|               Test net                | Used to create cross chain transactions for BTC test net environment. Fill in the parameters to create a transaction. A BTC full node can be used to broadcast the transaction if available, else transaction needs to be broadcast  manually |
+|              Private net              | Used to create cross chain transactions for the private net (regtest). Same as test net function in terms of usage                                                                                                                            |
+|          Contract signature           | Used by vendors to sign their deployed contracts and sign multi-signature `redeem` transactions                                                                                                                                               |
+|  Register a multi-signature contract  | Used to register the `redeem` script and the target contract on the relay chain                                                                                                                                                               |
+|          Encrypt private key          | Used to encrypt a plaintext private key. Used by vendors to enable their signing tool                                                                                                                                                         |
+|         Generate private key          | Used to generate a new private key. Displays the corresponding address and the public key                                                                                                                                                     |
+| Generate mult-signature redeem script | Used to generate the redeem script by providing the public key. Displays the multi-signature wallet address                                                                                                                                   |
 
-### 1. 构造BTC跨链交易
+### Creating a Cross Chain BTC Transaction
 
-首先选择工具。现在支持比特币测试网和本地私网，比特币测试网包含在当前跨链生态测试中，发送交易后，可以在目标链测试网看到余额变化，如果是本地私网，则需要自行搭建联盟链、目标链等环境，可用作开发测试。选择后，参数会有变化，以下以测试网为例。
+The **btctool** currently supports cross chain transactions on the test net and the private net. Creating and sending a transaction to the BTC test net will transfer the amount to the target chain's test net account. 
+In case working with a private net configuration, you first need to setup a chain consortium environment and define a target chain, etc. This can be used to carry out testing. Please take note of the changes that need to be made when a network configuration changes. 
 
-1. 然后填写对应参数。如下表，测试网对应需要填入的参数，因为本工具没有实现钱包等复杂功能，所以UTXO的信息需要用户自行填入，可以使用测试网[浏览器](https://tbtc.bitaps.com/)查找自己地址的相关交易，找到未使用的输出即可。如果是拥有测试网全节点或者是私网，不需要指定UTXO，但需要配置节点的RPC信息。
+A sample cross chain transaction on the test net would involve the following steps:
 
-   | 参数               | 含义                                                         |
-   | :----------------- | :----------------------------------------------------------- |
-   | 跨链BTC金额        | 用户想要发送到目标链的BTC金额，如0.01                        |
-   | BTC多签地址        | 提供跨链业务的组织提供的地址                                 |
-   | 目标链代币合约哈希 | 比特币在目标链的映射合约，一般为OEP4或者ERC20等，如[BTCX](https://github.com/zouxyan/btc_crosschain_demo) |
-   | 目标链ID           | 每条链在跨链生态中都有自己的ID，如比特币是0、本体是2         |
-   | 目标链地址         | 用户在目标链上用来接收BTC的地址                              |
-   | BTC交易手续费      | 构造比特币交易之后，发送交易需要的手续费，如0.00001          |
-   | 私钥(WIF)          | WIF形式的比特币私钥，用来对交易签名                          |
-   | UTXO的index        | 用户想使用的UTXO是前一笔交易的第几个输出，可以有多个，用逗号","隔开，如“0,2,2” |
-   | UTXO的金额         | 用户要使用的UTXO的金额，可以有多个，用逗号","隔开，如“0.01,0.02,0.1” |
-   | UTXO的交易ID       | UTXO的来源交易ID，可以有多个，用逗号","隔开                  |
-   | 全节点的URL        | 需要填比特币测试网全节点的RPC链接地址                        |
-   | RPC用户名          | 比特币全节点RPC用户名                                        |
-   | RPC密码            | 比特币全节点RPC密码                                          |
+1.  First provide the necessary information in the form of parameters. Now since the tool does not support complex functionalities such as a built-in wallet, you need to fill in the UTXO information manually. The transactions sent out can be viewed by looking up your address in an [explorer](https://tbtc.bitaps.com/). You don't need to specify the UTXO information manually if working with a private chain environment, or if a BTC full node is available. But for these cases, you just need to specify the RPC details of the node. 
 
-   比如下图，向以太坊测试网转移了0.0001BTC，手续费设置为0.00001BTC，填入以太坊的BTC合约、在以太坊接收BTC的账户地址以及以太坊的ChainID，然后选择UTXO的获取方式，用户可以自行填写，也可以通过比特币全节点的RPC自动获取UTXO和发送交易：
+|             Parameter              | Description                                                                                                                                                               |
+| :--------------------------------: | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| BTC cross chain transaction amount | Amount to be transferred to the target chain, for e.g. 0.01                                                                                                               |
+|    BTC multi-signature address     | Multi-signature address provided by the cross chain service vendor                                                                                                        |
+|  Target chain token contract hash  | Contract hash of the token that complements BTC on the target chain. Generally an OEP4 or ERC20 contract, for e.g. [BTCX](https://github.com/zouxyan/btc_crosschain_demo) |
+|          Target chain ID           | ID of the target chain in the cross chain ecosystem, for e.g. BTC is 0, ONT is 2                                                                                          |
+|        Target chain address        | Address of the user's account on the target chain                                                                                                                         |
+|        BTC transaction fee         | Transaction fee for sending the cross chain BTC transaction, for e.g. 0.00001                                                                                             |
+|          WIF private key           | WIF private key used to sign the transaction                                                                                                                              |
+|             UTXO Index             | The UTXO to be used by the user w.r.t the last transaction, multiple values separated using commas, for e.g. 0,2,2                                                        |
+|            UTXO Amount             | UTXO amount to be used, multiple values separated using commas, for e.g. 0.01,0.02,0.1                                                                                    |
+|        UTXO Transaction ID         | Source transaction ID of the UTXO, multiple values separated using commas                                                                                                 |
+|         BTC full node URL          | RPC address of the test net BTC full node                                                                                                                                 |
+|           RPC user name            | BTC full node RPC user name                                                                                                                                               |
+|            RPC password            | BTC full node RPC password                                                                                                                                                |
 
-   <div align=center><img width="430" height="180" src="./pic/param.png"/></div>
+The picture below illustrates a transaction that transfers **0.0001 BTC** to the Ethereum test net. The transaction fee is set to 0.00001 BTC. The target chain token contract hash, the receiving address on the target chain, and Ethereum's chain ID is also specified. And then then the UTXO details are provided which can also be fetched directly using the BTC full node's RPC. 
 
-3. 最后点击按钮，获得结果。测试网工具，会显示交易的十六进制字符串，用户只需复制字符串然后广播即可，私网则会通过参数中比特币全节点的RPC接口自动发送交易。比如：
+<div align=center><img width="430" height="180" src="./pic/param.png"/></div>
 
-   <div align=center><img width="470" height="144" src="./pic/res.png"/></div>
+2. Click the button to the see the result. The tool will display the transaction hash. This transaction hash can be copied and broadcasted. In a private net, the transaction will be transferred to the node using the RPC, which will then automatically broadcast it. For example:
 
-   拷贝上图中十六进制字符串，使用该[工具](https://tbtc.bitaps.com/broadcast)广播交易，获得交易ID“[de4eaa98252b24a1cd658f847c0a05083b6d03b4d5ad188f7cb62a808091ba8a](https://tbtc.bitaps.com/de4eaa98252b24a1cd658f847c0a05083b6d03b4d5ad188f7cb62a808091ba8a)”.
+<div align=center><img width="470" height="144" src="./pic/res.png"/></div>
 
-### 2. 为合约签名
+The transaction hash, as displayed in the picture above can be copied and broadcasted using this [tool](https://tbtc.bitaps.com/broadcast). A transaction ID will be obtained, such as "[de4eaa98252b24a1cd658f847c0a05083b6d03b4d5ad188f7cb62a808091ba8a](https://tbtc.bitaps.com/de4eaa98252b24a1cd658f847c0a05083b6d03b4d5ad188f7cb62a808091ba8a)"
 
-对于准备开展跨链业务的商户来说，他们需要先把自己在目标链上的合约和多签Redeem脚本进行注册，然后才算是加入跨链生态，因为中继链会验证每笔交易的多签和合约之间的绑定关系。
+### Contract Signature
+
+The vendors looking to start cross chain businesses need to register their contracts and multi-signature `Redeem` scripts on the target chain before becoming a part of the cross chain ecosystem. The relay chain will verify the signatures of each transaction and their link to the contract.
 
 <div align=center><img width="580" height="400" src="./pic/sign.png"/></div>
 
-如上填入WIF格式的私钥，需要绑定的目标合约和多签Redeem脚本，点击“签名”即可，结果会在下面显示，商户需要记下自己的签名，汇总每个人的签名后，再向中继链注册。
+Fill in the WIF private as shown above and click the **sign** button to link the target chain contract and the multi-signature **redeem** script. The result will be displayed at the bottom. The vendor needs to record their signature, and all the signatures are consolidated, they can be registered on the relay chain.
 
-### 3. 注册多签合约
+### Registering Multi-Signature Contract
 
-只有在中继链注册过的多签脚本和合约才能实现跨链。如下，填入参数，点击注册即可，结果栏会显示中继链的交易哈希。
+The multi-signature scripts and contracts that have been registered on the relay chain are the only ones that can carry out cross chain transactions. Fill in the parameters as displayed in the following picture and click on register. The result pane will display the relay chain transaction hash.
 
 <div align=center><img width="580" height="420" src="./pic/register.png"/></div>
 
-参数的介绍如下：
+|        Parameter        | Description                                                                                               |
+| :---------------------: | --------------------------------------------------------------------------------------------------------- |
+| Relay chain RPC address | RPC address of the relay chain                                                                            |
+|     Target contract     | Contract address of the cross chain BTC token on the target chain                                         |
+| Multi-signature redeem  | Multi-signature script to be used by the cross chain ecosystem                                            |
+|        Signature        | Signature of each individual in the multi-signature redeem script, multiple values separated using commas |
+| Relay chain wallet path | Wallet account that sends the transaction to the relay chain                                              |
+|     Wallet password     | Relay chain wallet password                                                                               |
+|     Target chain ID     | ID of the target chain                                                                                    |
 
-| 参数           | 介绍                                                         |
-| -------------- | ------------------------------------------------------------ |
-| 中继链RPC地址  | 获取一个中继链的RPC地址                                      |
-| 目标合约       | 目标链的BTC代币合约地址                                      |
-| 多签Redeem     | 跨链要使用的多签脚本                                         |
-| 签名           | 多签中每个人的签名，只要满足多签脚本的要求即可，多个签名间以“,”分隔 |
-| 中继链钱包路径 | 向中继链发送交易注册的账户                                   |
-| 钱包密码       | 中继链钱包的密码                                             |
-| 目标链ID       | 目标链的chain-id                                             |
+### Signing Parameters
 
-### 4. 为交易参数签名
-
-当商户完成多签与合约的绑定后，商户就可以设置构造解锁BTC交易的参数了。首先需要商户确定下参数，然后各自用自己的比特币私钥对参数进行签名，填写参数签名即可。
+After the vendor links the multi-signature tool to the contract they can set the parameters required to create the transaction that releases the locked BTC. First the parameters need to be fixed, and then all the collaborators use their respective private keys to sign them after filling them in.
 
 <div align=center><img width="640" height="420" src="./pic/signparam.png"/></div>
 
-参数介绍如下：
+The parameters have been described below:
 
-| 参数              | 介绍                                                         |
+| Parameter              | Description                                                         |
 | ----------------- | ------------------------------------------------------------ |
-| 私钥（WIF）       | WIF格式的比特币私钥；                                        |
-| 多签Redeem        | 商家的多签赎回脚本；                                         |
-| 参数版本          | 参数的版本号，参数可以更改，但是每次更改都只能增加版本号；   |
-| 费率（sat/byte）  | 构造解锁交易的手续费率，即每字节多少聪，比如10sat/byte，那么一笔100字节的交易需要1000聪的手续费，这笔手续费从用户的解锁金额中扣除； |
-| 最小找零值（sat） | 在构造解锁交易的时候，可能产生对多签地址的找零，最小找零值限制了找零的金额不能小于该值，防止产生过小的UTXO，甚至粉尘UTXO，伤害到跨链解锁的效果； |
+| WIF private key       | WIF format BTC private key                                        |
+| Multi-signature Redeem        | Vendor's redeem script                                         |
+| Paramter version          | Version no. of the parameters, can be updated, but the version no. can only increase with each change   |
+| Fee rate（sat/byte）  | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC  |
+| Min. change value（sat） | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO |
 
-### 5. 设置交易参数
+### Setting Transaction Parameters
 
-当对参数的签名满足多签要求后，签名可以每个人发送自己的，也可以收集好签名一起发送，只要中继链上的签名足够多就会完成交易参数的设置，如下图，填入参数即可发送交易至中继链，完成参数设置。
+Once the min. no. of necessary signatures are collected for signing the parameters are collected on the relay chain, the transaction parameter setting will be carrid out. The signatures can be sent individually or accumulated and then sent in a group. Fill in the required parameters as shown in the picture below:
 
 <div align=center><img width="640" height="420" src="./pic/setparam.png"/></div>
 
-参数的介绍如下：
+The parameters have been described below.
 
-| 参数              | 介绍                                                         |
+| Parameter              | Description                                                         |
 | ----------------- | ------------------------------------------------------------ |
-| 中继链RPC地址     | 获取一个中继链的RPC地址                                      |
-| 多签Redeem        | 跨链要使用的多签脚本                                         |
-| 参数版本          | 商家构造解锁交易的参数版本                                   |
-| 签名              | 多签中每个人的签名，只要满足多签脚本的要求即可，多个签名间以“,”分隔 |
-| 费率（sat/byte）  | 构造解锁交易的手续费率，即每字节多少聪，比如10sat/byte，那么一笔100字节的交易需要1000聪的手续费，这笔手续费从用户的解锁金额中扣除； |
-| 最小找零值（sat） | 在构造解锁交易的时候，可能产生对多签地址的找零，最小找零值限制了找零的金额不能小于该值，防止产生过小的UTXO，甚至粉尘UTXO，伤害到跨链解锁的效果； |
-| 中继链钱包路径    | 向中继链发送交易注册的账户                                   |
-| 钱包密码          | 中继链钱包的密码                                             |
+| Relay chain RPC address     | RPC address of the relay chain                                      |
+| Multi-signature redeem        | The redeem script to be used to carry out the cross chain transaction |
+| Parameter version          | Version no. for the BTC release transaction parameters                                  |
+| Signature              | Signatures of the collaborators in the multi-signature redeem, multiple values separated using commas |
+| Fee rate (sat/byte)  | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC |
+| Min. change value（sat） | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO |
+| Relay chain wallet path    | Relay chain wallet, used to register the transaction on the relay chain |
+| Wallet password          | Password of the relay chain wallet                                             |
 
-### 6. 加密私钥
+### Encrypting Private Key
 
-在启动多签签名工具之前，需要生成加密的比特币私钥文件，这里使用了中继链的加密方式。如下图，只需要填入对应的参数，即可生成对应的加密钱包文件。
+A Bitcoin private key file needs to be generated before running the multi-signature contract. The relay chain's encryption method is used here. As illustrated in the picture below, fill in the parameters to generate the encrypted wallet file.
 
 <div align=center><img width="580" height="420" src="./pic/encrypt.png"/></div>
 
-### 7. 生成私钥
+### Generating Private Key
 
-通过工具可以生成比特币私钥，并显示公钥以及地址。网络类型可以填test、regtest和main，分别对应测试网、私网和主网。
+The tool can be used to generate a BTC private key, and display the public key and the address associated. The network type field can be assigned the values `test`, `regtest` and `main`, which respectively correspond to the test net, private net, and main net.
 
 <div align=center><img width="600" height="420" src="./pic/getprivk.png"/></div>
 
-### 8. 生成多签赎回脚本
 
-填入网络类型、参与多签的人的公钥（用“,”隔开）和要求的签名数目，点击获取即可得到Redeem脚本，各种形式的多签地址都是从Redeem脚本生成的。推荐使用P2WSH地址，可以有效降低交易手续费。
+### Generating the Multi-Signature Redeem Script
+
+Fill in the network type, the public keys of all the collaborators (separated using commas), and the no. of signatures required for authentication. Click on the **fetch** button to get the redeem script. The various types of multi-signature addresses are all generated using the redeem script. It is recommended that you use `P2WSH` addresses in order to minimize transaction fees.
 
 <div align=center><img width="600" height="450" src="./pic/redeem.png"/></div>
 
-### 9. UTXO监测
+### UTXO Monitoring
 
-UTXO监测功能实现了对中继链中UTXO的状态监听，方便商家掌握自己的多签地址状态，操作自己的跨链业务。填写中继链RPC地址、小额限制和多签赎回脚本，点击启动监听即可。对应的参数会显示在下方，包括UTXO金额总和等，UTXO详细信息会写入对应的文件。
+This feature of the **btctool** allows the vendor to dynamically monitor the relay chain UTXO thereby making it more convenient for them to carry out cross chain transactions. Fill in the relay chain RPC address, a min. amount and the redeem script. The UTXO information will be displayed at the bottom and added to the corresponding file.
 
 <div align=center><img width="640" height="420" src="./pic/utxo_mon.png"/></div>
 
-参数介绍如下：
+The parameters are described below.
 
-| 参数          | 介绍                                                       |
+| Parameter          | Description                                                       |
 | ------------- | ---------------------------------------------------------- |
-| 中继链RPC地址 | 获取一个中继链的RPC地址                                    |
-| 小额限制      | 设置一个比特币金额（聪），所有小于这个值的UTXO会被统计下来 |
-| 多签赎回脚本  | 生成多签地址的多签赎回脚本                                 |
+| Relay chain RPC address | RPC address of the relay chain                                    |
+| Min. amount limit      | A min. amount set in satoshis, smaller UTXO amounts are cumulatively added up |
+| Multi-signature redeem script  | Redeem script used to generate the multi-signature address  |
 
-结果参数如下:
+Resultant paramters are as follows:
 
-| 参数              | 介绍                                                         |
+| Parameter              | Description                                                         |
 | ----------------- | ------------------------------------------------------------ |
-| UTXO金额总和      | 多签锁定的比特币金额，即跨链到其他链的比特币金额             |
-| UTXO总数          | 可用的UTXO数目                                               |
-| P2SH格式UTXO数目  | 锁定脚本是P2SH格式的UTXO，交易费消耗更高                     |
-| P2WSH格式UTXO数目 | 锁定脚本是P2WSH格式的UTXO，隔离见证的交易费低                |
-| 小额UTXO数目      | 金额小于小额限制的UTXO数目                                   |
-| 费率              | 构造解锁交易的手续费率，即每字节多少聪，比如10sat/byte，那么一笔100字节的交易需要1000聪的手续费，这笔手续费从用户的解锁金额中扣除； |
-| 最小找零          | 在构造解锁交易的时候，可能产生对多签地址的找零，最小找零值限制了找零的金额不能小于该值，防止产生过小的UTXO，甚至粉尘UTXO，伤害到跨链解锁的效果； |
+|  UTXO transfer amount      | BTC amount locked in the multi-signature address, transferred to the target chain             |
+| UTXO number          | Current no. of UTXO that can be used                                               |
+| P2SH format UTXO  | No. of P2SH format UTXO locked by the script, high transaction fee                     |
+| P2WSH format UTXO | No. of P2WSH format UTXO locked by the script, relatively low transaction fee                |
+| No. of min. amount UTXO      | No. of UTXO with amount lesser than the set min. amount                                   |
+| Fee rate              | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC |
+| Min. change value          | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO |
 
 
 
-## 命令行运行
+## Command Line Execution
 
-btctool可以针对比特币测试网和本地仿真网络，如果使用跨链生态提供的测试网，那么btctool选择测试网即可，如果是在本地运行跨链测试网络，则选择仿真网络。
+The **btctool** can work in test net and simulated network environments. If you're using the test net environment that is provided by the cross chain ecosystem, select test net. And if you're using a local private network, select the simulated network.
 
-### 1. 测试网络：
+### 1. Test Net
 
 ```shell
 ./btctool -tool=cctx -idxes=1 -utxovals=0.01 -txids=c09d7d7a321d025ac0cad75855b1b0313e55660a5a77b9d038bb7f606be6a744 -value=0.008 -fee=0.00001 -targetaddr=AdzZ2VKufdJWeB8t9a8biXoHbbMe2kZeyH -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -contract=b6bf9abf29ee6b8c9828a48b499ad667da1ad003 -multiaddr=tb1qy94qnjuwu5w6r2g74z2z25khjdkgs6ssk5rjnyqrvcvpds8f7x9shrfspn
 ```
 
-测试网络
+|  Parameter  | Usage                                                        |
+| :---------: | ------------------------------------------------------------ |
+|    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false |
+|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool |
+|   -idxes    | UTXO position in the transaction and output sequence, multiple values separated using commas |
+|  -utxovals  | Amount in each UTXO, multiple values separated using commas  |
+|  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves |
+|   -value    | Cross chain transfer amount, the amount locked to the multi-signature address on the consortium chain, amount of BTC transferred to the target chain account, default value `10000` satoshis |
+|    -fee     | Transaction fee charged for the transaction, default value `1000` satoshis |
+| -targetaddr | User's target address                                        |
+|  -contract  | Contract address of the target chain                         |
+|  -tochain   | ID of the target chain, used in the consortium to determine the BTC cross chain destination |
+| -multiaddr  | Multi-signature address of the organization providing the cross chain service |
 
-|    FLAGS    |                            USAGE                             |
-| :---------: | :----------------------------------------------------------: |
-|    -gui     |             是否以GUI的形式运行，1运行，0不运行              |
-|    -tool    |   选择对应的工具，cctx是测试网工具，regauto是仿真网络工具    |
-|   -idxes    | UTXO在交易中的位置，即第几个输出，例如0、1等，可多个，用","隔开 |
-|  -utxovals  |              每个UTXO的金额，可多个，用","隔开               |
-|  -privkb58  | 签名用的base58形式私钥，如果不设置，会返回未签名的交易，用户可以自行签名 |
-|   -value    | 跨链交易金额，即锁定到联盟链多签地址的金额，将value个BTC转移到目标链，默认1万聪 |
-|    -fee     |               该比特币交易的手续费，默认1000聪               |
-| -targetaddr |                       用户的目标链地址                       |
-|  -contract  |                    目标链代币智能合约地址                    |
-|  -tochain   |            目标链ID，联盟链用来确定BTC跨链目的地             |
-| -multiaddr  |               提供跨链业务的组织提供的多签地址               |
-
-运行实例：
+**Sample execution:**
 
 ```shell
 ./btctool -gui=0 -tool=cctx -idxes=1 -utxovals=0.01 -txids=c09d7d7a321d025ac0cad75855b1b0313e55660a5a77b9d038bb7f606be6a744 -value=0.008 -fee=0.00001  -targetaddr=AdzZ2VKufdJWeB8t9a8biXoHbbMe2kZeyH -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -contract=56faac6081cd320fab3347c62faea86344a8aece -multiaddr=tb1qy94qnjuwu5w6r2g74z2z25khjdkgs6ssk5rjnyqrvcvpds8f7x9shrfspn
@@ -211,81 +211,97 @@ btctool可以针对比特币测试网和本地仿真网络，如果使用跨链�
 2019/11/04 14:34:10.220742 [INFO ] GID 1, you need to broadcast tx by yourself
 ```
 
-如上，结果中的十六进制字符串即为签名后的交易，用户可通过其他工具自行广播，例如全节点rpc命令sendrawtransaction或者一些[网站](https://tbtc.bitaps.com/broadcast)。
+The transaction hash obtained, as shown in the sample code above, can be broadcasted using the `sendrawtransaction` RPC method with a BTC full node, or other [tools](https://tbtc.bitaps.com/broadcast).
 
-### 2. 仿真网络：
+### 2. Simulated Network
 
 ```shell
 ./btctool  -gui=0 -tool=regauto -fee=0.001 -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -pwd=test -user=test -targetaddr=AdzZ2VKufdJWeB8t9a8biXoHbbMe2kZeyH -url=http://172.168.3.77:18443 -value=0.01 -contract=b6bf9abf29ee6b8c9828a48b499ad667da1ad003 -tochain=2 -multiaddr=tb1qy94qnjuwu5w6r2g74z2z25khjdkgs6ssk5rjnyqrvcvpds8f7x9shrfspn
 ```
 
-仿真网络
+|  Parameter | Usage                                                        |
+| :---------: | ------------------------------------------------------------ |
+|    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false |
+|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool |
+|  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves |
+|    -pwd     | RPC password of the BTC client                               |
+|    -user    | RPC user name of the BTC client                              |
+| -targetaddr | User's target address                                        |
+|    -url     | RPC address of the BTC client                                |
+|   -value    | Cross chain transfer amount, the amount locked to the multi-signature address on the consortium chain, amount of BTC transferred to the target chain account, default value `10000` satoshis |
+|  -contract  | Contract address of the target chain                         |
+|  -tochain   | ID of the target chain, used in the consortium to determine the BTC cross chain destination |
+| -multiaddr  | Multi-signature address of the organization providing the cross chain service |
 
-|    FLAGS    |                            USAGE                             |
-| :---------: | :----------------------------------------------------------: |
-|    -gui     |             是否以GUI的形式运行，1运行，0不运行              |
-|    -tool    |   选择对应的工具，cctx是测试网工具，regauto是仿真网络工具    |
-|  -privkb58  | 签名用的base58形式私钥，如果不设置，会返回未签名的交易，用户可以自行签名 |
-|    -pwd     |                     比特币客户端rpc密码                      |
-|    -user    |                    比特币客户端rpc用户名                     |
-| -targetaddr |                       用户的目标链地址                       |
-|    -url     |                     比特币客户端rpc地址                      |
-|   -value    | 跨链交易金额，即锁定到联盟链多签地址的金额，将value个BTC转移到目标链，默认1万聪 |
-|  -contract  |                    目标链代币智能合约地址                    |
-|  -tochain   |            目标链ID，联盟链用来确定BTC跨链目的地             |
-| -multiaddr  |               提供跨链业务的组织提供的多签地址               |
+### 3. Contract Signing
 
-### 3. 为参数签名
 
-```
+|    Flag     | Usage                                                        |
+| :---------: | ------------------------------------------------------------ |
+|    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false |
+|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool |
+|  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves |
+|    -pwd     |                     BTC client RPC password                      |
+|    -user    |                    BTC client RPC username                     |
+| -targetaddr | User's receiving address on the target chain                                        |
+|    -url     |                     BTC client RPC address                      |
+|   -value    | Cross chain transfer amount, the amount locked to the multi-signature address on the consortium chain, amount of BTC transferred to the target chain account, default value `10000` satoshis |
+|  -contract  | Contract address of the target chain                         |
+|  -tochain   | ID of the target chain, used in the consortium to determine the BTC cross chain destination |
+| -multiaddr  | Multi-signature address of the organization providing the cross chain service |
+
+### 3. Signing the parameters
+
+```shell
 ./btctool -gui=0 -tool=sign_tx_param -fee_rate=30 -min_change=10000 -param_ver=0 -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX
 ```
 
-### 4. 设置交易参数
+### 4. Setting the transaction parameters
 
-```
+```shell
 ./btctool -gui=0 -tool=set_tx_param -allia-rpc=http://ip:40336 -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae -wallet=./wallet.dat -wallet-pwd=pwd -fee_rate=30 -min_change=10000 -param_ver=0
 ```
 
-### 5. 为合约签名
+### 5. Contract signing
 
-```
+```shell
 ./btctool -tool=sign_redeem_contract -contract=0x9702640a6b971CA18EFC20AD73CA4e8bA390C910 -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -gui=0
 ```
 
-参数与GUI处类似。运行后，会显示对应的签名。
+The options used are the same as the parameters passed using the GUI. After execution, the corresponding signature will be displayed.
 
-### 6. 注册多签合约
+### 6. Register a Multi-Signature Contract
 
-```
+```shell
 ./btctool -tool=register_redeem  -allia-rpc=http://orchain:40336  -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae  -sigs=304402207cf1b8bf2d7234c77a84250a79d07a87b9fb09378096d34a5459b79afa414c57022015308108b6ec07df3b286c0fe20fe10b23e77377959d7160c339508ec1759da8,3045022100d6731dd8a0ee9e32423a25ed4638882d9ffcb259cdb03a3f75b8f1e3cd23540c02204d2511f9b748d5e356a9dfe20cfdda49a2de631637cc980ac7416cc7b6954466,3045022100a1e43664faafe50e429ad5c246266122dbc7df835f3758603c390a75019bb581022023d34b4c8bed500ea67ef5e9cbe259d7406487cc06a7da8d0661e9e58a0bbd52,3045022100e9716af38afd49fae2951c87ceec8add41d2915befee4962f3babb4e9b88897302207b870953ca1bde8edf1417ec7cb3e07d9c7862583aae92c9b8c408b746e14987,304402201bf226994026d060ddae579108bd5b1b06aeba4a313be6875b7ccf5482618ba602200ee71faa98c49f6d5120b6e8dc73663838be546cf47ca9c7a7c6bf2e672c8cfa  -wallet=./wallet.dat  -wallet-pwd=pwd  -contractId=2  -gui=0
 ```
 
-allia-rpc指的是中继链的RPC地址；wallet是中继链的钱包。其他参数和GUI相同。
+The `allia-rpc` option specifies the RPC address of the relay chain. `wallet` is the relay chain wallet address. The rest of the parameters are the same as the GUI version.
 
-### 7. 加密私钥
+### 7. Encrypt Private Key
 
-```
+```shell
 ./btctool -tool=encrypt_privk -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -btcpwd=pwd -gui=0
 ```
 
-填入私钥和用来加密私钥的密码即可。
+This command is used to encrypt the private key which is specified using the `privkb58` parameter. The `btcpwd` specifies the password with which the encrypted key can be used.
 
-### 8. 生成私钥
+### 8. Generate Private Key
 
-```
+```shell
 ./btctool -gui=0 -tool=getprivk -net=test 
 ```
 
-指定工具和网络类型即可。
+Specify the tool type and the network type using the command above to generate a private key.
 
-### 9. 生成多签赎回脚本
 
-```
+### 9. Generate Multi-Signature Redeem Script
+
+```shell
 ./btctool -gui=0 -tool=getredeem -net=test -require=2 -pubks=037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b91735054,037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b91735054
 2020/02/24 19:17:21.387310 [INFO ] GID 1, your redeem is 5221037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b9173505421037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b9173505452ae
 your P2SH address is 2NDMFTruE6Y5rKkFNzG7ERQnEVGfvJwFx1m
 your P2WSH address is tb1q3frdrpmh7tlejtc8a0s9pg2tnvp2qm09gnapx2k5rs5m6j2cy8rsa2kwv4
 ```
 
-收集多签参与者的公钥，填写对应参数，pubks指定公钥，用","分隔，require指定多签脚本要求的最少签名数目。工具会返回redeem的Hex形式，以及对应的多签P2SH和P2WSH地址。
+Specify all the public key after consolidating all the public keys required to for the multi-signature script (separated using commas) using the `pubks` parameter. `required` specifies the minimum number of signatures required to use the redeem script. The tool will return the redeem script's hex value and the corresponding `P2SH` and `P2WSH` addresses.
