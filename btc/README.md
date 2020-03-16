@@ -1,6 +1,7 @@
 <h1 align="center">Bitcoin Cross Chain Ecosystem</h1>
 <h4 align="center">Version 1.0 </h4>
-English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/README_CN.md)
+
+English | [中文](README_CN.md)
 
 ## Introduction
 
