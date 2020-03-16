@@ -20,8 +20,6 @@
 - [**Relayer**](https://github.com/ontio/cross-chain/blob/master/eth/ethereum_relayer_manual_CN.md)：每条链都有自己的Relayer，它们负责搬运中继链和以太坊链之间的跨链信息，是中继链和以太坊链之间的通信兵，它们会在这个过程中获取收益；
 - [**以太坊链**](https://github.com/ontio/cross-chain/blob/master/eth/ethereum_relayer_manual_CN.md)：以太坊链是以太坊跨链生态的源头链，任意dApp开发都可以通过部署跨链智能合约实现以太链到其他链的任意信息跨链功能。
 
-
-
 ## 背景
 ### MPT证明和轻客户端
 - **MPT证明**，Merkle Patricia Tree是经过改良的、融合了Merkle Tree和前缀树两种树优势的一种更节省存储空间的数据结构，在以太坊上主要用来组织管理账户数据、交易数据等重要数据；而MPT证明是基于MPT树生成的用于证明智能合约中存储状态的一种数据结构，用户可基于MPT证明得出任意某一区块高度的状态是否合法；
