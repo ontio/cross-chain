@@ -37,7 +37,7 @@ All the functions in the top tab of the **btctool** have been described below:
 
 ### Creating a Cross Chain BTC Transaction
 
-The **btctool** currently supports cross chain transactions on the test net and the private net. Creating and sending a transaction to the BTC test net will transafer the amount to the target chain's test net account. 
+The **btctool** currently supports cross chain transactions on the test net and the private net. Creating and sending a transaction to the BTC test net will transfer the amount to the target chain's test net account. 
 In case working with a private net configuration, you first need to setup a chain consortium environment and define a target chain, etc. This can be used to carry out testing. Please take note of the changes that need to be made when a network configuration changes. 
 
 A sample cross chain transaction on the test net would involve the following steps:
@@ -60,7 +60,7 @@ A sample cross chain transaction on the test net would involve the following ste
 |           RPC user name            | BTC full node RPC user name                                                                                                                                               |
 |            RPC password            | BTC full node RPC password                                                                                                                                                |
 
-The picture below illustrates a transaction that transfers **0.0001 BTC** to the Ethereum test net. The transaction fee is set to 0.00001 BTC. The target chain token contract hash, the receving address on the target chain, and Etherum's chain ID is also specified. And then then the UTXO details are provided which can also be fetched directly using the BTC full node's RPC. 
+The picture below illustrates a transaction that transfers **0.0001 BTC** to the Ethereum test net. The transaction fee is set to 0.00001 BTC. The target chain token contract hash, the receiving address on the target chain, and Ethereum's chain ID is also specified. And then then the UTXO details are provided which can also be fetched directly using the BTC full node's RPC. 
 
 <div align=center><img width="430" height="180" src="./pic/param.png"/></div>
 
@@ -108,13 +108,13 @@ The tool can be used to generate a BTC private key, and display the public key a
 
 ### Generate Multi-Signature Redeem Script
 
-Fill in the network type, the public keys of all the collborators (seprated using commas), and the no. of signatures required for authentication. Click on the **fetch** button to get the redeem script. The variosu types of multi-signature addresses are all generated using the redeem script. It is recommended that you use `P2WSH` addresses in order to minimize transaction fees.
+Fill in the network type, the public keys of all the collaborators (separated using commas), and the no. of signatures required for authentication. Click on the **fetch** button to get the redeem script. The various types of multi-signature addresses are all generated using the redeem script. It is recommended that you use `P2WSH` addresses in order to minimize transaction fees.
 
 <div align=center><img width="600" height="450" src="./pic/redeem.png"/></div>
 
 ## Command Line Execution
 
-The **btctool** can work in test net and simulated network environments. If you're using the test net environment that is provided by the cross chain ecosystem, select test net. And if you're using a local provaet network, select the simulated network.
+The **btctool** can work in test net and simulated network environments. If you're using the test net environment that is provided by the cross chain ecosystem, select test net. And if you're using a local private network, select the simulated network.
 
 ### 1. Test Net
 
@@ -125,7 +125,7 @@ The **btctool** can work in test net and simulated network environments. If you'
 |  Parameter  | Usage                                                        |
 | :---------: | ------------------------------------------------------------ |
 |    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false |
-|    -tool    | Select the required tool, `cctx` is the testnet tool, `regauto` is the emulated network tool |
+|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool |
 |   -idxes    | UTXO position in the transaction and output sequence, multiple values separated using commas |
 |  -utxovals  | Amount in each UTXO, multiple values separated using commas  |
 |  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves |
@@ -149,7 +149,7 @@ The **btctool** can work in test net and simulated network environments. If you'
 
 The transaction hash obtained, as shown in the sample code above, can be broadcasted using the `sendrawtransaction` RPC method with a BTC full node, or other [tools](https://tbtc.bitaps.com/broadcast).
 
-### 2. Siimulate Network
+### 2. Simulated Network
 
 ```shell
 ./btctool  -gui=0 -tool=regauto -fee=0.001 -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -pwd=test -user=test -targetaddr=AdzZ2VKufdJWeB8t9a8biXoHbbMe2kZeyH -url=http://172.168.3.77:18443 -value=0.01 -contract=b6bf9abf29ee6b8c9828a48b499ad667da1ad003 -tochain=2 -multiaddr=tb1qy94qnjuwu5w6r2g74z2z25khjdkgs6ssk5rjnyqrvcvpds8f7x9shrfspn
@@ -158,7 +158,7 @@ The transaction hash obtained, as shown in the sample code above, can be broadca
 |  Parameter | Usage                                                        |
 | :---------: | ------------------------------------------------------------ |
 |    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false |
-|    -tool    | Select the required tool, `cctx` is the testnet tool, `regauto` is the emulated network tool |
+|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool |
 |  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves |
 |    -pwd     | RPC password of the BTC client                               |
 |    -user    | RPC user name of the BTC client                              |

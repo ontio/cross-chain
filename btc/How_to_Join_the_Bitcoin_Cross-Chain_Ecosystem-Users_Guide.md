@@ -8,21 +8,17 @@ English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/How_to_J
 
 The term user is used for anyone who wants to transfer their BTC from the Bitcoin network to another chain. They need to find a vendor who provides such a cross chain transfer service. The user will be sending their BTC tokens to the multi-signature address provided to them by the vendor, and so they must first check whether the vendor is reliable. This also encourages vendors to become more trustworthy.
 
-本文档将以跨链用户的角度，讲述如何实现自己BTC的跨链转移。比如你需要将自己的1BTC转到某条链上，你需要做的准备工作以及具体的操作步骤。
-
-In this document, we will be looking at the cross chain ecosystem from a user's perpspective. This is a guide for users that can help understand how to transfer BTC on a cross chain system. There are some things that need to be setup and the following procedure needs to be followed send BTC to another chain.
+In this document, we will be looking at the cross chain ecosystem from a user's perspective. This is a guide for users that can help understand how to transfer BTC on a cross chain system. There are some things that need to be setup and the following procedure needs to be followed send BTC to another chain.
 
 ## Initial Setup
 
-Let's say you found a vendor and you are interested in using their services. At this point you need to get their mult-signature BTC address and the contract address of the token deployed on the target chain. Next, you need to use the **btctool** to create a transaction. You can create a transaction using other methods as well, as long as it follows the defined protocol. You also need to create an address on the target chain that will be used to receive the cross chain BTC.
+Let's say you found a vendor and you are interested in using their services. At this point you need to get their multi-signature BTC address and the contract address of the token deployed on the target chain. Next, you need to use the **btctool** to create a transaction. You can create a transaction using other methods as well, as long as it follows the defined protocol. You also need to create an address on the target chain that will be used to receive the cross chain BTC.
 
 ## Example Operation
 
 Let us take a look at an example where we send BTC from the Bitcoin test net to Ethereum.
 
 Fill in the necessary information to the transaction construction tool. Please refer to [this](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md) guide for more details on how to use the construction tool. Next, use any method of broadcasting transactions to broadcast the transaction created and displayed in the tool. You can use this [website](https://tbtc.bitaps.com/broadcast). Next, you need to wait for the transaction to be confirmed on the Bitcoin network. The transferred BTC amount will be displayed in the receiving address on the target chain.
-
-我选择了信任的测试商户，他们的信息如下表。
 
 A list of certain verified and trusted vendors is shared below. Their address and other details are available and can be used for testing.
 
@@ -38,12 +34,12 @@ A list of certain verified and trusted vendors is shared below. Their address an
 
 ##### 1.1. Cross chain setup
 
-1. **Fetching testnet BTC:** Create a Bitcoin test net address and ensure that you have sufficient test net tokens before starting the process. This test net [faucet](https://testnet-faucet.mempool.co/) can be used to get test net BTC tokens;
-2. **Fetching testnet ETH:** Create an Ethereum test net address and ensure that you have sufficient Gas for contract invocation before starting the process. We use [Ropsten](https://teth.bitaps.com/) in this case;
+1. **Fetching test net BTC:** Create a Bitcoin test net address and ensure that you have sufficient test net tokens before starting the process. This test net [faucet](https://testnet-faucet.mempool.co/) can be used to get test net BTC tokens;
+2. **Fetching test net ETH:** Create an Ethereum test net address and ensure that you have sufficient Gas for contract invocation before starting the process. We use [Ropsten](https://teth.bitaps.com/) in this case;
 
 ##### 1.2. Creating and sending a transaction
 
-Please refer to this [guide](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md) for detailed instructions on how to use the tool send a transaction. AFter sending the transaction, use an [Ethereum explorer](https://ropsten.etherscan.io/) to confirm the amount of BTC tokens sent to the contract address specified in the transaction.
+Please refer to this [guide](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md) for detailed instructions on how to use the tool send a transaction. After sending the transaction, use an [Ethereum explorer](https://ropsten.etherscan.io/) to confirm the amount of BTC tokens sent to the contract address specified in the transaction.
 
 #### 2. BTC transferred back to the Bitcoin network
 
@@ -70,8 +66,8 @@ Please refer to [this](https://github.com/ontio/cross-chain/blob/master/eth/how_
    - Click on the cog in the top right corner of the wallet window and modify the settings as shown in the picture below. Save these settings to connect to the test net;
      
    <div align=center><img width="300" height="400" src="./pic/cyano-confignet.png"/></div>
-      
-   - After configuring the wallet, the OBTC token contract needs to be added to the wallet. Click on the cog and select the **OEP-4 TOKENS** option. Click on the **ADD** button and enter the contract address to the script hash. Click **CONFIRM** and the OBTC contract will be displyed in the wallet. Go back and save the settings;
+
+   - After configuring the wallet, the OBTC token contract needs to be added to the wallet. Click on the cog and select the **OEP-4 TOKENS** option. Click on the **ADD** button and enter the contract address to the script hash. Click **CONFIRM** and the OBTC contract will be displayed in the wallet. Go back and save the settings;
 
    <div align=center><img width="300" height="400" src="./pic/cyano-configoep4.png"/></div>
 
@@ -79,7 +75,7 @@ Please refer to [this](https://github.com/ontio/cross-chain/blob/master/eth/how_
 
 Use the transaction construction [tool](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md) to create and send the cross chain transaction. After the transaction is sent and confirmed on the Bitcoin network, the updated OBTC (mapped BTC) balance will be displayed in the Cyano wallet.
 
-You can now proceed to use these cross chain BTC tokens to carry out transaction on the Ontology chain. Since Ontology supports smart contract and offers very quick transaction times, it is perfcetly suited to carry out complex and frequent BTC related transactions. You can also, at any point of time, choose to transfer the BTC back to the Bitcoin network.
+You can now proceed to use these cross chain BTC tokens to carry out transaction on the Ontology chain. Since Ontology supports smart contract and offers very quick transaction times, it is perfectly suited to carry out complex and frequent BTC related transactions. You can also, at any point of time, choose to transfer the BTC back to the Bitcoin network.
 
 <div align=center><img width="300" height="400" src="./pic/cyano-btcx.png"/></div>
 
@@ -142,12 +138,12 @@ You may also use Ontology's Golang [SDK](https://github.com/ontio/ontology-go-sd
 
 There are certain fields of information that the user needs to provide for themselves:
 
-- The smart contract AVM code. The smart contract AVm code can be obtained by compiling the contract code in SmartX, or using the [Neptune](https://github.com/ontio/ontology-python-compiler) compiler;
+- The smart contract AVM code. The smart contract AVM code can be obtained by compiling the contract code in SmartX, or using the [Neptune](https://github.com/ontio/ontology-python-compiler) compiler;
 
 - The address used to receive the BTC;
 
 - RPC address of the Ontology node. IP can be set to `138.91.6.125` when using the test net;
 
-- Ontoloy wallet file path and password;
+- Ontology wallet file path and password;
 
-Once the transaction is successful, the upadted BTC balance will be displayed in the specified BTC address on the Bitcoin network.
+Once the transaction is successful, the updated BTC balance will be displayed in the specified BTC address on the Bitcoin network.

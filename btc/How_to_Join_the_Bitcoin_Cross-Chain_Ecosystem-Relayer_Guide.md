@@ -19,7 +19,7 @@ At the same time, it also monitors for cross chain transactions on the relay cha
 - **Preconditions:** Deploying a relayer first requires a deployed Bitcoin full node. A relayer needs uses the data from the Bitcoin full node. Please synchronize the full node's Bitcoin ledger prior to enabling the relayer.
 - **Forward Transactions:** The relayer constantly scans each BTC block for the cross chain transactions. When detected, it fetches the transaction's merkle root from the full node forwards the transaction along with the merkle root to the relay chain. In case of transactions that aren't confirmed, they are recorded and sent to the relay chain later when the necessary block height is reached.
 - **Block Header Synchronization:** The relayer sends the block header to the relay chain. It is equipped to process and handle normal forks and operate with relative stability, and continue sending the block headers tp the relay chain.
-- **Broadcasting Transactiions:** The BTC relayer creates the tranasctions that are used to send BTC back to the Bitcoin network. The relayer then also broadcasts them to the Bitcoin network.
+- **Broadcasting Transactions:** The BTC relayer creates the transactions that are used to send BTC back to the Bitcoin network. The relayer then also broadcasts them to the Bitcoin network.
 
 ## Setup
 

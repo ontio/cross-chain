@@ -5,7 +5,7 @@ English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/redeem_t
 
 ## Introduction
 
-Say Alice, Bob, and Carl have already created their BTC and relay chain wallets and they are ready to start developing and testing their cross chain service. But they realize that they don't really have a means to communicate with the relay chain, say for actions like receving the cross chain transactions sent by the relay chain or signing them. This is where they can start using this tool.
+Say Alice, Bob, and Carl have already created their BTC and relay chain wallets and they are ready to start developing and testing their cross chain service. But they realize that they don't really have a means to communicate with the relay chain, say for actions like receiving the cross chain transactions sent by the relay chain or signing them. This is where they can start using this tool.
 
 The multi-signature signing tool monitors the transactions on the relay chain and fetches the ones that need to be signed by the collaborators, each of whom run this tool individually. The collaborators use their respective private keys to sign the transactions fetched from the relay chain. This completes a cross chain BTC transaction.
 
