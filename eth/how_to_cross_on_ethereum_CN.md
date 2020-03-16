@@ -33,7 +33,8 @@ amount              - BTC金额，以聪为单位
 ```
 
 下面是go语言版本的调用示例：
-```
+
+```go
 func InvokeCross2Btc(cfg *config.ServiceConfig) bool {
 	ethclient, err := ethclient.Dial(cfg.RestURL)
 	if err != nil {
