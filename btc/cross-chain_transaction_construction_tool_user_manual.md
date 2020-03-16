@@ -37,7 +37,7 @@ All the functions in the top tab of the **btctool** have been described below:
 
 ### Creating a Cross Chain BTC Transaction
 
-The **btctool** currently supports cross chain transactions on the test net and the private net. Creating and sending a transaction to the BTC test net will transafer the amount to the target chain's test net account. 
+The **btctool** currently supports cross chain transactions on the test net and the private net. Creating and sending a transaction to the BTC test net will transfer the amount to the target chain's test net account. 
 In case working with a private net configuration, you first need to setup a chain consortium environment and define a target chain, etc. This can be used to carry out testing. Please take note of the changes that need to be made when a network configuration changes. 
 
 A sample cross chain transaction on the test net would involve the following steps:
@@ -174,6 +174,7 @@ Resultant paramters are as follows:
 | Fee rate              | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC |
 | Min. change value          | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO |
 
+Fill in the network type, the public keys of all the collaborators (separated using commas), and the no. of signatures required for authentication. Click on the **fetch** button to get the redeem script. The various types of multi-signature addresses are all generated using the redeem script. It is recommended that you use `P2WSH` addresses in order to minimize transaction fees.
 
 
 ## Command Line Execution
