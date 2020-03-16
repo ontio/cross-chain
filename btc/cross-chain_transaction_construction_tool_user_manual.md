@@ -94,23 +94,87 @@ The multi-signature scripts and contracts that have been registered on the relay
 |     Wallet password     | Relay chain wallet password                                                                               |
 |     Target chain ID     | ID of the target chain                                                                                    |
 
-### Encrypt Private Key
+### Signing Parameters
+
+After the vendor links the multi-signature tool to the contract they can set the parameters required to create the transaction that releases the locked BTC. First the parameters need to be fixed, and then all the collaborators use their respective private keys to sign them after filling them in.
+
+<div align=center><img width="640" height="420" src="./pic/signparam.png"/></div>
+
+The parameters have been described below:
+
+| Parameter              | Description                                                         |
+| ----------------- | ------------------------------------------------------------ |
+| WIF private key       | WIF format BTC private key                                        |
+| Multi-signature Redeem        | Vendor's redeem script                                         |
+| Paramter version          | Version no. of the parameters, can be updated, but the version no. can only increase with each change   |
+| Fee rate（sat/byte）  | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC  |
+| Min. change value（sat） | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO |
+
+### Setting Transaction Parameters
+
+Once the min. no. of necessary signatures are collected for signing the parameters are collected on the relay chain, the transaction parameter setting will be carrid out. The signatures can be sent individually or accumulated and then sent in a group. Fill in the required parameters as shown in the picture below:
+
+<div align=center><img width="640" height="420" src="./pic/setparam.png"/></div>
+
+The parameters have been described below.
+
+| Parameter              | Description                                                         |
+| ----------------- | ------------------------------------------------------------ |
+| Relay chain RPC address     | RPC address of the relay chain                                      |
+| Multi-signature redeem        | The redeem script to be used to carry out the cross chain transaction |
+| Parameter version          | Version no. for the BTC release transaction parameters                                  |
+| Signature              | Signatures of the collaborators in the multi-signature redeem, multiple values separated using commas |
+| Fee rate (sat/byte)  | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC |
+| Min. change value（sat） | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO |
+| Relay chain wallet path    | Relay chain wallet, used to register the transaction on the relay chain |
+| Wallet password          | Password of the relay chain wallet                                             |
+
+### Encrypting Private Key
 
 A Bitcoin private key file needs to be generated before running the multi-signature contract. The relay chain's encryption method is used here. As illustrated in the picture below, fill in the parameters to generate the encrypted wallet file.
 
 <div align=center><img width="580" height="420" src="./pic/encrypt.png"/></div>
 
-### Generate Private Key
+### Generating Private Key
 
 The tool can be used to generate a BTC private key, and display the public key and the address associated. The network type field can be assigned the values `test`, `regtest` and `main`, which respectively correspond to the test net, private net, and main net.
 
 <div align=center><img width="600" height="420" src="./pic/getprivk.png"/></div>
 
-### Generate Multi-Signature Redeem Script
+
+### Generating the Multi-Signature Redeem Script
 
 Fill in the network type, the public keys of all the collaborators (separated using commas), and the no. of signatures required for authentication. Click on the **fetch** button to get the redeem script. The various types of multi-signature addresses are all generated using the redeem script. It is recommended that you use `P2WSH` addresses in order to minimize transaction fees.
 
 <div align=center><img width="600" height="450" src="./pic/redeem.png"/></div>
+
+### UTXO Monitoring
+
+This feature of the **btctool** allows the vendor to dynamically monitor the relay chain UTXO thereby making it more convenient for them to carry out cross chain transactions. Fill in the relay chain RPC address, a min. amount and the redeem script. The UTXO information will be displayed at the bottom and added to the corresponding file.
+
+<div align=center><img width="640" height="420" src="./pic/utxo_mon.png"/></div>
+
+The parameters are described below.
+
+| Parameter          | Description                                                       |
+| ------------- | ---------------------------------------------------------- |
+| Relay chain RPC address | RPC address of the relay chain                                    |
+| Min. amount limit      | A min. amount set in satoshis, smaller UTXO amounts are cumulatively added up |
+| Multi-signature redeem script  | Redeem script used to generate the multi-signature address  |
+
+Resultant paramters are as follows:
+
+| Parameter              | Description                                                         |
+| ----------------- | ------------------------------------------------------------ |
+|  UTXO transfer amount      | BTC amount locked in the multi-signature address, transferred to the target chain             |
+| UTXO number          | Current no. of UTXO that can be used                                               |
+| P2SH format UTXO  | No. of P2SH format UTXO locked by the script, high transaction fee                     |
+| P2WSH format UTXO | No. of P2WSH format UTXO locked by the script, relatively low transaction fee                |
+| No. of min. amount UTXO      | No. of UTXO with amount lesser than the set min. amount                                   |
+| Fee rate              | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC |
+| Min. change value          | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO |
+
+
 
 ## Command Line Execution
 
@@ -171,13 +235,42 @@ The transaction hash obtained, as shown in the sample code above, can be broadca
 
 ### 3. Contract Signing
 
+
+|    Flag     | Usage                                                        |
+| :---------: | ------------------------------------------------------------ |
+|    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false |
+|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool |
+|  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves |
+|    -pwd     |                     BTC client RPC password                      |
+|    -user    |                    BTC client RPC username                     |
+| -targetaddr | User's receiving address on the target chain                                        |
+|    -url     |                     BTC client RPC address                      |
+|   -value    | Cross chain transfer amount, the amount locked to the multi-signature address on the consortium chain, amount of BTC transferred to the target chain account, default value `10000` satoshis |
+|  -contract  | Contract address of the target chain                         |
+|  -tochain   | ID of the target chain, used in the consortium to determine the BTC cross chain destination |
+| -multiaddr  | Multi-signature address of the organization providing the cross chain service |
+
+### 3. Signing the parameters
+
+```shell
+./btctool -gui=0 -tool=sign_tx_param -fee_rate=30 -min_change=10000 -param_ver=0 -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX
+```
+
+### 4. Setting the transaction parameters
+
+```shell
+./btctool -gui=0 -tool=set_tx_param -allia-rpc=http://ip:40336 -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae -wallet=./wallet.dat -wallet-pwd=pwd -fee_rate=30 -min_change=10000 -param_ver=0
+```
+
+### 5. Contract signing
+
 ```shell
 ./btctool -tool=sign_redeem_contract -contract=0x9702640a6b971CA18EFC20AD73CA4e8bA390C910 -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -gui=0
 ```
 
 The options used are the same as the parameters passed using the GUI. After execution, the corresponding signature will be displayed.
 
-### 4. Register a Multi-Signature Contract
+### 6. Register a Multi-Signature Contract
 
 ```shell
 ./btctool -tool=register_redeem  -allia-rpc=http://orchain:40336  -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae  -sigs=304402207cf1b8bf2d7234c77a84250a79d07a87b9fb09378096d34a5459b79afa414c57022015308108b6ec07df3b286c0fe20fe10b23e77377959d7160c339508ec1759da8,3045022100d6731dd8a0ee9e32423a25ed4638882d9ffcb259cdb03a3f75b8f1e3cd23540c02204d2511f9b748d5e356a9dfe20cfdda49a2de631637cc980ac7416cc7b6954466,3045022100a1e43664faafe50e429ad5c246266122dbc7df835f3758603c390a75019bb581022023d34b4c8bed500ea67ef5e9cbe259d7406487cc06a7da8d0661e9e58a0bbd52,3045022100e9716af38afd49fae2951c87ceec8add41d2915befee4962f3babb4e9b88897302207b870953ca1bde8edf1417ec7cb3e07d9c7862583aae92c9b8c408b746e14987,304402201bf226994026d060ddae579108bd5b1b06aeba4a313be6875b7ccf5482618ba602200ee71faa98c49f6d5120b6e8dc73663838be546cf47ca9c7a7c6bf2e672c8cfa  -wallet=./wallet.dat  -wallet-pwd=pwd  -contractId=2  -gui=0
@@ -185,7 +278,7 @@ The options used are the same as the parameters passed using the GUI. After exec
 
 The `allia-rpc` option specifies the RPC address of the relay chain. `wallet` is the relay chain wallet address. The rest of the parameters are the same as the GUI version.
 
-### 5. Encrypt Private Key
+### 7. Encrypt Private Key
 
 ```shell
 ./btctool -tool=encrypt_privk -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -btcpwd=pwd -gui=0
@@ -193,7 +286,7 @@ The `allia-rpc` option specifies the RPC address of the relay chain. `wallet` is
 
 This command is used to encrypt the private key which is specified using the `privkb58` parameter. The `btcpwd` specifies the password with which the encrypted key can be used.
 
-### 6. Generate Private Key
+### 8. Generate Private Key
 
 ```shell
 ./btctool -gui=0 -tool=getprivk -net=test 
@@ -201,7 +294,8 @@ This command is used to encrypt the private key which is specified using the `pr
 
 Specify the tool type and the network type using the command above to generate a private key.
 
-### 7. Generate Multi-Signature Redeem Script
+
+### 9. Generate Multi-Signature Redeem Script
 
 ```shell
 ./btctool -gui=0 -tool=getredeem -net=test -require=2 -pubks=037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b91735054,037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b91735054
