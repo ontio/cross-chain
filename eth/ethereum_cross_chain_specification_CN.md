@@ -61,7 +61,7 @@
 
 <div align=center><img width="780" height="360" src="pic/eth2orc.png"/></div>
 
-### 从中继链跨链到以太
+### 从中继链跨链到以太坊链
 
 反向与正向类似，依然可以分为区块头和merkle proof提交两部分：
 
@@ -88,6 +88,7 @@
 
 7. Target Chain验证跨链交易，如果有效，则执行交易，如释放1eth到账户B
 
+通过以上的介绍大家应该已经基本了解了以太坊跨链的流程，接下来，让我们一起看看如果实现以太坊链的跨链吧！[以太坊跨跨链操作手册](how_to_cross_on_ethereum.md)
 ## 许可证
 
 Ontology遵守GNU Lesser General Public License, 版本3.0。 详细信息请查看项目根目录下的LICENSE文件。
