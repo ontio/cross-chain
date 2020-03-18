@@ -21,63 +21,65 @@ The same process is involved when sending relay chain transactions to Ethereum. 
 
 Now the component of the cross chain ecosystem that actually carries out this process of synchronizing block headers and merkle proofs is the **relayer**. The relayer monitors the transactions taking place on Ethereum and synchronizes the block headers on the relay chain along with the respective cross chain transactions and events. It also needs to monitor the relay chain and send the block headers and the respective cross chain transactions to Ethereum.
 
-### 以太区块头同步到中继链
+### Synchronizing Ethereum Block Headers on the Relay Chain
 
-以太区块头同步到中继链需要首先指定一个以太同步初始区块头，从这个区块头开始同步后续的以太区块头。所以包括同步初始区块头和同步区块头。
+To synchronize block headers from Ethereum to the relay chain you first need to specify an initial block header from where the synchronization starts. The initial block header and the consequent block headers will be synchronized on the relay chain.
 
-以太同步区块头到中继链：
+Ethereum block headers synchronized on relay chain:
 
 <div align=center><img width="350" height="260" src="pic/sync_headers.png"/></div>
 
-以太同步区块头到中继链需要一个一个区块头进行，中继链使用了以太的轻客户端原理来验证以太区块头的正确性，包括以太区块头的挖矿难度。
+Block headers are synchronized one by one to the relay chain. The relay chain relies on the same verification principle that the Ethereum light client uses to ensure the legitimacy of the block headers, including the mining difficulty of the Ethereum chain.
 
-分叉是允许的，只要回到以太主链上的区块头一个一个同步就可以，中继链可以处理以太的分叉。
+The relay chain system can identify and withstand forks. The synchronization process carries on with the Ethereum main chain.
 
-### 中继链区块头同步到以太链
+### Synchronizing Relay Chain Block Headers on Ethereum
 
-中继链区块头同步到以太也一样需要首先指定一个中继链初始区块头，从这个区块头开始同步中继链区块头，也包括同步初始区块头和同步区块头。
+Synchronizing relay chain block headers Ethereum also occurs in a similar manner. An initial block header is selected from where the synchronization process begins, and all the subsequent blocks are synchronized, including the initial block header.
 
-中继链区块头同步到以太链：
+Relay chain headers synchronized on Ethereum :
 
 <div align=center><img width="480" height="200" src="pic/orchain_hdrs.png"/></div>
 
-中继链区块头同步到以太有些不一样，并不需要一个一个区块头同步，只有需要区块头才被同步。什么是需要的区块头呢？有发生验证节点变更的区块头和包含跨链到以太交易的区块头，需要同步到以太。因为中继链是具备终局性的区块链。
+However, in this case not all the blocks headers need to be synced on the Ethereum chain. The only blocks that need to be synced on the Ethereum chain are the cross chain block headers to Ethereum and the block headers wherein any changes occured in the verification nodes of the relay chain. The relay chain, just as a typical blockchain, also has finalty characteristics.
 
-### 从以太跨链到中继链
+### Transactions from Ethereum to the Relay Chain
 
-从以太跨链到中继链，需要在以太上发起一笔交易，在以太到BTC的跨链中，调用以太跨链BTC的业务合约的lock，同时需要生成事件并且写入到以太的存储中来生成该事件的Merkle proof。有了上面同步到中继链的以太区块头，那么中继链可以验证以太的这个事件。 当然需要relayer监听以太的跨链事件并提交跨链事件的Merkle proof到中继链。
+In a scenario where let's say an Ethereum to BTC transaction needs to be carried out, first the transaction is created by the user and send to the Ethereum chain. This cross chain transaction triggers the `lock` of the **ETH to BTC** service contract, and simultaneously an event needs to be created and recorded on Ethereum along with its merkle proof which will be generated on the Ethereum chain. Once the block header corresponding to the transaction and its respective merkle proof are synchronized on the relay chain, it can verify the existence of an event on Ethereum. 
 
-以太跨链到中继链：
+A relayer is necessary in this condition that listens for cross chain transactions on ETH and transmits them to the relay chain along with the corresponding merkle proof.
+
+Ethereum to relay chain cross chain transaction:
 
 <div align=center><img width="780" height="360" src="pic/eth2orc.png"/></div>
 
-### 从中继链跨链到以太
+### Transactions from the Relay Chain to Ethereum  
 
-反向与正向类似，依然可以分为区块头和merkle proof提交两部分：
+Sending a transaction from the relay chain to Ethereum is much like the opposite and involves sending the block headers and merkle proof.
 
-- Relayer会把中继链的区块头提交到以太上的区块头同步合约，该合约维护了联盟链的区块头；
-- Relayer监听中继链跨链管理合约，捕捉以太的跨链事件，提交跨链以太事件以及中继链的Merkle proof到以太，然后跨链管理合约会用中继链的区块头验证merkle proof，最后管理合约调用代理合约将ETH解锁给用户 。在BTC到以太的跨链中，提交跨链以太事件以及其Merkle proof到以太的跨链管理合约verifyAndExecuteTx的来完成。
+- The relayer sends the relay chain block headers to Ethereum's block header synchronization contract. This contract records and maintains the relay chain's block headers;
+- The relayer listens to the management contract on the relay chain, fetches the Ethereum cross chain events, and sends the events along with the respective merkle proofs to Ethereum. Finally, the management contract invokes a proxy contract that releases the user's locked ETH. For instance, in a transaction from BTC to ETH, the process of sending the cross chain events and merkle proofs is carried out by the `verifyAndExecuteTx` method of the management contract.
 
-## 以太跨链工作流程
+## Ethereum Cross Chain Transaction 
 
-以以太到BTC的跨链为例来介绍以太跨链工作流程：
+The process flow of cross chain transactions from Ethereum to other chains:
 
 <div align=center><img width="550" height="400" src="pic/cross%20progress.png"/></div>
 
-1. 用户发送跨链交易到以太，如以太账户A转账1个eth给Target Chain的账户B
+1. The user sends a transaction that, for instance, transfers 1 ETH from account A on Ethereum to account B on the target chain
 
-2. 以太链会锁定账户A的1个eth，生成跨链到Target Chain的跨链交易，会生成该跨链交易的Merkle proof
+2. Ethereum locks the 1 ETH transferred from account A, generates the transaction that is sent to the target chain and its merkle proof
 
-3. eth relayer会一直同步以太区块头到中继链，同时一直在监听ethereum chain的跨链事件，在以太生成了跨链交易后，relayer会提交该跨链交易以及其Merkle proof到中继链
+3. The ETH relayer constantly synchronizes Ethereum block headers on the relay chain, and monitors the Ethereum chain for cross chain transactions. Relayer transmits the cross chain transaction and the merkle proof generated by Ethereum to the relay chain
 
-4. 中继链有以太的区块头信息和以太跨链交易的Merkle proof，可以验证该跨链交易的有效性
+4. The Ethereum block headers and the respective merkle proof on the relay chain allow it to verify the legitimacy and validity of a cross chain transaction
 
-5. 如果有效，那么中继链会生成跨链到Target Chain的跨链交易，也会生成该跨链交易的Merkle proof
+5. If the transaction is valid, the relay chain generates a transaction to be sent to the target chain, along with the transaction's merkle proof
 
-6. Target Chain的relayer一直监听中继链上需要跨链到Target Chain的跨链交易，一但有，则同步中继链的区块头到Target Chain,同时提交跨链到Target Chain的跨链交易以及其Merkle proof到Target Chain
+6. The target chain relayer monitors the transactions on the relay chain and looks out for the transactions that need to be transferred to the target chain. It syncs the block header to the target chain and sends the transaction and the corresponding merkle proof along with it.
 
-7. Target Chain验证跨链交易，如果有效，则执行交易，如释放1eth到账户B
+7. When the target chain confirms the transaction's legitimacy, the target chain executes a final transaction that sends the 1 ETH to account B.
 
-## 许可证
+## License
 
-Ontology遵守GNU Lesser General Public License, 版本3.0。 详细信息请查看项目根目录下的LICENSE文件。
+Ontology complies with the GNU Lesser General Public License, version 3.0. For more information, see the LICENSE file in the project root directory.
