@@ -23,7 +23,7 @@ At the same time, it also monitors for cross chain transactions on the relay cha
 
 ## Setup
 
-### 1. Create a consortium chain wallet
+### 1. Create a ORChain wallet
 
 First create a relay chain wallet. An Ontology wallet can be also be used in it's place if available.
 

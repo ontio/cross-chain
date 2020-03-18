@@ -33,3 +33,91 @@ Alice、Bob和Carl是合作伙伴，他们热爱比特币与去中心化技术�
 经过测试（上述第三、四步商家可以不做），三人开始基于EBTC开发自己的比特币业务合约，他们终于能在以太坊智能合约上实现自己天马行空的想法了，这多亏了跨链生态！
 
 同样地，按照协议开发一本本体或者其他链的合约，它将作为BTC在本体上的映射，与比特币保持一比一的关系，也可以通过修改[模板]()的Redeem脚本后使用，这里称作OBTC。将准备好的OBTC合约部署到本体网络上，可以通过[smartx](https://smartx.ont.io/)其余步骤和以太坊类似。
+
+## 实例
+
+### 1. 生成多签脚本
+
+使用工具可以轻易生成私钥：
+
+```
+your private key is cTwKDy2MVGS5Z4hAZnisx9LojhJas2TBauK78LHKkce7qvHFavnH
+your compressed public key is 0372dd749a6221b35d74ba5654cdb49fc9af891234736de2c78e7a675ae3875996
+your legacy address is mzCyx1SyLJMdJQ9qXg7vizZNGXUVB7gpH7
+
+your private key is cQ62wvJPewSwhYymmQ42JgjrbF27TaPxhuG8R4BtLktmoPqvzLfx
+your compressed public key is 02a2e910081265957d83b4f3775689d880d52e6b84d6f0c508616fd46efa1678f7
+your legacy address is mgd191rA9LawKeJMnSUa1JzGRUBaz3RRpn
+
+your private key is cRWP4i2o25BSNSfQSZkeH4HBL1MFV7vq3EH1GUSK94ALrQCnemXF
+your compressed public key is 0257398e1bf56b25771f5a3f30356d2e7b492b45ab853e1f4d897391f27375e015
+your legacy address is muHFSWRGNCZYP8yapWaxiZkrdYsztsGVwG
+```
+
+用这些私钥对应的公钥，生成多签Redeem脚本：
+
+```
+your redeem is 52210372dd749a6221b35d74ba5654cdb49fc9af891234736de2c78e7a675ae38759962102a2e910081265957d83b4f3775689d880d52e6b84d6f0c508616fd46efa1678f7210257398e1bf56b25771f5a3f30356d2e7b492b45ab853e1f4d897391f27375e01553ae
+your P2SH address is 2Mw7fBAm6kzdbbbsN4Q3TFoEHhdiMKpeonx
+your P2WSH address is tb1q99g2a3fp6zpueygfypweevz9pzz92rxy54qy3xydlny2keq5azcq0gsqa2
+your multisig redeem hash is 2a723378355e3583417eabc3d4a863c526c00b6e
+```
+
+### 2. 获取中继链钱包
+
+获取方式待定
+
+### 3. 部署目标链合约
+
+用以太坊举例，多签部署了[BTCX]()`0x6e99209861c546d6ed83e5a4733c1b91d26de92c9135e4cbc35b03fb8ce51d35`作为BTC在以太坊上的映射。
+
+部署完合约，需要调用bindContractAddrWithChainId绑定多签的redeem hash，这样从BTC到以太的时候，BTCX合约就知道这笔钱确实锁定到了正确的多签地址，就可以准确地给用户增发BTC。
+
+然后设置最小返回金额，限制BTC从以太返回比特币的最低金额，只有高于这个金额才可以成功返回比特币网络。
+
+### 4. 绑定多签与合约
+
+<div align=center><img width="700" height="200" src="./pic/sign_contract_ex.png"/></div>
+
+多签中的每个成员，使用自己的BTC私钥，通过工具btctool的“为合约签名”功能，为BTCX合约、版本号、多签脚本签名，获得签名，注意合约版本号应该从0开始，并且每次更新合约地址的时候加1，版本号的加入主要是为了防止签名的重放，最后收集得到三个签名：
+
+```
+3045022100f5c1837c87224eedc0e9d25705a73e0100b741e860586d3f38dc4e03efdc2f0f02205361db9ae0237087534c5a6a72240741f1c82731159643813fd13fe765678c9e,304402200736f05d23825a7bece2e42de97eb60c61150ba11161a5b50a218227fa0171f4022068070209f098c4a3ad253692b55b23d1b1de61745ee4226fe608b210ff836228,3045022100cf287afaecc4c2539a9bb4dcff391353e5d950ca5fd7d5cdac5d629497c1b31a022031590ba8917ae48e70d665ea5b32f8b6fe05fb288b7e8f6b3db4ae5e958edae7
+```
+
+如图，使用工具朝中继链发送交易绑定合约和多签，这样多签在以太上的合约就被绑定了，所有使用该多签跨链到以太的BTC都会被转到这个合约。
+
+<div align=center><img width="700" height="180" src="./pic/register_contract_ex.png"/></div>
+
+### 5. 设置交易参数
+
+在中继链上设置BTC返程的交易参数，BTC要返回比特币链，必须要多签通过交易解锁BTC给用户，交易的构造有中继链上的合约负责，多签只需要为这笔交易签名即可，而构造交易需要设置的费率等参数，需要每个多签自己设置。
+
+首先，为参数签名，将参数信息序列化，然后各自用比特币私钥对其签名：
+
+<div align=center><img width="700" height="180" src="./pic/sign_param_ex.png"/></div>
+
+然后，类似于多签合约绑定，用btctool向中继链发送交易注册参数。
+
+### 6. 启动签名工具
+
+每个多签成员需要启动一个签名工具，获取中继链构造的未签名交易，然后用自己的比特币私钥对该交易签名，将签名发送到中继链，中继链合约会将签名收集并组装成完整的交易。
+
+在启动之前需要准备好中继链钱包以及比特币私钥加密钱包，利用工具加密比特币私钥，完成后可以在指定路径找到加密的钱包文件。
+
+<div align=center><img width="700" height="120" src="./pic/enc_btc_ex.png"/></div>
+
+把钱包放到签名工具的指定路径，配置好工具，就可以启动了。
+
+完成如上步骤之后，就可以正式开启跨链业务。
+
+最后需要注意的是费率和最小找零，以及BTCX合约中的最小返回值，推荐设置：
+$$
+min\_val=(400+160m+80n)*fee\_rate
+$$
+
+$$
+min\_change=(50+80m+40n)*fee\_rate
+$$
+
+min_change是最小找零，min_val是最小返回值，m/n指的是多签的参数。
