@@ -34,6 +34,7 @@ go build -o btctool main.go
 | 加密私钥         | 将自己的明文私钥加密，用于商家启动自己的签名工具。           |
 | 生成私钥         | 生成一个全新的私钥，会显示对应的公钥和地址                   |
 | 生成多签赎回脚本 | 输入公钥等参数，生成多签的赎回脚本，并显示多签钱包的地址     |
+| UTXO监测         | 帮助多签监测中继链上的UTXO状态                               |
 
 ### 1. 构造BTC跨链交易
 
@@ -93,23 +94,84 @@ go build -o btctool main.go
 | 钱包密码       | 中继链钱包的密码                                             |
 | 目标链ID       | 目标链的chain-id                                             |
 
-### 4. 加密私钥
+### 4. 为交易参数签名
+
+在供应商将多重签名工具链接到合约之后，他们可以设置参数，用来创建释放锁定的BTC的交易。 首先需要多签成员协商好参数内容，然后所有成员都使用自己的私钥对它们进行签名。
+
+<div align=center><img width="640" height="420" src="./pic/signparam.png"/></div>
+
+参数介绍如下：
+
+| Parameter        | Description                                              |
+| ---------------- | -------------------------------------------------------- |
+| 私钥（WIF）      | WIF格式的比特币私钥，某个多签成员的私钥                  |
+| 多签Redeem       | Vendor's redeem script                                   |
+| Paramter version | 参数可以更新，每次更新版本必须加1，初始为0               |
+| 费率（sat/byte） | 构造比特币解锁交易时候，计算手续费的费率                 |
+| 最小找零（sat）  | 构造比特币解锁交易，为多签找零的时候，找零值不得小于该值 |
+
+### 5. 设置交易参数
+
+收集好多签成员的签名，只要满足多签要求的签名数目即可，然后使用工具发送交易到中继链，完成参数注册。
+
+<div align=center><img width="640" height="420" src="./pic/setparam.png"/></div>
+
+参数介绍如下：
+
+| Parameter               | Description                                                  |
+| ----------------------- | ------------------------------------------------------------ |
+| Relay chain RPC address | 中继链的RPC地址                                              |
+| 多签redeem              | 供应商的多签赎回脚本                                         |
+| 参数版本                | 参数可以更新，每次更新版本必须加1，初始为0                   |
+| Signature               | Signatures of the collaborators in the multi-signature redeem, multiple values separated using commas |
+| 费率(sat/byte)          | 构造比特币解锁交易时候，计算手续费的费率                     |
+| 最小找零（sat）         | 构造比特币解锁交易，为多签找零的时候，找零值不得小于该值     |
+| Relay chain wallet path | 中继链钱包的文件路径                                         |
+| 钱包密码                | Password of the relay chain wallet                           |
+
+### 6. 加密私钥
 
 在启动多签签名工具之前，需要生成加密的比特币私钥文件，这里使用了中继链的加密方式。如下图，只需要填入对应的参数，即可生成对应的加密钱包文件。
 
 <div align=center><img width="580" height="420" src="./pic/encrypt.png"/></div>
 
-### 5. 生成私钥
+### 7. 生成私钥
 
 通过工具可以生成比特币私钥，并显示公钥以及地址。网络类型可以填test、regtest和main，分别对应测试网、私网和主网。
 
 <div align=center><img width="600" height="420" src="./pic/getprivk.png"/></div>
 
-### 6. 生成多签赎回脚本
+### 8. 生成多签赎回脚本
 
 填入网络类型、参与多签的人的公钥（用“,”隔开）和要求的签名数目，点击获取即可得到Redeem脚本，各种形式的多签地址都是从Redeem脚本生成的。推荐使用P2WSH地址，可以有效降低交易手续费。
 
-<div align=center><img width="600" height="450" src="./pic/redeem.png"/></div>
+<div align=center><img width="700" height="450" src="./pic/redeem.png"/></div>
+
+### 9. UTXO监测
+
+UTXO监测功能实现了对中继链中UTXO的状态监听，方便商家掌握自己的多签地址状态，操作自己的跨链业务。填写中继链RPC地址、小额限制和多签赎回脚本，点击启动监听即可。对应的参数会显示在下方，包括UTXO金额总和等，UTXO详细信息会写入对应的文件。
+
+<div align=center><img width="640" height="420" src="./pic/utxo_mon.png"/></div>
+
+参数介绍如下：
+
+| 参数          | 介绍                                                       |
+| ------------- | ---------------------------------------------------------- |
+| 中继链RPC地址 | 获取一个中继链的RPC地址                                    |
+| 小额限制      | 设置一个比特币金额（聪），所有小于这个值的UTXO会被统计下来 |
+| 多签赎回脚本  | 生成多签地址的多签赎回脚本                                 |
+
+结果参数如下:
+
+| 参数              | 介绍                                                         |
+| ----------------- | ------------------------------------------------------------ |
+| UTXO金额总和      | 多签锁定的比特币金额，即跨链到其他链的比特币金额             |
+| UTXO总数          | 可用的UTXO数目                                               |
+| P2SH格式UTXO数目  | 锁定脚本是P2SH格式的UTXO，交易费消耗更高                     |
+| P2WSH格式UTXO数目 | 锁定脚本是P2WSH格式的UTXO，隔离见证的交易费低                |
+| 小额UTXO数目      | 金额小于小额限制的UTXO数目                                   |
+| 费率              | 构造解锁交易的手续费率，即每字节多少聪，比如10sat/byte，那么一笔100字节的交易需要1000聪的手续费，这笔手续费从用户的解锁金额中扣除； |
+| 最小找零          | 在构造解锁交易的时候，可能产生对多签地址的找零，最小找零值限制了找零的金额不能小于该值，防止产生过小的UTXO，甚至粉尘UTXO，伤害到跨链解锁的效果； |
 
 ## 命令行运行
 
@@ -148,7 +210,7 @@ btctool可以针对比特币测试网和本地仿真网络，如果使用跨链�
 2019/11/04 14:34:10.220742 [INFO ] GID 1, you need to broadcast tx by yourself
 ```
 
-​	如上，结果中的十六进制字符串即为签名后的交易，用户可通过其他工具自行广播，例如全节点rpc命令sendrawtransaction或者一些[网站](https://tbtc.bitaps.com/broadcast)。
+如上，结果中的十六进制字符串即为签名后的交易，用户可通过其他工具自行广播，例如全节点rpc命令sendrawtransaction或者一些[网站](https://tbtc.bitaps.com/broadcast)。
 
 ### 2. 仿真网络：
 
@@ -172,7 +234,19 @@ btctool可以针对比特币测试网和本地仿真网络，如果使用跨链�
 |  -tochain   |            目标链ID，联盟链用来确定BTC跨链目的地             |
 | -multiaddr  |               提供跨链业务的组织提供的多签地址               |
 
-### 3. 为合约签名
+### 3. 为参数签名
+
+```
+./btctool -gui=0 -tool=sign_tx_param -fee_rate=30 -min_change=10000 -param_ver=0 -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX
+```
+
+### 4. 设置交易参数
+
+```
+./btctool -gui=0 -tool=set_tx_param -allia-rpc=http://ip:40336 -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae -wallet=./wallet.dat -wallet-pwd=pwd -fee_rate=30 -min_change=10000 -param_ver=0
+```
+
+### 5. 为合约签名
 
 ```
 ./btctool -tool=sign_redeem_contract -contract=0x9702640a6b971CA18EFC20AD73CA4e8bA390C910 -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -gui=0
@@ -180,7 +254,7 @@ btctool可以针对比特币测试网和本地仿真网络，如果使用跨链�
 
 参数与GUI处类似。运行后，会显示对应的签名。
 
-### 4. 注册多签合约
+### 6. 注册多签合约
 
 ```
 ./btctool -tool=register_redeem  -allia-rpc=http://orchain:40336  -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae  -sigs=304402207cf1b8bf2d7234c77a84250a79d07a87b9fb09378096d34a5459b79afa414c57022015308108b6ec07df3b286c0fe20fe10b23e77377959d7160c339508ec1759da8,3045022100d6731dd8a0ee9e32423a25ed4638882d9ffcb259cdb03a3f75b8f1e3cd23540c02204d2511f9b748d5e356a9dfe20cfdda49a2de631637cc980ac7416cc7b6954466,3045022100a1e43664faafe50e429ad5c246266122dbc7df835f3758603c390a75019bb581022023d34b4c8bed500ea67ef5e9cbe259d7406487cc06a7da8d0661e9e58a0bbd52,3045022100e9716af38afd49fae2951c87ceec8add41d2915befee4962f3babb4e9b88897302207b870953ca1bde8edf1417ec7cb3e07d9c7862583aae92c9b8c408b746e14987,304402201bf226994026d060ddae579108bd5b1b06aeba4a313be6875b7ccf5482618ba602200ee71faa98c49f6d5120b6e8dc73663838be546cf47ca9c7a7c6bf2e672c8cfa  -wallet=./wallet.dat  -wallet-pwd=pwd  -contractId=2  -gui=0
@@ -188,7 +262,7 @@ btctool可以针对比特币测试网和本地仿真网络，如果使用跨链�
 
 allia-rpc指的是中继链的RPC地址；wallet是中继链的钱包。其他参数和GUI相同。
 
-### 5. 加密私钥
+### 7. 加密私钥
 
 ```
 ./btctool -tool=encrypt_privk -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -btcpwd=pwd -gui=0
@@ -196,7 +270,7 @@ allia-rpc指的是中继链的RPC地址；wallet是中继链的钱包。其他�
 
 填入私钥和用来加密私钥的密码即可。
 
-### 6. 生成私钥
+### 8. 生成私钥
 
 ```
 ./btctool -gui=0 -tool=getprivk -net=test 
@@ -204,7 +278,7 @@ allia-rpc指的是中继链的RPC地址；wallet是中继链的钱包。其他�
 
 指定工具和网络类型即可。
 
-### 7. 生成多签赎回脚本
+### 9. 生成多签赎回脚本
 
 ```
 ./btctool -gui=0 -tool=getredeem -net=test -require=2 -pubks=037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b91735054,037927b594d277b6b178c1c958112bcfcb1d06747dc0d8662253334e6b91735054

@@ -21,7 +21,7 @@ The GUI supported version of the tool is available for download. Please follow [
 
 The main window of the GUI version of the tool is as displayed in the picture below. The tabs on the top are used to select a particular function and provide the respective parameters to implement the corresponding function and send a cross chain transaction.
 
-<div align=center><img width="600" height="422" src="./pic/gui.png"/></div>
+<div align=center><img width="700" height="422" src="./pic/gui_en.png"/></div>
 
 All the functions in the top tab of the **btctool** have been described below:
 
@@ -62,11 +62,11 @@ A sample cross chain transaction on the test net would involve the following ste
 
 The picture below illustrates a transaction that transfers **0.0001 BTC** to the Ethereum test net. The transaction fee is set to 0.00001 BTC. The target chain token contract hash, the receiving address on the target chain, and Ethereum's chain ID is also specified. And then then the UTXO details are provided which can also be fetched directly using the BTC full node's RPC. 
 
-<div align=center><img width="430" height="180" src="./pic/param.png"/></div>
+<div align=center><img width="630" height="230" src="./pic/param_en.png"/></div>
 
 2. Click the button to the see the result. The tool will display the transaction hash. This transaction hash can be copied and broadcasted. In a private net, the transaction will be transferred to the node using the RPC, which will then automatically broadcast it. For example:
 
-<div align=center><img width="470" height="144" src="./pic/res.png"/></div>
+<div align=center><img width="670" height="80" src="./pic/res_en.png"/></div>
 
 The transaction hash, as displayed in the picture above can be copied and broadcasted using this [tool](https://tbtc.bitaps.com/broadcast). A transaction ID will be obtained, such as "[de4eaa98252b24a1cd658f847c0a05083b6d03b4d5ad188f7cb62a808091ba8a](https://tbtc.bitaps.com/de4eaa98252b24a1cd658f847c0a05083b6d03b4d5ad188f7cb62a808091ba8a)"
 
@@ -74,7 +74,7 @@ The transaction hash, as displayed in the picture above can be copied and broadc
 
 The vendors looking to start cross chain businesses need to register their contracts and multi-signature `Redeem` scripts on the target chain before becoming a part of the cross chain ecosystem. The relay chain will verify the signatures of each transaction and their link to the contract.
 
-<div align=center><img width="580" height="400" src="./pic/sign.png"/></div>
+<div align=center><img width="680" height="400" src="./pic/sign_en.png"/></div>
 
 Fill in the WIF private as shown above and click the **sign** button to link the target chain contract and the multi-signature **redeem** script. The result will be displayed at the bottom. The vendor needs to record their signature, and all the signatures are consolidated, they can be registered on the relay chain.
 
@@ -82,7 +82,7 @@ Fill in the WIF private as shown above and click the **sign** button to link the
 
 The multi-signature scripts and contracts that have been registered on the relay chain are the only ones that can carry out cross chain transactions. Fill in the parameters as displayed in the following picture and click on register. The result pane will display the relay chain transaction hash.
 
-<div align=center><img width="580" height="420" src="./pic/register.png"/></div>
+<div align=center><img width="680" height="420" src="./pic/register_en.png"/></div>
 
 |        Parameter        | Description                                                                                               |
 | :---------------------: | --------------------------------------------------------------------------------------------------------- |
@@ -98,7 +98,7 @@ The multi-signature scripts and contracts that have been registered on the relay
 
 After the vendor links the multi-signature tool to the contract they can set the parameters required to create the transaction that releases the locked BTC. First the parameters need to be fixed, and then all the collaborators use their respective private keys to sign them after filling them in.
 
-<div align=center><img width="640" height="420" src="./pic/signparam.png"/></div>
+<div align=center><img width="640" height="420" src="./pic/signparam_en.png"/></div>
 
 The parameters have been described below:
 
@@ -114,7 +114,7 @@ The parameters have been described below:
 
 Once the min. no. of necessary signatures are collected for signing the parameters are collected on the relay chain, the transaction parameter setting will be carrid out. The signatures can be sent individually or accumulated and then sent in a group. Fill in the required parameters as shown in the picture below:
 
-<div align=center><img width="640" height="420" src="./pic/setparam.png"/></div>
+<div align=center><img width="640" height="420" src="./pic/setparam_en.png"/></div>
 
 The parameters have been described below.
 
@@ -133,26 +133,26 @@ The parameters have been described below.
 
 A Bitcoin private key file needs to be generated before running the multi-signature contract. The relay chain's encryption method is used here. As illustrated in the picture below, fill in the parameters to generate the encrypted wallet file.
 
-<div align=center><img width="580" height="420" src="./pic/encrypt.png"/></div>
+<div align=center><img width="580" height="420" src="./pic/encrypt_en.png"/></div>
 
 ### Generating Private Key
 
 The tool can be used to generate a BTC private key, and display the public key and the address associated. The network type field can be assigned the values `test`, `regtest` and `main`, which respectively correspond to the test net, private net, and main net.
 
-<div align=center><img width="600" height="420" src="./pic/getprivk.png"/></div>
+<div align=center><img width="600" height="420" src="./pic/getprivk_en.png"/></div>
 
 
 ### Generating the Multi-Signature Redeem Script
 
 Fill in the network type, the public keys of all the collaborators (separated using commas), and the no. of signatures required for authentication. Click on the **fetch** button to get the redeem script. The various types of multi-signature addresses are all generated using the redeem script. It is recommended that you use `P2WSH` addresses in order to minimize transaction fees.
 
-<div align=center><img width="600" height="450" src="./pic/redeem.png"/></div>
+<div align=center><img width="600" height="450" src="./pic/redeem_en.png"/></div>
 
 ### UTXO Monitoring
 
 This feature of the **btctool** allows the vendor to dynamically monitor the relay chain UTXO thereby making it more convenient for them to carry out cross chain transactions. Fill in the relay chain RPC address, a min. amount and the redeem script. The UTXO information will be displayed at the bottom and added to the corresponding file.
 
-<div align=center><img width="640" height="420" src="./pic/utxo_mon.png"/></div>
+<div align=center><img width="640" height="420" src="./pic/utxo_mon_en.png"/></div>
 
 The parameters are described below.
 
