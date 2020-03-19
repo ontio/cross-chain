@@ -5,17 +5,17 @@
 
 ## 引言
 
-Alice、Bob和Carl三个人决定作为商家开展BTC跨链业务，能将BTC转移到以太坊上去，而你希望成为他们的用户，为此你需要知道他们的**多签地址**，创建一个你的以**太坊地址**，当一切准备就绪，你只需要发送一笔特殊的比特币交易到商家的多签地址，生态中的其他角色就会帮助你把BTC转移到以太坊！
+Alice、Bob和Carl三个人决定作为供应商开展BTC跨链业务，能将BTC转移到以太坊上去，而你希望成为他们的用户，为此你需要知道他们的**多签地址**，创建一个你的以**太坊地址**，当一切准备就绪，你只需要发送一笔特殊的比特币交易到供应商的多签地址，生态中的其他角色就会帮助你把BTC转移到以太坊！
 
 怎么算是BTC跨链到以太坊呢？下图简单介绍了跨链生态对于用户来说完成的事情。
 
 <div align=center><img width="600" height="200" src="./pic/desc.png"/></div>
 
-在跨链之前，你需要确定商家及其业务是值得信任的。跨链实际上就是将比特币网络中的BTC原封不动地转移到其他链上，在其他链上的BTC具备和跨链前完全一致的属性，具有相同的价值，BTC在目标链上以代币（智能合约）的形式存在，比如ERC20。
+在跨链之前，你需要确定供应商及其业务是值得信任的。跨链实际上就是将比特币网络中的BTC原封不动地转移到其他链上，在其他链上的BTC具备和跨链前完全一致的属性，具有相同的价值，BTC在目标链上以代币（智能合约）的形式存在，比如ERC20。
 
-你需要先将1BTC发送到商家的比特币多签地址，锁定1BTC，这需要你信任商家，这笔交易内需要填入要跨到哪条链和你在那条链的地址等信息，这笔交易会被跨链生态“搬运到”目标链上，进而在商家在目标链部署的智能合约中生成1BTC，这时候你就可以在目标链上使用BTC了。当你希望自己的BTC回到比特币网络，只需要调用商家的智能合约，跨链生态就会构造一笔多签解锁交易，商家会把你的BTC从多签地址退回给你，但你会发现收到的金额不足1BTC，这是因为你需要支付生态中损耗的手续费。
+你需要先将1BTC发送到供应商的比特币多签地址，锁定1BTC，这需要你信任供应商，这笔交易内需要填入要跨到哪条链和你在那条链的地址等信息，这笔交易会被跨链生态“搬运到”目标链上，进而在供应商在目标链部署的智能合约中生成1BTC，这时候你就可以在目标链上使用BTC了。当你希望自己的BTC回到比特币网络，只需要调用供应商的智能合约，跨链生态就会构造一笔多签解锁交易，供应商会把你的BTC从多签地址退回给你，但你会发现收到的金额不足1BTC，这是因为你需要支付生态中损耗的手续费。
 
-用户的详细操作可见这篇[文档](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide.md)。同样地，作为商家想要开展自己的BTC跨链业务，就要完成注册、签名和智能合约部署等工作，详情可见这篇[文档](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Merchant_Guide.md)。
+用户的详细操作可见这篇[文档](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide.md)。同样地，作为供应商想要开展自己的BTC跨链业务，就要完成注册、签名和智能合约部署等工作，详情可见这篇[文档](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Vendor_Guide.md)。
 
 想知道怎么实现的？接下来就了解一下吧！
 
@@ -23,13 +23,13 @@ Alice、Bob和Carl三个人决定作为商家开展BTC跨链业务，能将BTC�
 
 <div align=center><img width="280" height="300" src="./pic/ark.png"/></div>
 
-如上图简单介绍了跨链生态的架构，从上到下分别是比特币链、比特币的Relayer、商家的比特币交易签名工具、其他链的Relayer和某一条链。简单来说，用户的BTC会经由Relayer传递到ORChain，再由其他链的Relayer传递到目标链，BTC返回与之类似，不过需要商家对BTC最后回到比特币网络的多签交易进行签名。
+如上图简单介绍了跨链生态的架构，从上到下分别是比特币链、比特币的Relayer、供应商的比特币交易签名工具、其他链的Relayer和某一条链。简单来说，用户的BTC会经由Relayer传递到ORChain，再由其他链的Relayer传递到目标链，BTC返回与之类似，不过需要供应商对BTC最后回到比特币网络的多签交易进行签名。
 
 生态中的角色如下：
 
 - [**中继链 ORChain**]()：中继链是整个生态中的重要部分，每个节点由不同的个人或组织运行，有自己独特的治理模式和信任机制，它负责将各个链连接到一起，实现BTC到各个链的转移。
 - [**Relayer**](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Relayer_Guide.md)：每条链都有自己的Relayer，它们负责把交易等信息搬运到中继链，是中继链和外界的通信兵，它们会在这个过程中获取收益。
-- [**跨链商家**](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Merchant_Guide.md)：商家是指开展跨链业务的人或组织，任何人都可以成为商家，比如Alice一伙，只要拥有一个比特币多签地址，部署好对应链的智能合约，然后向中继链注册多签Redeem与合约，注册过程完全由商家自己掌控，最后启动签名工具（Signers）即可，剩下的就是招揽来信任你的客户啦！
+- [**跨链供应商**](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Vendor_Guide.md)：供应商是指开展跨链业务的人或组织，任何人都可以成为供应商，比如Alice一伙，只要拥有一个比特币多签地址，部署好对应链的智能合约，然后向中继链注册多签Redeem与合约，注册过程完全由供应商自己掌控，最后启动签名工具（Signers）即可，剩下的就是招揽来信任你的客户啦！
 - [**用户**](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide.md)：对跨链生态来说，最重要的就是参与者，通过发送带有跨链信息的特殊BTC交易，实现BTC到以太坊等链的转移，让你的BTC参与到以太坊的DApp等业务中，让BTC真正流通起来！
 
 ## 流程
@@ -38,9 +38,9 @@ Alice、Bob和Carl三个人决定作为商家开展BTC跨链业务，能将BTC�
 
 <div align=center><img width="600" height="440" src="./pic/from.png"/></div>
 
-上图介绍了BTC跨链到其他链的具体流程。图中的目标链指的是要将BTC转移过去的目的地，比如以太坊。红色的Relayer是为专门为目标链服务的，负责转发目标链和ORChain之间的信息，而绿色的Relayer是为比特币链服务的。图下方为比特币链，上方为目标链，中心则为中继链ORChain。跨链流程大体可分为以上六步，而用户需用做的只有第一步，选择自己信任的商家的多签地址，朝该地址发送特殊的比特币交易，其余由整个跨链生态系统完成，具体操作请[见](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide.md)，如果想成为商家，则请[见](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Merchant_Guide.md)。
+上图介绍了BTC跨链到其他链的具体流程。图中的目标链指的是要将BTC转移过去的目的地，比如以太坊。红色的Relayer是为专门为目标链服务的，负责转发目标链和ORChain之间的信息，而绿色的Relayer是为比特币链服务的。图下方为比特币链，上方为目标链，中心则为中继链ORChain。跨链流程大体可分为以上六步，而用户需用做的只有第一步，选择自己信任的供应商的多签地址，朝该地址发送特殊的比特币交易，其余由整个跨链生态系统完成，具体操作请[见](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide.md)，如果想成为供应商，则请[见](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Vendor_Guide.md)。
 
-跨链的BTC会锁到商家的多签地址中，实际上商家会掌握跨链的BTC，这就是为什么用户需要信任商家，BTC跨链后会映射到上的一本代币合约，比如ERC20，它会实现协议中要求的接口，这本合约是由商家开发并部署的，比如Alice他们。
+跨链的BTC会锁到供应商的多签地址中，实际上供应商会掌握跨链的BTC，这就是为什么用户需要信任供应商，BTC跨链后会映射到上的一本代币合约，比如ERC20，它会实现协议中要求的接口，这本合约是由供应商开发并部署的，比如Alice他们。
 
 #### 1.1 发送交易
 
@@ -66,7 +66,7 @@ Alice、Bob和Carl三个人决定作为商家开展BTC跨链业务，能将BTC�
 
 #### 1.5 目标链落账
 
-此时，用户可以在代币合约的账户余额中发现BTC了，目标链上的BTC可以用来在参与商家相关业务，可能是游戏、交易所等等，对商家来说，这就是发挥想象力与创造力的时刻。
+此时，用户可以在代币合约的账户余额中发现BTC了，目标链上的BTC可以用来在参与供应商相关业务，可能是游戏、交易所等等，对供应商来说，这就是发挥想象力与创造力的时刻。
 
 ### 2. 比特币区块头同步
 
@@ -83,10 +83,10 @@ Alice、Bob和Carl三个人决定作为商家开展BTC跨链业务，能将BTC�
 
 <div align=center><img width="600" height="490" src="./pic/to.png"/></div>
 
-上图中展示了BTC从目标链回到比特币需要经过的流程。红色的是目标链Relayer，青色的是商家（Alice他们）启动的签名工具，能监听中继链并对交易进行签名，绿色的是比特币的Relayer。
+上图中展示了BTC从目标链回到比特币需要经过的流程。红色的是目标链Relayer，青色的是供应商（Alice他们）启动的签名工具，能监听中继链并对交易进行签名，绿色的是比特币的Relayer。
 
 1. 用户调用目标链的智能合约释放BTC，目标链的中继节点会监听到这个事件，将必要的信息通过调用智能合约传递到中继链；
 2. 中继链会在合约执行过程中构造出未签名的比特币交易，这些交易会释放用户锁在多签中的BTC；
-3. 商户启动的签名工具监听中继链，从而获得这些待签名的交易，他们分别对交易进行签名，通过调用中继链合约将自己的签名传递上去，合约会验证签名是多签中的一个，并在最后一个符合要求的签名到达后，将签名和交易组装起来，然后通过事件发布出去；
+3. 供应商启动的签名工具监听中继链，从而获得这些待签名的交易，他们分别对交易进行签名，通过调用中继链合约将自己的签名传递上去，合约会验证签名是多签中的一个，并在最后一个符合要求的签名到达后，将签名和交易组装起来，然后通过事件发布出去；
 4. 比特币的Relayer监听中继链的事件，会将这笔交易广播出去；
-5. 用户将会看到自己的BTC又回到了比特币网络中，当然这过程中消耗的手续费由用户自己承担，中继链构造交易时会按照交易大小动态设置手续费，费率由商家设定。
+5. 用户将会看到自己的BTC又回到了比特币网络中，当然这过程中消耗的手续费由用户自己承担，中继链构造交易时会按照交易大小动态设置手续费，费率由供应商设定。
