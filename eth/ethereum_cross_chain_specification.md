@@ -82,4 +82,4 @@ The process flow of cross chain transactions from Ethereum to other chains:
 
 ## License
 
-Ontology complies with the GNU Lesser General Public License, version 3.0. For more information, see the LICENSE file in the project root directory.
+The Ontology library is licensed under the GNU Lesser General Public License v3.0. Please refer to the LICENSE file in the root directory of the project for details.
