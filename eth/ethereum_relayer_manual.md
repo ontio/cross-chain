@@ -81,4 +81,4 @@ The relayer can also be run in the background or run using the shell script (How
 
 ## License
 
-Ontology complies with the GNU Lesser General Public License, version 3.0. For more information, see the LICENSE file in the project root directory.
+The Ontology library is licensed under the GNU Lesser General Public License v3.0. Please refer to the LICENSE file in the root directory of the project for details.
