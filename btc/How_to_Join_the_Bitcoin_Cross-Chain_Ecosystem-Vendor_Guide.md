@@ -34,7 +34,7 @@ The EBTC contract is deployed on the Ethereum chain. This contract is used to re
 
 #### Step 2: Enabling the signing tool
 
-Please follow the instructions described in the [tool guide](https://github.com/zouxyan/cross-chain/blob/master/btc/redeem_tool_guide.md) and import the encrypted private key into the tool to enable it and monitor the consortium chain transactions and carry out the signature process.
+Please follow the instructions described in the [tool guide](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide.md) and import the encrypted private key into the tool to enable it and monitor the consortium chain transactions and carry out the signature process.
 
 #### Step 3: Transferring from BTC to Ethereum
 
@@ -47,3 +47,91 @@ When the user wants to transfer their BTC back to the Bitcoin network they can d
 After completing a certain amount of testing, vendors can proceed to provide BTC related services to users by implementing complex logic in the form of smart contracts on Ethereum, which can be made possible using the cross chain ecosystem.
 
 Similarly, cross chain services for other chains such as Ontology can also be implemented in the same way. The contract for a cross chain token deployed on the Ontology chain, say OBTC, maintains a one to one equivalence with BTC. This can also be implemented by modifying and personalizing the redeem script of the sample contract [template](). The contract can be deployed using Ontology's [SmartX](https://smartx.ont.io/). The rest of the process is the same as that on Ethereum, as described above.
+
+## Example
+
+### Step1: Generating multi-sign script
+
+It's easy to generate private keys by [btctool](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md):
+
+```
+your private key is cTwKDy2MVGS5Z4hAZnisx9LojhJas2TBauK78LHKkce7qvHFavnH
+your compressed public key is 0372dd749a6221b35d74ba5654cdb49fc9af891234736de2c78e7a675ae3875996
+your legacy address is mzCyx1SyLJMdJQ9qXg7vizZNGXUVB7gpH7
+
+your private key is cQ62wvJPewSwhYymmQ42JgjrbF27TaPxhuG8R4BtLktmoPqvzLfx
+your compressed public key is 02a2e910081265957d83b4f3775689d880d52e6b84d6f0c508616fd46efa1678f7
+your legacy address is mgd191rA9LawKeJMnSUa1JzGRUBaz3RRpn
+
+your private key is cRWP4i2o25BSNSfQSZkeH4HBL1MFV7vq3EH1GUSK94ALrQCnemXF
+your compressed public key is 0257398e1bf56b25771f5a3f30356d2e7b492b45ab853e1f4d897391f27375e015
+your legacy address is muHFSWRGNCZYP8yapWaxiZkrdYsztsGVwG
+```
+
+Generating the multisig script, called Redeem, by the public keys:
+
+```
+your redeem is 52210372dd749a6221b35d74ba5654cdb49fc9af891234736de2c78e7a675ae38759962102a2e910081265957d83b4f3775689d880d52e6b84d6f0c508616fd46efa1678f7210257398e1bf56b25771f5a3f30356d2e7b492b45ab853e1f4d897391f27375e01553ae
+your P2SH address is 2Mw7fBAm6kzdbbbsN4Q3TFoEHhdiMKpeonx
+your P2WSH address is tb1q99g2a3fp6zpueygfypweevz9pzz92rxy54qy3xydlny2keq5azcq0gsqa2
+your multisig redeem hash is 2a723378355e3583417eabc3d4a863c526c00b6e
+```
+
+### Step2: Get ORChain Wallet
+
+Acquisition method to be determined.
+
+### Step3: Deploying SmartContract on Target Chain 
+
+Take Ethereum as an example, smartcontract [BTCX]()  is used as the BTC mapping on Ethereum.
+
+After deploying smartcontract, you need to invoke interface `bindContractAddrWithChainId` of BTCX to bind redeem's hash with contract address. When BTC arrived on ethereum, BTCX would know that BTC is transfer to your multisig address. So your BTCX would issue the BTC on ethereum to the address of user.
+
+Then you need to set the minimum amount, and user's cross-chain BTC amount has to be bigger than your minimum amount value when user want to transfer their BTC back to bitcoin net. 
+
+### Step4: Binding Multi-sign Script and SmartContract
+
+<div align=center><img width="700" height="200" src="./pic/sign_contract_ex_en.png"/></div>
+
+Each member of the vendor uses his own BTC private key to sign the **(BTCX contract, version number, and multi-sign script)** through the "sign contract" function of the btctool, and obtains the signature. Note that the contract version number should start from 0. And each time the contract address is updated, it should be increased by 1. The version number is added to prevent the signature from being replayed. Finally, three signatures are collected:
+
+```
+3045022100f5c1837c87224eedc0e9d25705a73e0100b741e860586d3f38dc4e03efdc2f0f02205361db9ae0237087534c5a6a72240741f1c82731159643813fd13fe765678c9e,304402200736f05d23825a7bece2e42de97eb60c61150ba11161a5b50a218227fa0171f4022068070209f098c4a3ad253692b55b23d1b1de61745ee4226fe608b210ff836228,3045022100cf287afaecc4c2539a9bb4dcff391353e5d950ca5fd7d5cdac5d629497c1b31a022031590ba8917ae48e70d665ea5b32f8b6fe05fb288b7e8f6b3db4ae5e958edae7
+```
+
+As shown in the figure, using btctool to send a transaction which will bind smartcontract address and multi-sign script to the ORChain, so that vendor's contract which reparents BTC on ethereum is settled, and all BTC that transferred to ethereum using vendor's cross-chain service will be transferred to this BTCX contract.
+
+<div align=center><img width="700" height="200" src="./pic/register_contract_ex_en.png"/></div>
+
+### Step5: Set Unlocking Transaction Parameters
+
+Set the unlocking transaction parameters on ORChain which using to construct a transaction for transferring BTC back to bitcoin net. To return to the Bitcoin chain, BTC must be unlock from the vendor's multisig address. The smartcontract on ORChain would contruct a unsigned bitcoin transaction for vendor to transfer BTC back to user's address. And every member need to sign this transaction. Then the BTC cross back to user. To contruct this transaction, ORChain need to know some parameters, like fee rate, etc. Vendor need to set these parameters on ORChain for their cross-chain service. 
+
+First, each member sign the parameters serialized with their bitcoin private key:
+
+<div align=center><img width="700" height="180" src="./pic/sign_param_ex_en.png"/></div>
+
+Then, vendor sends a transaction with parameters and signatures to ORChain.
+
+### Step6: Starting Signing-Tool
+
+Each vendor member needs to start a [signing-tool](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide.md) to obtain the unsigned transaction constructed by the ORChain, and then sign the transaction with his own bitcoin private key, and send the signature to the ORChain. ORChain's contract will collect the signature and return a complete transaction.
+
+Before starting, you need to prepare a ORChain wallet and a Bitcoin private key encryption wallet. Use a btctool to encrypt the bitcoin private key. After that, you can find the encrypted wallet file in the specified path.
+
+<div align=center><img width="700" height="120" src="./pic/enc_btc_ex_en.png"/></div>
+
+Put the wallet in the designated path of the signing-tool, configure the signing-tool, and start it.
+
+After completing the above steps, you can officially start cross-chain business.
+
+The last thing to note is **the fee rate, minimum change and the minimum return value in the BTCX contract**. The recommended settings are:
+$$
+min\_val=(400+160m+80n)*fee\_rate
+$$
+
+$$
+min\_change=(50+80m+40n)*fee\_rate
+$$
+
+`min_change` is the minimum change amount for get change for vendor's multisig address when contructing unlocking transaction. If change amount less than `min_change`, then no transaction contructed for this unlock request. `min_val` is the minimum return value which limit the minimum BTC amount cross-transfer back to bitcoin net, and m/n refers to the multi-sign parameter.
