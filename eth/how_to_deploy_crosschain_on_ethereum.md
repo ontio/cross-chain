@@ -3,11 +3,11 @@
 
 English | [中文](how_to_deploy_crosschain_on_ethereum_CN.md)
 
-This document serves as a guide on how to deploy a cross chain ecosystem to transfer assets from Ethereum to other chains. The deployment process includes deploying a proxy contract, the existing ERC20 token contract being transferred, and two different methods of deploying new cross chain ERC20 token contract, i.e. implementing cross chian via the proxy contract, and directly.
+This document serves as a guide on how to deploy a cross chain ecosystem to transfer assets from Ethereum to other chains. The deployment process includes deploying a proxy contract, the existing ERC20 token contract being transferred, and two different methods of deploying new cross chain ERC20 token contract, i.e. implementing cross chain via the proxy contract, and directly.
 
 ## Proxy Contract Deployment and Configuration
 
-Considering cross chain transfer from Ethereum to Ontology as an example, two proxy contracts that follow the cross chain protocol need to be deployed on both Ethereum and the Ontology chain. After deploying succesfully the following configuration needs to be carried out.
+Considering cross chain transfer from Ethereum to Ontology as an example, two proxy contracts that follow the cross chain protocol need to be deployed on both Ethereum and the Ontology chain. After deploying successfully the following configuration needs to be carried out.
 
 The `bindProxyHash` method of the Ethereum cross chain proxy contract is used to bind the proxy contract on Ethereum to the one deployed on Ontology. The method declaration is as follows:
 
@@ -65,7 +65,7 @@ When deploying a new cross chain ERC20 contract via a proxy contract, you can fi
 
 ### Contract development
 
-If the cross chain environement is not setup using a proxy contract, you can write an ERC20 contract that adheres to the ERC20 and the cross chain protocol. Please refer to [this]() link for a template. There are four main API methods that need to be implemented in this contract-
+If the cross chain environment is not setup using a proxy contract, you can write an ERC20 contract that adheres to the ERC20 and the cross chain protocol. Please refer to [this]() link for a template. There are four main API methods that need to be implemented in this contract-
 
 1. **setMinter**
 

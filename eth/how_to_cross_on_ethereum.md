@@ -101,12 +101,12 @@ Sending ETH from Ethereum to other chains is carried out by invoking the `lock` 
 function lock(address sourceAssetHash, uint64 toChainId, bytes memory toAddress, uint256 amount)
 ```
 
-| Parameter       | Description                                                                  |
-| --------------- | ---------------------------------------------------------------------------- |
+| Parameter       | Description                                                  |
+| --------------- | ------------------------------------------------------------ |
 | sourceAssetHash | Transfer asset hash, For ETH set to 0000000000000000000000000000000000000000 |
-| toChainId       | Target chain ID, for e.g. Ontology is 3                                      |
-| toAddress       | Receving account address on the target chain                                 |
-| amount          | Transfer amount of the transaction                                           |
+| toChainId       | Target chain ID, for e.g. Ontology is 3                      |
+| toAddress       | Receiving account address on the target chain                |
+| amount          | Transfer amount of the transaction                           |
 
 
 The same process can be carried out using the **go-ethereum** SDK.
@@ -168,7 +168,7 @@ The process remains the same when sending a transaction by invoking `lock` metho
 
 ## Sending ERC20 Tokens to Ontology
 
-### Inital Setup
+### Initial Setup
 
 The proxy contract deployed on Ethereum handles the cross chain requests for transfers to other chains. ERC20 transfer request are also processed by the proxy contract. Before proceeding, ensure that the ERC20 asset contract adheres to the cross chain protocol and has been configured and deployed on the Ethereum chain.
 
@@ -215,12 +215,12 @@ The `lock` method of the proxy contract used to send ERC20 resources to other ch
 */
 function lock(address sourceAssetHash, uint64 toChainId, bytes memory toAddress, uint256 amount)
 ```
-| Parameter       | Description                          |
-| --------------- | ------------------------------------ |
-| sourceAssetHash | ERC20 asset hash                     |
-| toChainId       | Target chain ID, Ontology is 3       |
-| toAddress       | Receving address on the target chain |
-| amount          | Transfer amount                      |
+| Parameter       | Description                           |
+| --------------- | ------------------------------------- |
+| sourceAssetHash | ERC20 asset hash                      |
+| toChainId       | Target chain ID, Ontology is 3        |
+| toAddress       | Receiving address on the target chain |
+| amount          | Transfer amount                       |
 
 ## License
 

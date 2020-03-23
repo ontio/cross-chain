@@ -3,7 +3,7 @@
 
 English | [中文](ethereum_relayer_manual_CN.md)
 
-The relay chain serves as the intermediary for cross chain transactions both from Ethereum to another target chain and vice versa. The relayer that acts as the medium of communication between Ethereum and the relay chain synchronizes the block and transmits cross chain transactions from Etherem to the relay chain and the other way around.
+The relay chain serves as the intermediary for cross chain transactions both from Ethereum to another target chain and vice versa. The relayer that acts as the medium of communication between Ethereum and the relay chain synchronizes the block and transmits cross chain transactions from Ethereum to the relay chain and the other way around.
 
 ## Initial Setup
 
