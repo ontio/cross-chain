@@ -147,7 +147,11 @@ There are certain fields of information that the user needs to provide for thems
 - Ontology wallet file path and password;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 Once the transaction is successful, the updated BTC balance will be displayed in the specified BTC address on the Bitcoin network.
 =======
 Once the transaction is successful, the updated BTC balance will be displayed in the specified BTC address on the Bitcoin network.
 >>>>>>> btc EN
+=======
+Once the transaction is successful, the updated BTC balance will be displayed in the specified BTC address on the Bitcoin network.
+>>>>>>> 8cd3f346c453c0f15750eb720ef3cbc21388e2ab
