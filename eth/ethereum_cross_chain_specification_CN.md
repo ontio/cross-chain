@@ -16,7 +16,7 @@
 如上图所示的以太坊跨链生态架构，从上到下依次为以太坊链、以太坊Relayer、中继链、目标链Relayer、目标链。简单来说，用户通过调用以太坊上的跨链dApp产生执行结果经过以太坊Relayer传递到中继链，再由目标链Relayer将跨链信息传递到目标链，目标链执行跨链信息即可完成整个跨链交互流程。
 
 生态中的角色：
-- [**中继链**]()：中继链是整个生态中的重要部分，每个节点由不同的个人或组织运行，有自己独特的治理模式和信任机制，它负责将各个链连接到一起，实现了跨链信息统一、跨链接口标准化、跨链信息合法性验证等功能；
+- [**中继链**](https://github.com/ontio/cross-chain/blob/master/orchain/How_to_join_cross_chain_cn.md)：中继链是整个生态中的重要部分，每个节点由不同的个人或组织运行，有自己独特的治理模式和信任机制，它负责将各个链连接到一起，实现了跨链信息统一、跨链接口标准化、跨链信息合法性验证等功能；
 - [**Relayer**](https://github.com/ontio/cross-chain/blob/master/eth/ethereum_relayer_manual_CN.md)：每条链都有自己的Relayer，它们负责搬运中继链和以太坊链之间的跨链信息，是中继链和以太坊链之间的通信兵，它们会在这个过程中获取收益；
 - [**以太坊链**](https://github.com/ontio/cross-chain/blob/master/eth/ethereum_relayer_manual_CN.md)：以太坊链是以太坊跨链生态的源头链，任意dApp开发都可以通过部署跨链智能合约实现以太链到其他链的任意信息跨链功能。
 

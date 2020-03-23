@@ -5,13 +5,17 @@
 
 本文档介绍如何部署从以太到其他链的跨链。包括如何部署跨链代理合约，已有ERC20的跨链，部署新ERC20跨链的两种方式：通过跨链代理跨链和直接跨链。
 
-## 部署跨链代理合约以及配置
+## 通过代理合约跨链
 
-以需要从以太到ontology跨链为例，需要在以太上和ontology上部署遵循跨链协议的跨链代理合约，如果跨链代理合约已经部署，只需要进行以下的配置。
+### 为什么需要代理合约？
 
-在以太的跨链代理合约上配置绑定到ontology的跨链代理合约是通过调用以太跨链代理合约的bindProxyHash接口来完成：
+以太坊智能合约已经是一个完整且复杂的生态体系了，其中ERC20代币占据了很大一部分，比如USDT，要实现已有ERC20的跨链，需要额外实现一个代理合约，相当于原先ERC20合约的补充功能，实现了跨链协议中的主要接口，新部署的ERC20也可以使用现有的代理合约，实现跨链，避免重复开发。
 
-```
+如下为代理合约必须实现的接口：
+
+```js
+function setManagerProxy(address ethCCMProxyAddr) onlyOperator public
+
 /* @notice                  This function binds the target chain proxy contract.
 *                           Only the binded proxy contract request is accept by this contract.
 *  @param toChainId         The target chain id
@@ -19,57 +23,74 @@
 *  @param targetProxyHash   The binded proxy contract address
 *
 */
-function bindProxyHash(uint64 toChainId, bytes memory targetProxyHash)
+function bindProxyHash(uint64 toChainId, bytes memory targetProxyHash) onlyOperator public returns (bool)
+
+function bindAssetHash(address fromAssetHash, uint64 toChainId, bytes memory toAssetHash, uint256 assetLimit, bool isTargetChainAsset) onlyOperator public returns (bool)
+
+/* @notice                  This function is meant to be invoked by the user,
+    *                           a certin amount teokens will be locked in the proxy contract the invoker/msg.sender immediately.
+    *                           Then the same amount of tokens will be unloked from target chain proxy contract at the target chain with chainId later.
+    *  @param fromAssetHash   The asset hash in current chain
+    *  @param toChainId         The target chain id
+    *                           
+    *  @param toAddress         The address in bytes format to receive same amount of tokens in target chain 
+    *  @param amount            The amount of tokens to be crossed from ethereum to the chain with chainId
+    */
+    function lock(address fromAssetHash, uint64 toChainId, bytes memory toAddress, uint256 amount) public payable returns (bool)
+
+    // /* @notice                  This function is meant to be invoked by the ETH crosschain management contract,
+    // *                           then mint a certin amount of tokens to the designated address since a certain amount 
+    // *                           was burnt from the source chain invoker.
+    // *  @param argsBs            The argument bytes recevied by the ethereum lock proxy contract, need to be deserialized.
+    // *                           based on the way of serialization in the source chain proxy contract.
+    // *  @param fromContractAddr  The source chain contract address
+    // *  @param fromChainId       The source chain id
+    // */
+    function unlock(bytes memory argsBs, bytes memory fromContractAddr, uint64 fromChainId) onlyManagerContract public returns (bool)
 ```
 
-在ontology的跨链代理合约上配置绑定到以太的跨链代理合约，参考ontology的手册中关于部署跨链代理合约和配置部分。
+- 调用`setManagerProxy`设置跨链管理合约地址，代理合约在部署后，需要设置跨链管理合约地址；
+- `bindProxyHash`绑定目标链上的代理合约hash，或者实现了跨链接口的合约hash，在ERC20朝其他链跨链的时候会将该目标链代理合约作为中转站，进而将ERC20转到目标链的映射合约，当然在跨链开始前应该预先部署好映射合约；
+- `bindAssetHash`绑定ERC20代币合约地址和目标链映射合约，比如USDT地址，并设置金额限制；
+- `lock`接口会把ERC20代币锁到代理合约中，然后向管理合约发出跨链请求；
+- `unlock`接口会释放原先锁定的ERC20代币，即从其他链返回的ERC20代币，管理合约会调用该接口，为用户释放代币；
 
+所以代理合约主要实现的是ERC20的注册、锁定与解锁，锁定就是用户将ERC20转到合约中，解锁只有跨链管理合约可以调用。代理合约可以自己部署，也可以使用现有的合约，多个ERC20可以使用一本代理合约。
 
-## 部署已有ERC20的跨链
+### 实例：已有的ERC20跨链
 
-如果已经发行了ERC20，可以基于以下手册来部署该ERC20到其他链的跨链，以下以跨链到ontology示例。
+#### Step1 部署跨链代理合约以及配置
 
-### 在目标链部署资产合约并配置
+以将USDT从以太跨链到ontology为例：
 
-以跨链到ontology为例，在ontology部署该ERC20对应的OEP4合约。
+<div align=center><img width="360" height="200" src="./pic/usdt_ex.png"/></div>
 
-部署OEP4合约后，需要在ontology的跨链代理合约上配置该OEP4和ERC20的跨链关系，参考ontology的手册中关于配置OEP4的跨链部分。
+- 在ontology上部署一个OEP4的USDT映射合约。
+- 需要在以太上和ontology上部署跨链代理合约，在两边都调用`bindProxyHash`绑定代理之间的对应关系。
 
+- 在两边的代理合约绑定资产，即在代理合约上绑定ERC20和OEP4跨链关系，调用`bindAssetHash`在代理合约中绑定USDT到ontology的映射合约，以及金额限制。
+- 如果使用其他代理服务提供商的代理合约，需要和向其提出请求，由其完成绑定。
 
-### 配置ERC20
+#### Step2 跨链转账
 
-在以太的跨链代理合约上绑定ERC20和OEP4跨链关系。
-调用以太跨链代理合约的bindAssetHash接口：
-```
-/* @notice                  This function binds the erc20 asset and eht other asset on other chain.
-*                           Only the binded asset can cross chain.
-*  @param sourceAssetHash         The erc20 asset hash
-*
-*  @param toChainId               The target chain id
-*
-*  @param targetAssetHash         The target asset hash on target chain
-*
-*  @param assetLimit              The limit of target asset used to cross chain
-*
-*  @param isTargetChainAsset      The indicate of sourceAssetHash, new erc20 or existing erc20
-*
-*/
-function bindAssetHash(address sourceAssetHash, uint64 toChainId, bytes memory targetAssetHash, uint256 assetLimit, bool isTargetChainAsset)
-```
+用户调用`lock`接口将USDT锁定到代理合约，然后以太的跨链生态就会将USDT搬运到本体，用户可以在本体的USDT上看到余额了；同样地，在本体端调用代理合约的`lock`接口，把USDT转回以太坊。
 
-## 通过代理合约跨链的新ERC20部署
+### 实例：新部署的ERC20通过代理合约跨链
 
 如果新ERC20通过代理合约跨链的话，只需要部署遵循ERC20标准的合约，再按照已有ERC20的跨链进行部署和配置。
 
-## 直接跨链的ERC20部署
+
+
+## 不通过代理合约跨链
 
 ### 开发合约
 
 如果不通过代理合约跨链，那么需要遵循跨链协议和ERC20协议来开发ERC20合约。可以参考其模板。
-主要有4个主要的接口需要实现，配置erc20的minter接口setminter，绑定目标链的资产合约接口bindContractAddrWithChainId，发送到其他链时调用的lock接口，以及从其他链发送回以太时由管理合约调用的unlock
+主要有4个主要的接口需要实现，配置erc20的minter接口`setminter`，绑定目标链的资产合约接口`bindContractAddrWithChainId`，发送到其他链时调用的lock接口，以及从其他链发送回以太时由管理合约调用的`unlock`
 
-setminter接口只能被该erc20的管理员调用，用来设置unlock只能被跨链管理合约调用，接口如下：
-```
+`setminter`接口只能被该erc20的管理员调用，用来设置unlock只能被跨链管理合约调用，接口如下：
+
+```js
 /* @notice                              Set the ETH cross chain contract as the minter such that the ETH cross chain contract
 *                                       will be able to mint tokens to the designated account after a certain amount of tokens
 *                                       are locked in the source chain
@@ -79,7 +100,7 @@ function setMinter(address ethCrossChainContractAddr) onlyManager
 ```
 
 代码示例：
-```
+```js
 function setMinter(address ethCrossChainContractAddr) onlyManager public {
     minter = ethCrossChainContractAddr;
     emit SetMinterEvent(ethCrossChainContractAddr);
@@ -87,8 +108,9 @@ function setMinter(address ethCrossChainContractAddr) onlyManager public {
 ```
 
 绑定目标链的资产合约接口bindContractAddrWithChainId接口也只能被该erc20的管理员调用，用来设置该erc20合约绑定的目标链上的合约，只有目标链上与该erc20绑定的合约的请求才会被该erc20接受。
-接口如下
-```
+接口如下：
+
+```js
 /* @notice              Bind the target chain with the target chain id
 *  @param chainId       The target chain id
 *  @param contractAddr  The specific contract address in bytes format in the target chain
@@ -97,7 +119,7 @@ function bindContractAddrWithChainId(uint64 chainId, bytes memory contractAddr) 
 ```
 
 实现示例：
-```
+```js
 function bindContractAddrWithChainId(uint64 chainId, bytes memory contractAddr) onlyManager public {
 	require(chainId >= 0, "chainId illegal!");
 	contractAddrBindChainId[chainId] = contractAddr;
@@ -107,7 +129,7 @@ function bindContractAddrWithChainId(uint64 chainId, bytes memory contractAddr) 
 
 lock接口如下：
 
-```
+```js
 /* @notice                  This function is meant to be invoked by the user,
 *                           a certin amount teokens will be burnt from the invoker/msg.sender immediately.
 *                           Then the same amount of tokens will be mint at the target chain with chainId later.
@@ -120,7 +142,7 @@ function lock(uint64 toChainId, bytes memory toUserAddr, uint64 amount)
 ```
 
 以下是一个具体的示例以及注释解释
-```
+```js
 function lock(uint64 toChainId, bytes memory toUserAddr, uint256 amount) public returns (bool) {
     /*
 	1. 构造跨链交易的参数，这个参数最终会发送给该资产合约绑定的目标链的资产合约的unlock
@@ -148,7 +170,7 @@ function lock(uint64 toChainId, bytes memory toUserAddr, uint256 amount) public 
 }
 ```
 unlock接口由跨链管理合约调用，仅仅可以被跨链管理合约调用，接口如下：
-```
+```js
 /* @notice                  This function is meant to be invoked by the ETH crosschain management contract,
 *                           then mint a certin amount of tokens to the designated address since a certain amount
 *                           was burnt from the source chain invoker.
@@ -161,7 +183,7 @@ function unlock(bytes memory argsBs, bytes memory fromContractAddr, uint64 fromC
 ```
 
 以下是一个具体的示例，其中有注释解释：
-```
+```js
 function unlock(bytes memory argsBs, bytes memory fromContractAddr, uint64 fromChainId) onlyMinter public returns (bool) {
     /*
 	1. 跨链交易请求方构造的跨链交易参数
