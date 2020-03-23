@@ -184,3 +184,9 @@ def unlock(params, fromContractAddr, fromChainId)
 #### Step2 跨链转账
 
 用户调用`lock`接口将USDT锁定到代理合约，然后本体的跨链生态就会将USDT搬运到以太坊，用户可以在以太坊的USDT上看到余额了；同样地，在以太坊端调用代理合约的`lock`接口，把USDT转回以本体。
+
+## 文档示例
+
+实现跨链接口的OEP4合约代码示例[To be added]()
+
+OEP4代理合约代码示例[To be added]()
