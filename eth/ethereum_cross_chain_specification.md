@@ -11,13 +11,13 @@ The cross chain ecosystem operates using a **relay chain** that helps carry out 
 
 How do we confirm that a certain event or transaction has taken place on the Ethereum chain? Merkle proofs are a solution. When events and transactions are recorded on the Ethereum blockchain, a corresponding merkle proof. By the virtue of having a merkle proof and the correct block header we can prove that a particular transaction or event did occur on the Ethereum chain with certainty.
 
-The relay chain works on the same principle. Using the merkle proof and the correct block header it can be established wheter or not a transaction has occurred on the relay chain.
+The relay chain works on the same principle. Using the merkle proof and the correct block header it can be established whether or not a transaction has occurred on the relay chain.
 
 ## The Principle
 
 If the correct block header exists on the relay chain, it can directly use the merkle proof of a particular event or transaction to confirm whether it occurred by sending it to the Ethereum chain. This completes the Ethereum to relay chain transfer. It chiefly involves two steps, i.e. fetching and synchronizing the Ethereum transactions on the relay chain, and the relayer then sending the corresponding merkle proof to the relay chain.
 
-The same process is involved when sending relay chain transactions to Ethereum. Once the correct block headers are recorded on the Etherum chain, Ethereum can confirm whether a transaction or event occur on the relay chain by submitting the merkle proof. And so this process of transferring transactions from the relay chain to Ethereum also involves two steps, i.e. synchronize the relay chain transaction block headers on Ethereum, and then send the respective proofs as well.
+The same process is involved when sending relay chain transactions to Ethereum. Once the correct block headers are recorded on the Ethereum chain, Ethereum can confirm whether a transaction or event occur on the relay chain by submitting the merkle proof. And so this process of transferring transactions from the relay chain to Ethereum also involves two steps, i.e. synchronize the relay chain transaction block headers on Ethereum, and then send the respective proofs as well.
 
 Now the component of the cross chain ecosystem that actually carries out this process of synchronizing block headers and merkle proofs is the **relayer**. The relayer monitors the transactions taking place on Ethereum and synchronizes the block headers on the relay chain along with the respective cross chain transactions and events. It also needs to monitor the relay chain and send the block headers and the respective cross chain transactions to Ethereum.
 
@@ -41,7 +41,7 @@ Relay chain headers synchronized on Ethereum :
 
 <div align=center><img width="480" height="200" src="pic/orchain_hdrs.png"/></div>
 
-However, in this case not all the blocks headers need to be synced on the Ethereum chain. The only blocks that need to be synced on the Ethereum chain are the cross chain block headers to Ethereum and the block headers wherein any changes occured in the verification nodes of the relay chain. The relay chain, just as a typical blockchain, also has finalty characteristics.
+However, in this case not all the blocks headers need to be synced on the Ethereum chain. The only blocks that need to be synced on the Ethereum chain are the cross chain block headers to Ethereum and the block headers wherein any changes occurred in the verification nodes of the relay chain. The relay chain, just as a typical blockchain, also has finality characteristics.
 
 ### Transactions from Ethereum to the Relay Chain
 

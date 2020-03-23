@@ -102,13 +102,13 @@ After the vendor links the multi-signature tool to the contract they can set the
 
 The parameters have been described below:
 
-| Parameter              | Description                                                         |
-| ----------------- | ------------------------------------------------------------ |
-| WIF private key       | WIF format BTC private key                                        |
-| Multi-signature Redeem        | Vendor's redeem script                                         |
-| Paramter version          | Version no. of the parameters, can be updated, but the version no. can only increase with each change   |
-| Fee rate（sat/byte）  | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC  |
-| Min. change value（sat） | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO |
+| Parameter                | Description                                                                                                                              |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| WIF private key          | WIF format BTC private key                                                                                                               |
+| Multi-signature Redeem   | Vendor's redeem script                                                                                                                   |
+| Paramter version         | Version no. of the parameters, can be updated, but the version no. can only increase with each change                                    |
+| Fee rate（sat/byte）     | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC |
+| Min. change value（sat） | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO               |
 
 ### Setting Transaction Parameters
 
@@ -118,16 +118,16 @@ Once the min. no. of necessary signatures are collected for signing the paramete
 
 The parameters have been described below.
 
-| Parameter              | Description                                                         |
-| ----------------- | ------------------------------------------------------------ |
-| Relay chain RPC address     | RPC address of the relay chain                                      |
-| Multi-signature redeem        | The redeem script to be used to carry out the cross chain transaction |
-| Parameter version          | Version no. for the BTC release transaction parameters                                  |
-| Signature              | Signatures of the collaborators in the multi-signature redeem, multiple values separated using commas |
-| Fee rate (sat/byte)  | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC |
-| Min. change value（sat） | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO |
-| Relay chain wallet path    | Relay chain wallet, used to register the transaction on the relay chain |
-| Wallet password          | Password of the relay chain wallet                                             |
+| Parameter                | Description                                                                                                                              |
+| ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Relay chain RPC address  | RPC address of the relay chain                                                                                                           |
+| Multi-signature redeem   | The redeem script to be used to carry out the cross chain transaction                                                                    |
+| Parameter version        | Version no. for the BTC release transaction parameters                                                                                   |
+| Signature                | Signatures of the collaborators in the multi-signature redeem, multiple values separated using commas                                    |
+| Fee rate (sat/byte)      | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC |
+| Min. change value（sat） | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO               |
+| Relay chain wallet path  | Relay chain wallet, used to register the transaction on the relay chain                                                                  |
+| Wallet password          | Password of the relay chain wallet                                                                                                       |
 
 ### Encrypting Private Key
 
@@ -156,23 +156,23 @@ This feature of the **btctool** allows the vendor to dynamically monitor the rel
 
 The parameters are described below.
 
-| Parameter          | Description                                                       |
-| ------------- | ---------------------------------------------------------- |
-| Relay chain RPC address | RPC address of the relay chain                                    |
-| Min. amount limit      | A min. amount set in satoshis, smaller UTXO amounts are cumulatively added up |
-| Multi-signature redeem script  | Redeem script used to generate the multi-signature address  |
+| Parameter                     | Description                                                                   |
+| ----------------------------- | ----------------------------------------------------------------------------- |
+| Relay chain RPC address       | RPC address of the relay chain                                                |
+| Min. amount limit             | A min. amount set in satoshis, smaller UTXO amounts are cumulatively added up |
+| Multi-signature redeem script | Redeem script used to generate the multi-signature address                    |
 
 Resultant paramters are as follows:
 
-| Parameter              | Description                                                         |
-| ----------------- | ------------------------------------------------------------ |
-|  UTXO transfer amount      | BTC amount locked in the multi-signature address, transferred to the target chain             |
-| UTXO number          | Current no. of UTXO that can be used                                               |
-| P2SH format UTXO  | No. of P2SH format UTXO locked by the script, high transaction fee                     |
-| P2WSH format UTXO | No. of P2WSH format UTXO locked by the script, relatively low transaction fee                |
-| No. of min. amount UTXO      | No. of UTXO with amount lesser than the set min. amount                                   |
-| Fee rate              | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC |
-| Min. change value          | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO |
+| Parameter               | Description                                                                                                                              |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| UTXO transfer amount    | BTC amount locked in the multi-signature address, transferred to the target chain                                                        |
+| UTXO number             | Current no. of UTXO that can be used                                                                                                     |
+| P2SH format UTXO        | No. of P2SH format UTXO locked by the script, high transaction fee                                                                       |
+| P2WSH format UTXO       | No. of P2WSH format UTXO locked by the script, relatively low transaction fee                                                            |
+| No. of min. amount UTXO | No. of UTXO with amount lesser than the set min. amount                                                                                  |
+| Fee rate                | Fee rate for creating the BTC release BTC, fixed in satoshi per byte, for e.g. 10 sat/byte, deducted from the user's transfer amount BTC |
+| Min. change value       | Sets min. change amount for the BTC release transaction from the multi-signature address, prevents generation of dust UTXO               |
 
 
 
@@ -186,19 +186,19 @@ The **btctool** can work in test net and simulated network environments. If you'
 ./btctool -tool=cctx -idxes=1 -utxovals=0.01 -txids=c09d7d7a321d025ac0cad75855b1b0313e55660a5a77b9d038bb7f606be6a744 -value=0.008 -fee=0.00001 -targetaddr=AdzZ2VKufdJWeB8t9a8biXoHbbMe2kZeyH -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -contract=b6bf9abf29ee6b8c9828a48b499ad667da1ad003 -multiaddr=tb1qy94qnjuwu5w6r2g74z2z25khjdkgs6ssk5rjnyqrvcvpds8f7x9shrfspn
 ```
 
-|  Parameter  | Usage                                                        |
-| :---------: | ------------------------------------------------------------ |
-|    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false |
-|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool |
-|   -idxes    | UTXO position in the transaction and output sequence, multiple values separated using commas |
-|  -utxovals  | Amount in each UTXO, multiple values separated using commas  |
-|  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves |
+|  Parameter  | Usage                                                                                                                                                                                        |
+| :---------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false                                                                                                                              |
+|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool                                                                                                |
+|   -idxes    | UTXO position in the transaction and output sequence, multiple values separated using commas                                                                                                 |
+|  -utxovals  | Amount in each UTXO, multiple values separated using commas                                                                                                                                  |
+|  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves                                                       |
 |   -value    | Cross chain transfer amount, the amount locked to the multi-signature address on the consortium chain, amount of BTC transferred to the target chain account, default value `10000` satoshis |
-|    -fee     | Transaction fee charged for the transaction, default value `1000` satoshis |
-| -targetaddr | User's target address                                        |
-|  -contract  | Contract address of the target chain                         |
-|  -tochain   | ID of the target chain, used in the consortium to determine the BTC cross chain destination |
-| -multiaddr  | Multi-signature address of the organization providing the cross chain service |
+|    -fee     | Transaction fee charged for the transaction, default value `1000` satoshis                                                                                                                   |
+| -targetaddr | User's target address                                                                                                                                                                        |
+|  -contract  | Contract address of the target chain                                                                                                                                                         |
+|  -tochain   | ID of the target chain, used in the consortium to determine the BTC cross chain destination                                                                                                  |
+| -multiaddr  | Multi-signature address of the organization providing the cross chain service                                                                                                                |
 
 **Sample execution:**
 
@@ -219,36 +219,36 @@ The transaction hash obtained, as shown in the sample code above, can be broadca
 ./btctool  -gui=0 -tool=regauto -fee=0.001 -privkb58=cRRMYvoHPN*************************MVwyqZVrAcX -pwd=test -user=test -targetaddr=AdzZ2VKufdJWeB8t9a8biXoHbbMe2kZeyH -url=http://172.168.3.77:18443 -value=0.01 -contract=b6bf9abf29ee6b8c9828a48b499ad667da1ad003 -tochain=2 -multiaddr=tb1qy94qnjuwu5w6r2g74z2z25khjdkgs6ssk5rjnyqrvcvpds8f7x9shrfspn
 ```
 
-|  Parameter | Usage                                                        |
-| :---------: | ------------------------------------------------------------ |
-|    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false |
-|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool |
-|  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves |
-|    -pwd     | RPC password of the BTC client                               |
-|    -user    | RPC user name of the BTC client                              |
-| -targetaddr | User's target address                                        |
-|    -url     | RPC address of the BTC client                                |
+|  Parameter  | Usage                                                                                                                                                                                        |
+| :---------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false                                                                                                                              |
+|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool                                                                                                |
+|  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves                                                       |
+|    -pwd     | RPC password of the BTC client                                                                                                                                                               |
+|    -user    | RPC user name of the BTC client                                                                                                                                                              |
+| -targetaddr | User's target address                                                                                                                                                                        |
+|    -url     | RPC address of the BTC client                                                                                                                                                                |
 |   -value    | Cross chain transfer amount, the amount locked to the multi-signature address on the consortium chain, amount of BTC transferred to the target chain account, default value `10000` satoshis |
-|  -contract  | Contract address of the target chain                         |
-|  -tochain   | ID of the target chain, used in the consortium to determine the BTC cross chain destination |
-| -multiaddr  | Multi-signature address of the organization providing the cross chain service |
+|  -contract  | Contract address of the target chain                                                                                                                                                         |
+|  -tochain   | ID of the target chain, used in the consortium to determine the BTC cross chain destination                                                                                                  |
+| -multiaddr  | Multi-signature address of the organization providing the cross chain service                                                                                                                |
 
 ### 3. Contract Signing
 
 
-|    Flag     | Usage                                                        |
-| :---------: | ------------------------------------------------------------ |
-|    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false |
-|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool |
-|  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves |
-|    -pwd     |                     BTC client RPC password                      |
-|    -user    |                    BTC client RPC username                     |
-| -targetaddr | User's receiving address on the target chain                                        |
-|    -url     |                     BTC client RPC address                      |
+|    Flag     | Usage                                                                                                                                                                                        |
+| :---------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|    -gui     | Whether run in the GUI, `1` indicates true, `0` indicates false                                                                                                                              |
+|    -tool    | Select the required tool, `cctx` is the test net tool, `regauto` is the emulated network tool                                                                                                |
+|  -privkb58  | `base58` private key used to sign a transaction, unsigned transaction is returned if left empty, user can choose to sign by themselves                                                       |
+|    -pwd     | BTC client RPC password                                                                                                                                                                      |
+|    -user    | BTC client RPC username                                                                                                                                                                      |
+| -targetaddr | User's receiving address on the target chain                                                                                                                                                 |
+|    -url     | BTC client RPC address                                                                                                                                                                       |
 |   -value    | Cross chain transfer amount, the amount locked to the multi-signature address on the consortium chain, amount of BTC transferred to the target chain account, default value `10000` satoshis |
-|  -contract  | Contract address of the target chain                         |
-|  -tochain   | ID of the target chain, used in the consortium to determine the BTC cross chain destination |
-| -multiaddr  | Multi-signature address of the organization providing the cross chain service |
+|  -contract  | Contract address of the target chain                                                                                                                                                         |
+|  -tochain   | ID of the target chain, used in the consortium to determine the BTC cross chain destination                                                                                                  |
+| -multiaddr  | Multi-signature address of the organization providing the cross chain service                                                                                                                |
 
 ### 3. Signing the parameters
 
