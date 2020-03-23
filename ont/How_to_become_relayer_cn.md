@@ -24,8 +24,8 @@ Relayer会持续扫描每个Ontology网络区块，找到跨链区块并获取�
 	{
 	  "AliaJsonRpcAddress":"http://172.168.3.73:40336", // 联盟链rpc地址
 	  "SideJsonRpcAddress":"http://172.168.3.73:20336", // Ontologyrpc地址
-	  "AliaChainID": 4,	// 联盟链编码
-	  "SideChainID": 2,	// Ontology链编码
+	  "AliaChainID": 0,	// 联盟链编码
+	  "SideChainID": 3,	// Ontology链编码
 	  "AliaWalletFile": "./wallet1.dat",	// 联盟链钱包
 	  "SideWalletFile": "./wallet2.dat",	// Ontology钱包
 	  "DBPath": "boltdb",			// 存储位置
