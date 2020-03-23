@@ -68,6 +68,7 @@ type RegisterSideChainParam struct {
 	Router       uint64    //该链的路由协议，目前已实现的协议有1:btc, 2:eth, 3:ont，同构链可以采用已有协议，异构链则需要根据上面提交的信息新增路由协议
 	Name         string    //链的名称
 	BlocksToWait uint64    //终局所需要的确认区块数
+	CCMCAddress  []byte    //该链的跨链管理合约地址
 }
 ```
 
