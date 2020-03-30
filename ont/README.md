@@ -14,7 +14,7 @@ A cross chain asset is one where it can be transferred from it's chain of origin
 
 Any information that is transferred to the target chain from the original chain must also be verified for legitimacy.
 
-## 架构
+## structure
 
 <div align=center><img width="280" height="300" src="resources/structure.png"/></div>
 
