@@ -1,5 +1,7 @@
 ## 本体跨链合约开发
 
+[English](How_to_new_cross_chain_asset.md) | 中文
+
 本体多链生态支持跨链合约，所谓跨链合约就是合约的逻辑贯穿两条甚至多条链，例如：
 
 发布一本OEP4，该OEP4合约资产可以在ontology和ethereum之间转移。
