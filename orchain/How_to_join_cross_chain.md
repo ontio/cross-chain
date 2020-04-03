@@ -86,7 +86,7 @@ type RegisterSideChainParam struct {
 |   ChainId    | Chain ID of this chain                                       |
 |    Router    | The routing protocol of the chain, existing routing protocols - **1:BTC**, **2:ETH**, **3:ONT**, isomorphic chains can select existing protocol, rest must first define the respective protocol and then select |
 |     Name     | Name of the blockchain network                               |
-| BlocksToWait | No. of blocks to wait for to confirm finality                |
+| BlocksToWait | No. of blocks to wait for in order to confirm finality                |
 
 As the cross chain ecosystem grows with time and more and more chains join in, different routing protocols will become a part of the system and isomorphic chains will directly be able to use the appropriate routing protocol.
 
