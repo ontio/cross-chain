@@ -14,6 +14,21 @@
 
 这种验证过程目前都是通过merkle证明的形式实现的，即原链将其上发生的行为存储下来，并构造一颗merkle tree，然后将merkle tree的树根写入区块头，并生成该行为的merkle proof。目标链同步并验证原链的区块头，对于原链上提交的merkle proof，找到其对应的合法区块头，通过merkle root验证proof的合法性，从而确定原链上发生的行为。
 
+## 架构
+
+<div align=center><img width="280" height="300" src="resources/structure.png"/></div>
+
+如上图简单介绍了本体跨链生态的架构，从上到下分别是Ont链、Ont链的Relayer、中继链ORChain，目标链的Relayer和目标链。简单来说，用户的Ont链上资产的交易证明会经由Relayer传递到ORChain，再由目标链的Relayer传递到目标链，目标链验证Ont链上的交易证明并执行相应的交易。
+
+目标链资产跨链到Ont链与之相反。
+
+生态中的角色如下：
+
+- [**中继链 ORChain**](https://github.com/ontio/cross-chain/blob/master/orchain)：中继链是整个生态中的重要部分，每个节点由不同的个人或组织运行，有自己独特的治理模式和信任机制，它负责将各个链连接到一起，实现Ont到各个链的转移。
+- [**Relayer**](https://github.com/ontio/cross-chain/blob/master/ont/How_to_become_relayer_cn.md)：每条链都有自己的Relayer，它们负责把交易等信息搬运到中继链，是中继链和外界的通信兵，它们会在这个过程中获取收益。
+- [**应用**](https://github.com/ontio/cross-chain/blob/master/ont/How_to_new_cross_chain_asset_cn.md)：应用是指开发跨链业务的人或组织，任何人都可以部署跨链合约来构建跨链应用。然后把你的应用公开出去招揽用户吧！
+- [**用户**](https://github.com/ontio/cross-chain/blob/master/ont/How_to_cross_OEP4_cn.md)：对跨链生态来说，最重要的就是用户，通过调用具有跨链功能的应用，实现Ont到以太坊等链的跨链业务。
+
 ## 本体和中继链之间的区块头同步
 
 本体链和中继链采用了相似的共识治理模型，网络每隔一定数量的区块更换一次共识节点，即在一个共识周期内，验证者集合保持不变。因此，区块头同步过程不需要同步所有区块，只需要同步关键区块（即切换验证者集合的周期切换区块）和跨链交易发生的区块即可，这样的设计大大减少了区块头的同步数量。

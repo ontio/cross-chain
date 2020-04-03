@@ -14,6 +14,24 @@ A cross chain asset is one where it can be transferred from it's chain of origin
 
 Any information that is transferred to the target chain from the original chain must also be verified for legitimacy.
 
+## Structure
+
+<div align=center><img width="280" height="300" src="resources/structure.png"/></div>
+
+As illustrated in the above figure, the cross chain framework consists of the Ontology chain, the Ontology relayer, Ontology Relay Chain, relayers of target chain, and the target chain they are linked to. To put it simply, the user's transaction proof on Ontology are first transferred to ORChain by the relayer, and then transferred to a target chain by their respective relayer.
+
+And vice versa.
+
+The parties involved in the ecosystem are:
+
+- [**ORChain**](https://github.com/ontio/cross-chain/blob/master/orchain)：The relay chain is one of the crucial components of the cross chain ecosystem. Every type of node is deployed and maintained by different individuals or organizations and has its unique governance and trust mechanism. The relay chain is responsible for connecting them and transferring the tokens from Ontology network to other chains.
+- [**Relayer**](https://github.com/ontio/cross-chain/blob/master/ont/How_to_become_relayer.md)：Every chain has a relayer linked to them which monitors the transactions taking place in the corresponding network. They basically transmit the transaction information to the relay chain, thus connecting the relay chain with the outside world. Relayers collect small incentives for carrying out this task.
+- [**Applications**](https://github.com/ontio/cross-chain/blob/master/ont/How_to_new_cross_chain_asset.md)：Applications refer to people or organizations who develop and implement cross chain business. Anyone can deploy cross chain contract to build cross chain business.
+- [**Users**](https://github.com/ontio/cross-chain/blob/master/ont/How_to_cross_OEP4.md)：Users includes anyone interested in transferring their asset to other target chains such as Ethereum and use them in dApps.
+
+
+## Block header synchronization between ontology and relay chain
+
 We use merkle proofs to carry out this verification process. All the event related information is stored on the original chain and a merkle tree is generated for this data. The root hashes are added to the respective block headers and merkle proof is generated for the data. Relayers pick up this data and synchronize the block headers and the respective merkle proofs to the relay chain from where the relayers of the target chain  synchronizes them to the destination chain. The destination chain then verifies the headers, parses the root hash and verifies the legitimacy of the transactions.
 
 ## Ontology and Relay Chain Block Header Synchronization
