@@ -14,7 +14,7 @@ A cross chain asset is one where it can be transferred from it's chain of origin
 
 Any information that is transferred to the target chain from the original chain must also be verified for legitimacy.
 
-## structure
+## Structure
 
 <div align=center><img width="280" height="300" src="resources/structure.png"/></div>
 
@@ -31,6 +31,7 @@ The parties involved in the ecosystem are:
 
 
 ## Block header synchronization between ontology and relay chain
+
 We use merkle proofs to carry out this verification process. All the event related information is stored on the original chain and a merkle tree is generated for this data. The root hashes are added to the respective block headers and merkle proof is generated for the data. Relayers pick up this data and synchronize the block headers and the respective merkle proofs to the relay chain from where the relayers of the target chain  synchronizes them to the destination chain. The destination chain then verifies the headers, parses the root hash and verifies the legitimacy of the transactions.
 
 ## Ontology and Relay Chain Block Header Synchronization
