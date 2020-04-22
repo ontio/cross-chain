@@ -17,9 +17,18 @@
 ## 特性
 * 轻量级跨链协议
 * 同时支持同构链和异构链
-* 支持比特币及其子链或侧链
-* 支持以太坊及其子链或侧链
+* 支持Bitcoin链及其子链或侧链
+* 支持Ethereum链及其子链或侧链
+* 支持Ontology链及其子链或侧链 
+* 支持Neo链及其子链或侧链
+* 支持Cosmos链及其子链或侧链
 * 中继链作为适配器
+
+## 教程文档
+* [中继链介绍](orchain/How_to_join_cross_chain_cn.md)
+* [Bitcoin链介绍](btc/README_CN.md)
+* [Ethereum链介绍](eth/README_CN.md)
+* [Ontology链介绍](ont/README_CN.md)
 
 ## 贡献代码
 
