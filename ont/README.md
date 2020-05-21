@@ -44,9 +44,9 @@ The synced block headers are stored in the header synchronization contract. Any 
 
 ## Cross Chain Transactions Between Ontology and the Relay Chain
 
-<div align=center><img width="750" height="330" src="resources/ont2orc.png"/></div>
+<div align=center><img width="750" height="330" src="resources/ont2poly.png"/></div>
 
-<div align=center><img width="750" height="310" src="resources/orc2ont.png"/></div>
+<div align=center><img width="750" height="310" src="resources/poly2ont.png"/></div>
 
 The process of block header and the respective merkle proof transaction from the relay chain to the target chain is as follows:
 

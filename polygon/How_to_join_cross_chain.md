@@ -2,7 +2,7 @@
 
 ## Overview
 
-Ploygon cross chain ecosystem provides a platform for various different chains to interact and transfer data along with carrying out cross chain transactions. Any chain can freely join the ecosystem. However, the chains that support smart contracts can interact and transfer all kinds of information between chains, while the chains that do not support smart contracts are limited to cross chain asset transfer. There are three factors that determine whether a blockchain can join the Ploygon cross chain ecosystem: 
+Polygon cross chain ecosystem provides a platform for various different chains to interact and transfer data along with carrying out cross chain transactions. Any chain can freely join the ecosystem. However, the chains that support smart contracts can interact and transfer all kinds of information between chains, while the chains that do not support smart contracts are limited to cross chain asset transfer. There are three factors that determine whether a blockchain can join the Polygon cross chain ecosystem: 
 
 - The system implements multiple interfaces either using smart contracts, or as core API that can be used to interact with the chain
 - The chain needs to provide its block header format, the serialization and deserialization methods used, and the mode of signature verification in order to allow the relay chain to be able to process and verify block headers.

@@ -71,7 +71,7 @@ A relayer is necessary in this condition that listens for cross chain transactio
 
 Ethereum to relay chain cross chain transaction:
 
-<div align=center><img width="780" height="360" src="pic/eth2orc.png"/></div>
+<div align=center><img width="780" height="360" src="pic/eth2poly.png"/></div>
 
 ### Transactions from the Relay Chain to Ethereum  
 
@@ -84,7 +84,7 @@ Sending a transaction from the relay chain to Ethereum is much like the opposite
 
 The process flow of cross chain transactions from Ethereum to other chains:
 
-<div align=center><img width="550" height="400" src="pic/cross%20progress.png"/></div>
+<div align=center><img width="700" height="500" src="pic/cross_progress_en.png"/></div>
 
 1. The user sends a transaction that, for instance, transfers 1 ETH from account A on Ethereum to account B on the target chain
 
