@@ -59,7 +59,7 @@
 
 以太跨链到中继链：
 
-<div align=center><img width="780" height="360" src="pic/eth2orc.png"/></div>
+<div align=center><img width="780" height="360" src="pic/eth2poly.png"/></div>
 
 ### 从中继链跨链到以太坊链
 

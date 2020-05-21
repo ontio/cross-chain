@@ -41,7 +41,7 @@
 
 
 
-<div align=center><img width="750" height="330" src="resources/ont2orc.png"/></div>
+<div align=center><img width="750" height="330" src="resources/ont2poly.png"/></div>
 
 ONT/ONG跨链到目标链的流程如上：
 
@@ -51,7 +51,7 @@ ONT/ONG跨链到目标链的流程如上：
 - 中继链验证merkle proof的合法性，将跨链交易的信息以事件的形式返回，目标链的Relayer会把去往自己链的交易捕获到，然后转发到该链；
 - 目标链的跨链管理合约验证中继链merkle proof的合法性，验证通过则说明原链上的跨链信息合法，目标链的跨链管理合约会调用相应的业务合约，执行目标链上的业务内容。
 
-<div align=center><img width="750" height="310" src="resources/orc2ont.png"/></div>
+<div align=center><img width="750" height="310" src="resources/poly2ont.png"/></div>
 
 ONT/ONG从其他链跨回本体的流程如上：
 
