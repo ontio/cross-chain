@@ -1,16 +1,16 @@
 <h1 align="center">如何加入比特币跨链生态：供应商篇</h1>
 <h4 align="center">Version 1.0 </h4>
 
-[English](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Vendor_Guide.md) | 中文
+[English](./How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Vendor_Guide.md) | 中文
 
-供应商指的是为用户提供跨链业务的个人或组织，是跨链服务的供应商，他们在比特币网络上以多签地址的形式提供服务，用户只需要把BTC发送到供应商的多签地址，跨链生态会完成BTC的“搬运”，整个过程中供应商仅需要监听ORChain并完成签名工作。跨链的BTC会锁定在供应商的多签地址，这意味着用户需要信任供应商，供应商需要证明自己可信，同时意识到内部资产安全的重要性。
+供应商指的是为用户提供跨链业务的个人或组织，是跨链服务的供应商，他们在比特币网络上以多签地址的形式提供服务，用户只需要把BTC发送到供应商的多签地址，跨链生态会完成BTC的“搬运”，整个过程中供应商仅需要监听Polygon并完成签名工作。跨链的BTC会锁定在供应商的多签地址，这意味着用户需要信任供应商，供应商需要证明自己可信，同时意识到内部资产安全的重要性。
 
-Alice、Bob和Carl是合作伙伴，他们热爱比特币与去中心化技术，希望在比特币上开展更加复杂的业务，但是碍于比特币链的诸多不便，于是他们决定利用中继链的跨链生态，成为跨链供应商，将比特币转移到以太坊上，然后基于以太坊的合约开发自己的业务。下面就介绍他们三个人是如何成为供应商的。
+Alice、Bob和Carl是合作伙伴，他们热爱比特币与去中心化技术，希望在比特币上开展更加复杂的业务，但是碍于比特币链的诸多不便，于是他们决定利用Polygon的跨链生态，成为跨链供应商，将比特币转移到以太坊上，然后基于以太坊的合约开发自己的业务。下面就介绍他们三个人是如何成为供应商的。
 
 ## 供应商的工作
 
 - **BTC的锁定**：用户将比特币发送到供应商的多签，称之为“锁定”，在锁定之后，跨链生态会在目标链上供应商的合约中为用户发放BTC，经过这个过程，BTC相当于从比特币链转移到了目标链。这一步并不需要供应商进行操作，跨链生态会搞定一切。
-- **BTC的解锁**：当BTC从其他链回到比特币链的时候，中继链会帮助供应商构造解锁交易，将供应商多签中的BTC退回给用户，这中间产生的手续费由用户承担，供应商的多签不会有财产的损失。构造完的交易将会被签名工具监听到，然后多签中的每个人会分开对该交易签名，然后通过调用中继链合约的形式，将签名提交到中继链上，最终中继链会将交易和签名合并，完整的交易会被广播到比特币网络，所以供应商不需要维护多签的UTXO，中继链将会代替供应商维护这些信息，通过[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)可以获取UTXO的信息。
+- **BTC的解锁**：当BTC从其他链回到比特币链的时候，Polygon会帮助供应商构造解锁交易，将供应商多签中的BTC退回给用户，这中间产生的手续费由用户承担，供应商的多签不会有财产的损失。构造完的交易将会被签名工具监听到，然后多签中的每个人会分开对该交易签名，然后通过调用Polygon合约的形式，将签名提交到Polygon上，最终Polygon会将交易和签名合并，完整的交易会被广播到比特币网络，所以供应商不需要维护多签的UTXO，Polygon将会代替供应商维护这些信息，通过[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)可以获取UTXO的信息。
 
 ## 开启跨链业务
 
@@ -18,10 +18,10 @@ Alice、Bob和Carl是合作伙伴，他们热爱比特币与去中心化技术�
 
 1. **比特币部分**：Alice、Bob和Carl分别准备了自己的**比特币私钥**，并用这些私钥构成了2/3多签脚本，以此脚本作为赎回脚本（Redeem脚本）生成P2WSH或者P2SH形式的多签地址，多签地址的作用主要是锁住比特币，使用这些锁住的比特币需要供应商的大多数参与者同意。生成私钥、脚本和地址等操作可以通过[工具](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide.md)完成。
 2. **以太坊部分**：他们需要按照[模板]()开发一个特殊的ERC20代币**合约**（以下称为EBTC），部署在以太坊上，用来接收跨链的比特币。
-3. **中继链部分**：每人都要创建一个联盟链跨链生态的**钱包**，并向中继链[注册]()自己的钱包来获取发送交易的权限，向联盟链提交自己的签名。
-   - 注册完毕后，每个人都用自己的比特币私钥对合约哈希、合约版本和Redeem脚本进行签名，然后向中继链绑定。
-   - 然后，需要向中继链注册多钱解锁交易的费率（sat/byte）和最小找零等参数，和注册合约类似，每个人签名并向中继链提交。这些可以使用[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)实现。
-4. **签名工具**：接下来，下载多签的[签名工具](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide.md)，它可以监听联盟链，当有比特币从以太坊合约返回的时候，Alice、Bob和Carl各自使用自己的私钥对解锁BTC的交易签名，最终在中继链构造一个多签解锁交易，这样比特币就回到了客户自己的手里。
+3. **Polygon部分**：每人都要创建一个联盟链跨链生态的**钱包**，并向Polygon[注册]()自己的钱包来获取发送交易的权限，向联盟链提交自己的签名。
+   - 注册完毕后，每个人都用自己的比特币私钥对合约哈希、合约版本和Redeem脚本进行签名，然后向Polygon绑定。
+   - 然后，需要向Polygon注册多钱解锁交易的费率（sat/byte）和最小找零等参数，和注册合约类似，每个人签名并向Polygon提交。这些可以使用[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)实现。
+4. **签名工具**：接下来，下载多签的[签名工具](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide.md)，它可以监听联盟链，当有比特币从以太坊合约返回的时候，Alice、Bob和Carl各自使用自己的私钥对解锁BTC的交易签名，最终在Polygon构造一个多签解锁交易，这样比特币就回到了客户自己的手里。
 
 ### 供应商启动业务
 
@@ -63,7 +63,7 @@ your P2WSH address is tb1q99g2a3fp6zpueygfypweevz9pzz92rxy54qy3xydlny2keq5azcq0g
 your multisig redeem hash is 2a723378355e3583417eabc3d4a863c526c00b6e
 ```
 
-### 2. 获取中继链钱包
+### 2. 获取Polygon钱包
 
 获取方式待定
 
@@ -85,25 +85,25 @@ your multisig redeem hash is 2a723378355e3583417eabc3d4a863c526c00b6e
 3045022100f5c1837c87224eedc0e9d25705a73e0100b741e860586d3f38dc4e03efdc2f0f02205361db9ae0237087534c5a6a72240741f1c82731159643813fd13fe765678c9e,304402200736f05d23825a7bece2e42de97eb60c61150ba11161a5b50a218227fa0171f4022068070209f098c4a3ad253692b55b23d1b1de61745ee4226fe608b210ff836228,3045022100cf287afaecc4c2539a9bb4dcff391353e5d950ca5fd7d5cdac5d629497c1b31a022031590ba8917ae48e70d665ea5b32f8b6fe05fb288b7e8f6b3db4ae5e958edae7
 ```
 
-如图，使用工具朝中继链发送交易绑定合约和多签，这样多签在以太上的合约就被绑定了，所有使用该多签跨链到以太的BTC都会被转到这个合约。
+如图，使用工具朝Polygon发送交易绑定合约和多签，这样多签在以太上的合约就被绑定了，所有使用该多签跨链到以太的BTC都会被转到这个合约。
 
 <div align=center><img width="700" height="180" src="./pic/register_contract_ex.png"/></div>
 
 ### 5. 设置交易参数
 
-在中继链上设置BTC返程的交易参数，BTC要返回比特币链，必须要多签通过交易解锁BTC给用户，交易的构造有中继链上的合约负责，多签只需要为这笔交易签名即可，而构造交易需要设置的费率等参数，需要每个多签自己设置。
+在Polygon上设置BTC返程的交易参数，BTC要返回比特币链，必须要多签通过交易解锁BTC给用户，交易的构造有Polygon上的合约负责，多签只需要为这笔交易签名即可，而构造交易需要设置的费率等参数，需要每个多签自己设置。
 
 首先，为参数签名，将参数信息序列化，然后各自用比特币私钥对其签名：
 
 <div align=center><img width="700" height="180" src="./pic/sign_param_ex.png"/></div>
 
-然后，类似于多签合约绑定，用btctool向中继链发送交易注册参数。
+然后，类似于多签合约绑定，用btctool向Polygon发送交易注册参数。
 
 ### 6. 启动签名工具
 
-每个多签成员需要启动一个签名工具，获取中继链构造的未签名交易，然后用自己的比特币私钥对该交易签名，将签名发送到中继链，中继链合约会将签名收集并组装成完整的交易。
+每个多签成员需要启动一个签名工具，获取Polygon构造的未签名交易，然后用自己的比特币私钥对该交易签名，将签名发送到Polygon，Polygon合约会将签名收集并组装成完整的交易。
 
-在启动之前需要准备好中继链钱包以及比特币私钥加密钱包，利用工具加密比特币私钥，完成后可以在指定路径找到加密的钱包文件。
+在启动之前需要准备好Polygon钱包以及比特币私钥加密钱包，利用工具加密比特币私钥，完成后可以在指定路径找到加密的钱包文件。
 
 <div align=center><img width="700" height="120" src="./pic/enc_btc_ex.png"/></div>
 

@@ -1,7 +1,7 @@
 <h1 align="center">多签签名工具</h1>
 <h4 align="center">Version 1.0 </h4>
 
-[English](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide.md) | 中文
+[English](./redeem_tool_guide.md) | 中文
 
 ## 引言
 
@@ -41,10 +41,10 @@
 }
 ```
 
-​	比特币钱包和中继链钱包采取了同样的格式，可以通过该[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)将私钥转换为钱包，或者通过ORChain转换，priv文件填写你的WIF格式私钥，生成完毕后记得删除：
+​	比特币钱包和中继链钱包采取了同样的格式，可以通过该[工具](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)将私钥转换为钱包，或者通过Polygon转换，priv文件填写你的WIF格式私钥，生成完毕后记得删除：
 
 ```
-./orchain account import -w btcprivk --source ./priv --wif
+./polygon account import -w btcprivk --source ./priv --wif
 ```
 
 ### 3. 启动

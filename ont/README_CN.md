@@ -18,13 +18,13 @@
 
 <div align=center><img width="280" height="300" src="resources/structure.png"/></div>
 
-如上图简单介绍了本体跨链生态的架构，从上到下分别是Ont链、Ont链的Relayer、中继链ORChain，目标链的Relayer和目标链。简单来说，用户的Ont链上资产的交易证明会经由Relayer传递到ORChain，再由目标链的Relayer传递到目标链，目标链验证Ont链上的交易证明并执行相应的交易。
+如上图简单介绍了本体跨链生态的架构，从上到下分别是Ont链、Ont链的Relayer、中继链Polygon，目标链的Relayer和目标链。简单来说，用户的Ont链上资产的交易证明会经由Relayer传递到Polygon，再由目标链的Relayer传递到目标链，目标链验证Ont链上的交易证明并执行相应的交易。
 
 目标链资产跨链到Ont链与之相反。
 
 生态中的角色如下：
 
-- [**中继链 ORChain**](https://github.com/ontio/cross-chain/blob/master/orchain)：中继链是整个生态中的重要部分，每个节点由不同的个人或组织运行，有自己独特的治理模式和信任机制，它负责将各个链连接到一起，实现Ont到各个链的转移。
+- [**中继链 Polygon**](../polygon/How_to_join_cross_chain.md)：中继链是整个生态中的重要部分，每个节点由不同的个人或组织运行，有自己独特的治理模式和信任机制，它负责将各个链连接到一起，实现Ont到各个链的转移。
 - [**Relayer**](https://github.com/ontio/cross-chain/blob/master/ont/How_to_become_relayer_cn.md)：每条链都有自己的Relayer，它们负责把交易等信息搬运到中继链，是中继链和外界的通信兵，它们会在这个过程中获取收益。
 - [**应用**](https://github.com/ontio/cross-chain/blob/master/ont/How_to_new_cross_chain_asset_cn.md)：应用是指开发跨链业务的人或组织，任何人都可以部署跨链合约来构建跨链应用。然后把你的应用公开出去招揽用户吧！
 - [**用户**](https://github.com/ontio/cross-chain/blob/master/ont/How_to_cross_OEP4_cn.md)：对跨链生态来说，最重要的就是用户，通过调用具有跨链功能的应用，实现Ont到以太坊等链的跨链业务。

@@ -1,4 +1,4 @@
-<h1 align=center> Relay Chain Governance Mechanism </h1>
+<h1 align=center> Ploygon Chain Governance Mechanism </h1>
 
 ## Side Chain Management
 
