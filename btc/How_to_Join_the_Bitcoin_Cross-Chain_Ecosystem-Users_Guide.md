@@ -2,7 +2,7 @@
 
 <h4 align="center">Version 1.0 </h4>
 
-English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide_CN.md)
+English | [中文](./How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide_CN.md)
 
 ## Introduction
 

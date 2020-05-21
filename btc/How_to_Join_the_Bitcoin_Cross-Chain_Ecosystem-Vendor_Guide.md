@@ -1,7 +1,7 @@
 <h1 align="center">How to Join the Bitcoin Cross Chain Ecosystem: Vendor Guide</h1>
 <h4 align="center">Version 1.0 </h4>
 
-English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Vendor_Guide_CN.md)
+English | [中文](./How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Vendor_Guide_CN.md)
 
 ## Introduction
 
@@ -77,7 +77,7 @@ your P2WSH address is tb1q99g2a3fp6zpueygfypweevz9pzz92rxy54qy3xydlny2keq5azcq0g
 your multisig redeem hash is 2a723378355e3583417eabc3d4a863c526c00b6e
 ```
 
-### Step2: Get ORChain Wallet
+### Step2: Get Polygon Wallet
 
 Acquisition method to be determined.
 
@@ -99,25 +99,25 @@ Each member of the vendor uses his own BTC private key to sign the **(BTCX contr
 3045022100f5c1837c87224eedc0e9d25705a73e0100b741e860586d3f38dc4e03efdc2f0f02205361db9ae0237087534c5a6a72240741f1c82731159643813fd13fe765678c9e,304402200736f05d23825a7bece2e42de97eb60c61150ba11161a5b50a218227fa0171f4022068070209f098c4a3ad253692b55b23d1b1de61745ee4226fe608b210ff836228,3045022100cf287afaecc4c2539a9bb4dcff391353e5d950ca5fd7d5cdac5d629497c1b31a022031590ba8917ae48e70d665ea5b32f8b6fe05fb288b7e8f6b3db4ae5e958edae7
 ```
 
-As shown in the figure, using btctool to send a transaction which will bind smartcontract address and multi-sign script to the ORChain, so that vendor's contract which reparents BTC on ethereum is settled, and all BTC that transferred to ethereum using vendor's cross-chain service will be transferred to this BTCX contract.
+As shown in the figure, using btctool to send a transaction which will bind smartcontract address and multi-sign script to the Polygon, so that vendor's contract which reparents BTC on ethereum is settled, and all BTC that transferred to ethereum using vendor's cross-chain service will be transferred to this BTCX contract.
 
 <div align=center><img width="700" height="200" src="./pic/register_contract_ex_en.png"/></div>
 
 ### Step5: Set Unlocking Transaction Parameters
 
-Set the unlocking transaction parameters on ORChain which using to construct a transaction for transferring BTC back to bitcoin net. To return to the Bitcoin chain, BTC must be unlock from the vendor's multisig address. The smartcontract on ORChain would contruct a unsigned bitcoin transaction for vendor to transfer BTC back to user's address. And every member need to sign this transaction. Then the BTC cross back to user. To contruct this transaction, ORChain need to know some parameters, like fee rate, etc. Vendor need to set these parameters on ORChain for their cross-chain service. 
+Set the unlocking transaction parameters on Polygon which using to construct a transaction for transferring BTC back to bitcoin net. To return to the Bitcoin chain, BTC must be unlock from the vendor's multisig address. The smartcontract on Polygon would contruct a unsigned bitcoin transaction for vendor to transfer BTC back to user's address. And every member need to sign this transaction. Then the BTC cross back to user. To contruct this transaction, Polygon need to know some parameters, like fee rate, etc. Vendor need to set these parameters on Polygon for their cross-chain service. 
 
 First, each member sign the parameters serialized with their bitcoin private key:
 
 <div align=center><img width="700" height="180" src="./pic/sign_param_ex_en.png"/></div>
 
-Then, vendor sends a transaction with parameters and signatures to ORChain.
+Then, vendor sends a transaction with parameters and signatures to Polygon.
 
 ### Step6: Starting Signing-Tool
 
-Each vendor member needs to start a [signing-tool](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide.md) to obtain the unsigned transaction constructed by the ORChain, and then sign the transaction with his own bitcoin private key, and send the signature to the ORChain. ORChain's contract will collect the signature and return a complete transaction.
+Each vendor member needs to start a [signing-tool](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide.md) to obtain the unsigned transaction constructed by the Polygon, and then sign the transaction with his own bitcoin private key, and send the signature to the Polygon. Polygon's contract will collect the signature and return a complete transaction.
 
-Before starting, you need to prepare a ORChain wallet and a Bitcoin private key encryption wallet. Use a btctool to encrypt the bitcoin private key. After that, you can find the encrypted wallet file in the specified path.
+Before starting, you need to prepare a Polygon wallet and a Bitcoin private key encryption wallet. Use a btctool to encrypt the bitcoin private key. After that, you can find the encrypted wallet file in the specified path.
 
 <div align=center><img width="700" height="120" src="./pic/enc_btc_ex_en.png"/></div>
 

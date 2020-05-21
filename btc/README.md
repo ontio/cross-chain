@@ -1,6 +1,6 @@
 <h1 align="center">Bitcoin Cross Chain Ecosystem</h1>
 <h4 align="center">Version 1.0 </h4>
-English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/README_CN.md)
+English | [中文](./README_CN.md)
 
 ## Introduction
 
@@ -8,7 +8,7 @@ Alice, Bob and Carl plan to start a new BTC cross chain service that can be used
 
 How exactly are the BTC tokens transferred to Ethereum? We provide a brief description of the cross chain ecosystem workflow.
 
-<div align=center><img width="700" height="200" src="./pic/desc_en.png"/></div>
+<div align=center><img width="700" height="180" src="./pic/desc_en.png"/></div>
 
 It is advisable that the users first confirm the reliability of the cross chain vendor whose services they intend to use. A cross chain transfer basically locks the BTC on the Bitcoin network, and an equivalent amount of tokens that maintain a one to one rate with BTC are delivered to the user's account on the target chain. An example of a token protocol used for this purpose would be ERC20.
 
@@ -23,14 +23,14 @@ Let us take a closer look at how the cross chain system operates.
 ## Framework
 
 <div align=center><img width="280" height="300" src="./pic/ark.png"/></div>
-As illustrated in the above figure, the cross chain framework consists of the Bitcoin chain, the Bitcoin relayer, the vendor's BTC signature and transaction creation tool, other relayers, and the target chain they are linked to. To put it simply, the user's BTC are first transferred to ORChain by the relayer, and then transferred to a target chain by their respective relayer.
+As illustrated in the above figure, the cross chain framework consists of the Bitcoin chain, the Bitcoin relayer, the vendor's BTC signature and transaction creation tool, other relayers, and the target chain they are linked to. To put it simply, the user's BTC are first transferred to Polygon by the relayer, and then transferred to a target chain by their respective relayer.
 
 The parties involved in the ecosystem are:
 
-- [**ORChain - Relay Chain**](https://github.com/ontio/cross-chain/blob/master/orchain/How_to_join_cross_chain_cn.md): The relay chain is one of the crucial components of the cross chain ecosystem. Every type of node is deployed and maintained by different individuals or organizations and has its unique governance and trust mechanism. The relay chain is responsible for connecting them and transferring the tokens from BTC network to other chains. 
-- [**Relayer**](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Relayer_Guide.md): Every chain has a relayer linked to them which monitors the transactions taking place in the corresponding network. They basically transmit the transaction information to the relay chain, thus connecting the relay chain with the outside world. Relayers collect small incentives for carrying out this task. 
-- [**Cross Chain Vendors**](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Vendor_Guide.md): A vendor could be an individual, a group of individuals, or an institution that provides cross chain services. Anybody can become a vendor. The steps involved are pretty simple. All that is needed is a multi-signature BTC address, deploying smart contracts that lock and generate the tokens in the BTC network and the target chain respectively, and finally registering the multi-signature `Redeem` and the contracts on the relay chain. Everything is under the vendor's control. With the aforementioned components in place the vendor can enable the multi-signature tool and customers can start using their services.
-- [**Users**](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide.md): Users includes anyone interested in transferring their BTC to other target chains such as Ethereum and use them in dApps and such. 
+- [**Polygon - Relay Chain**](../polygon/How_to_join_cross_chain.md): The relay chain is one of the crucial components of the cross chain ecosystem. Every type of node is deployed and maintained by different individuals or organizations and has its unique governance and trust mechanism. The relay chain is responsible for connecting them and transferring the tokens from BTC network to other chains. 
+- [**Relayer**](./How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Relayer_Guide.md): Every chain has a relayer linked to them which monitors the transactions taking place in the corresponding network. They basically transmit the transaction information to the relay chain, thus connecting the relay chain with the outside world. Relayers collect small incentives for carrying out this task. 
+- [**Cross Chain Vendors**](./How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Vendor_Guide.md): A vendor could be an individual, a group of individuals, or an institution that provides cross chain services. Anybody can become a vendor. The steps involved are pretty simple. All that is needed is a multi-signature BTC address, deploying smart contracts that lock and generate the tokens in the BTC network and the target chain respectively, and finally registering the multi-signature `Redeem` and the contracts on the relay chain. Everything is under the vendor's control. With the aforementioned components in place the vendor can enable the multi-signature tool and customers can start using their services.
+- [**Users**](./How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide.md): Users includes anyone interested in transferring their BTC to other target chains such as Ethereum and use them in dApps and such. 
 
 ## Process Flow
 
@@ -38,9 +38,9 @@ The parties involved in the ecosystem are:
 
 <div align=center><img width="600" height="440" src="./pic/from_en.png"/></div>
 The figure above illustrates the process through which BTC can be transferred other target chains. The destination where the BTC tokens are to be transferred is labelled as the target chain, for instance Ethereum.
-The red relayer particularly focuses on the communication between the target chain and the ORChain.
-The green relayer is responsible for the communication between the Bitcoin network and the ORChain.
-The chain at the bottom represents BTC, while the one on the top represents the target chain. The center is marked in pink, which is the ORChain.
+The red relayer particularly focuses on the communication between the target chain and the Polygon.
+The green relayer is responsible for the communication between the Bitcoin network and the Polygon.
+The chain at the bottom represents BTC, while the one on the top represents the target chain. The center is marked in pink, which is the Polygon.
 
 The cross chain transfer process can be divided into six main steps, where the user only needs to carry out the first one, which is selecting a vendor you trust and then sending the amount of BTC you want to transfer to their multi-signature address. The rest is taken care of by the cross chain ecosystem. Users can refer to this [user guide](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Users_Guide.md) for reference, while interested vendors can refer to the [vendor's guide](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Vendor_Guide.md).
 
@@ -57,7 +57,7 @@ The only thing in this entire process that the user needs to do is sending a tra
 
 - **Output:** The protocol includes two important points of output, the transfer amount output to the multi-signature address and the `OP_RETURN` information output contained in the cross contract transaction. Both need to be serialized in sequence as first and second elements respectively. For other points of output, can be used for returning change or other kinds of transfer. 
 
-- **OP_RETURN data format:** The one byte of data stored in `OP_RETURN` includes the cross chain label, receiver's target chain account address, chain ID of the target chain, cross chain transaction fee, and the address of the target contract. The target contract represents the token that complements BTC and is deployed on the target chain. For example, an ERC20 contract on Ethereum. The chain ID tells the ORChain (the relay chain) where to transfer the BTC. The transaction fee charged here is the processing fee for using the cross chain ecosystem.
+- **OP_RETURN data format:** The one byte of data stored in `OP_RETURN` includes the cross chain label, receiver's target chain account address, chain ID of the target chain, cross chain transaction fee, and the address of the target contract. The target contract represents the token that complements BTC and is deployed on the target chain. For example, an ERC20 contract on Ethereum. The chain ID tells the Polygon (the relay chain) where to transfer the BTC. The transaction fee charged here is the processing fee for using the cross chain ecosystem.
 
 #### 1.2 BTC Relay Transmission
 

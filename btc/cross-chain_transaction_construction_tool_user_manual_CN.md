@@ -1,11 +1,11 @@
 <h1 align="center">BTC跨链交易构造工具</h1>
 <h4 align="center">Version 1.0 </h4>
 
-[English](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md)| 中文
+[English](./cross-chain_transaction_construction_tool_user_manual.md)| 中文
 
 ## 引言
 
-btctool用于构造跨链用的BTC特定格式的交易，同时实现了向中继链注册多签和合约等功能。
+btctool用于构造跨链用的BTC特定格式的交易，同时实现了向Polygon注册多签和合约等功能。
 
 ## 编译
 
@@ -30,11 +30,11 @@ go build -o btctool main.go
 | 测试网           | 测试网指的是对测试网构造BTC跨链交易，填入参数即可，如果拥有测试网全节点，则可以直接让全节点广播，否则需要手动广播交易。 |
 | 本地私网         | 针对本地私网（regtest）构造比特币跨链交易，使用方法类似。    |
 | 为合约签名       | 供应商使用多签中自己的比特币私钥对合约和Redeem签名，用于注册Redeem和合约。 |
-| 注册多签合约     | 向中继链注册Redeem和目标链合约。                             |
+| 注册多签合约     | 向Polygon注册Redeem和目标链合约。                            |
 | 加密私钥         | 将自己的明文私钥加密，用于供应商启动自己的签名工具。         |
 | 生成私钥         | 生成一个全新的私钥，会显示对应的公钥和地址                   |
 | 生成多签赎回脚本 | 输入公钥等参数，生成多签的赎回脚本，并显示多签钱包的地址     |
-| UTXO监测         | 帮助多签监测中继链上的UTXO状态                               |
+| UTXO监测         | 帮助多签监测Polygon上的UTXO状态                              |
 
 ### 1. 构造BTC跨链交易
 
@@ -70,29 +70,29 @@ go build -o btctool main.go
 
 ### 2. 为合约签名
 
-对于准备开展跨链业务的供应商来说，他们需要先把自己在目标链上的合约和多签Redeem脚本进行注册，然后才算是加入跨链生态，因为中继链会验证每笔交易的多签和合约之间的绑定关系。
+对于准备开展跨链业务的供应商来说，他们需要先把自己在目标链上的合约和多签Redeem脚本进行注册，然后才算是加入跨链生态，因为Polygon会验证每笔交易的多签和合约之间的绑定关系。
 
 <div align=center><img width="580" height="400" src="./pic/sign.png"/></div>
 
-如上填入WIF格式的私钥，需要绑定的目标合约和多签Redeem脚本，点击“签名”即可，结果会在下面显示，供应商需要记下自己的签名，汇总每个人的签名后，再向中继链注册。
+如上填入WIF格式的私钥，需要绑定的目标合约和多签Redeem脚本，点击“签名”即可，结果会在下面显示，供应商需要记下自己的签名，汇总每个人的签名后，再向Polygon注册。
 
 ### 3. 注册多签合约
 
-只有在中继链注册过的多签脚本和合约才能实现跨链。如下，填入参数，点击注册即可，结果栏会显示中继链的交易哈希。
+只有在Polygon注册过的多签脚本和合约才能实现跨链。如下，填入参数，点击注册即可，结果栏会显示Polygon的交易哈希。
 
 <div align=center><img width="580" height="420" src="./pic/register.png"/></div>
 
 参数的介绍如下：
 
-| 参数           | 介绍                                                         |
-| -------------- | ------------------------------------------------------------ |
-| 中继链RPC地址  | 获取一个中继链的RPC地址                                      |
-| 目标合约       | 目标链的BTC代币合约地址                                      |
-| 多签Redeem     | 跨链要使用的多签脚本                                         |
-| 签名           | 多签中每个人的签名，只要满足多签脚本的要求即可，多个签名间以“,”分隔 |
-| 中继链钱包路径 | 向中继链发送交易注册的账户                                   |
-| 钱包密码       | 中继链钱包的密码                                             |
-| 目标链ID       | 目标链的chain-id                                             |
+| 参数            | 介绍                                                         |
+| --------------- | ------------------------------------------------------------ |
+| PolygonRPC地址  | 获取一个Polygon的RPC地址                                     |
+| 目标合约        | 目标链的BTC代币合约地址                                      |
+| 多签Redeem      | 跨链要使用的多签脚本                                         |
+| 签名            | 多签中每个人的签名，只要满足多签脚本的要求即可，多个签名间以“,”分隔 |
+| Polygon钱包路径 | 向Polygon发送交易注册的账户                                  |
+| 钱包密码        | Polygon钱包的密码                                            |
+| 目标链ID        | 目标链的chain-id                                             |
 
 ### 4. 为交易参数签名
 
@@ -112,7 +112,7 @@ go build -o btctool main.go
 
 ### 5. 设置交易参数
 
-收集好多签成员的签名，只要满足多签要求的签名数目即可，然后使用工具发送交易到中继链，完成参数注册。
+收集好多签成员的签名，只要满足多签要求的签名数目即可，然后使用工具发送交易到Polygon，完成参数注册。
 
 <div align=center><img width="640" height="420" src="./pic/setparam.png"/></div>
 
@@ -120,18 +120,18 @@ go build -o btctool main.go
 
 | Parameter               | Description                                                  |
 | ----------------------- | ------------------------------------------------------------ |
-| Relay chain RPC address | 中继链的RPC地址                                              |
+| Relay chain RPC address | Polygon的RPC地址                                             |
 | 多签redeem              | 供应商的多签赎回脚本                                         |
 | 参数版本                | 参数可以更新，每次更新版本必须加1，初始为0                   |
 | Signature               | Signatures of the collaborators in the multi-signature redeem, multiple values separated using commas |
 | 费率(sat/byte)          | 构造比特币解锁交易时候，计算手续费的费率                     |
 | 最小找零（sat）         | 构造比特币解锁交易，为多签找零的时候，找零值不得小于该值     |
-| Relay chain wallet path | 中继链钱包的文件路径                                         |
+| Relay chain wallet path | Polygon钱包的文件路径                                        |
 | 钱包密码                | Password of the relay chain wallet                           |
 
 ### 6. 加密私钥
 
-在启动多签签名工具之前，需要生成加密的比特币私钥文件，这里使用了中继链的加密方式。如下图，只需要填入对应的参数，即可生成对应的加密钱包文件。
+在启动多签签名工具之前，需要生成加密的比特币私钥文件，这里使用了Polygon的加密方式。如下图，只需要填入对应的参数，即可生成对应的加密钱包文件。
 
 <div align=center><img width="580" height="420" src="./pic/encrypt.png"/></div>
 
@@ -149,17 +149,17 @@ go build -o btctool main.go
 
 ### 9. UTXO监测
 
-UTXO监测功能实现了对中继链中UTXO的状态监听，方便供应商掌握自己的多签地址状态，操作自己的跨链业务。填写中继链RPC地址、小额限制和多签赎回脚本，点击启动监听即可。对应的参数会显示在下方，包括UTXO金额总和等，UTXO详细信息会写入对应的文件。
+UTXO监测功能实现了对Polygon中UTXO的状态监听，方便供应商掌握自己的多签地址状态，操作自己的跨链业务。填写PolygonRPC地址、小额限制和多签赎回脚本，点击启动监听即可。对应的参数会显示在下方，包括UTXO金额总和等，UTXO详细信息会写入对应的文件。
 
 <div align=center><img width="640" height="420" src="./pic/utxo_mon.png"/></div>
 
 参数介绍如下：
 
-| 参数          | 介绍                                                       |
-| ------------- | ---------------------------------------------------------- |
-| 中继链RPC地址 | 获取一个中继链的RPC地址                                    |
-| 小额限制      | 设置一个比特币金额（聪），所有小于这个值的UTXO会被统计下来 |
-| 多签赎回脚本  | 生成多签地址的多签赎回脚本                                 |
+| 参数           | 介绍                                                       |
+| -------------- | ---------------------------------------------------------- |
+| PolygonRPC地址 | 获取一个Polygon的RPC地址                                   |
+| 小额限制       | 设置一个比特币金额（聪），所有小于这个值的UTXO会被统计下来 |
+| 多签赎回脚本   | 生成多签地址的多签赎回脚本                                 |
 
 结果参数如下:
 
@@ -257,10 +257,10 @@ btctool可以针对比特币测试网和本地仿真网络，如果使用跨链�
 ### 6. 注册多签合约
 
 ```
-./btctool -tool=register_redeem  -allia-rpc=http://orchain:40336  -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae  -sigs=304402207cf1b8bf2d7234c77a84250a79d07a87b9fb09378096d34a5459b79afa414c57022015308108b6ec07df3b286c0fe20fe10b23e77377959d7160c339508ec1759da8,3045022100d6731dd8a0ee9e32423a25ed4638882d9ffcb259cdb03a3f75b8f1e3cd23540c02204d2511f9b748d5e356a9dfe20cfdda49a2de631637cc980ac7416cc7b6954466,3045022100a1e43664faafe50e429ad5c246266122dbc7df835f3758603c390a75019bb581022023d34b4c8bed500ea67ef5e9cbe259d7406487cc06a7da8d0661e9e58a0bbd52,3045022100e9716af38afd49fae2951c87ceec8add41d2915befee4962f3babb4e9b88897302207b870953ca1bde8edf1417ec7cb3e07d9c7862583aae92c9b8c408b746e14987,304402201bf226994026d060ddae579108bd5b1b06aeba4a313be6875b7ccf5482618ba602200ee71faa98c49f6d5120b6e8dc73663838be546cf47ca9c7a7c6bf2e672c8cfa  -wallet=./wallet.dat  -wallet-pwd=pwd  -contractId=2  -gui=0
+./btctool -tool=register_redeem  -allia-rpc=http://Polygon:40336  -redeem=552102dec9a415b6384ec0a9331d0cdf02020f0f1e5731c327b86e2b5a92455a289748210365b1066bcfa21987c3e207b92e309b95ca6bee5f1133cf04d6ed4ed265eafdbc21031104e387cd1a103c27fdc8a52d5c68dec25ddfb2f574fbdca405edfd8c5187de21031fdb4b44a9f20883aff505009ebc18702774c105cb04b1eecebcb294d404b1cb210387cda955196cc2b2fc0adbbbac1776f8de77b563c6d2a06a77d96457dc3d0d1f2102dd7767b6a7cc83693343ba721e0f5f4c7b4b8d85eeb7aec20d227625ec0f59d321034ad129efdab75061e8d4def08f5911495af2dae6d3e9a4b6e7aeb5186fa432fc57ae  -sigs=304402207cf1b8bf2d7234c77a84250a79d07a87b9fb09378096d34a5459b79afa414c57022015308108b6ec07df3b286c0fe20fe10b23e77377959d7160c339508ec1759da8,3045022100d6731dd8a0ee9e32423a25ed4638882d9ffcb259cdb03a3f75b8f1e3cd23540c02204d2511f9b748d5e356a9dfe20cfdda49a2de631637cc980ac7416cc7b6954466,3045022100a1e43664faafe50e429ad5c246266122dbc7df835f3758603c390a75019bb581022023d34b4c8bed500ea67ef5e9cbe259d7406487cc06a7da8d0661e9e58a0bbd52,3045022100e9716af38afd49fae2951c87ceec8add41d2915befee4962f3babb4e9b88897302207b870953ca1bde8edf1417ec7cb3e07d9c7862583aae92c9b8c408b746e14987,304402201bf226994026d060ddae579108bd5b1b06aeba4a313be6875b7ccf5482618ba602200ee71faa98c49f6d5120b6e8dc73663838be546cf47ca9c7a7c6bf2e672c8cfa  -wallet=./wallet.dat  -wallet-pwd=pwd  -contractId=2  -gui=0
 ```
 
-allia-rpc指的是中继链的RPC地址；wallet是中继链的钱包。其他参数和GUI相同。
+allia-rpc指的是Polygon的RPC地址；wallet是Polygon的钱包。其他参数和GUI相同。
 
 ### 7. 加密私钥
 

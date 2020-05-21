@@ -1,11 +1,11 @@
 <h1 align="center">如何加入比特币跨链生态：Relayer篇</h1>
 <h4 align="center">Version 1.0 </h4>
 
-[English](https://github.com/ontio/cross-chain/blob/master/btc/How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Relayer_Guide.md) | 中文
+[English](./How_to_Join_the_Bitcoin_Cross-Chain_Ecosystem-Relayer_Guide.md) | 中文
 
 ## 引言
 
-在跨链生态中，Relayer起到了举足轻重的作用，它会转发跨链交易和区块头，实现中继链与外界的信息交互，可以说是生态的对外沟通的媒介。
+在跨链生态中，Relayer起到了举足轻重的作用，它会转发跨链交易和区块头，实现Polygon与外界的信息交互，可以说是生态的对外沟通的媒介。
 
 下面将介绍如何启动自己的Relayer。
 
@@ -13,18 +13,18 @@
 
 <div align=center><img width="380" height="200" src="./pic/relayer.png"/></div>
 
-比特币Relayer实现了比特币网络的监听，能识别并转发跨链交易，向中继链提交区块头，并获取收益，同时监听中继链，广播中继链构造的跨链交易，只要有一个Relayer在工作，那么整个比特币跨链生态就可以持续运作。
+比特币Relayer实现了比特币网络的监听，能识别并转发跨链交易，向Polygon提交区块头，并获取收益，同时监听Polygon，广播Polygon构造的跨链交易，只要有一个Relayer在工作，那么整个比特币跨链生态就可以持续运作。
 
 - **先决条件**：部署Relayer需要提前部署好比特币的[全节点](https://bitcoin.org/en/download)，Relayer需要使用全节点的数据，全节点同步好比特币账本，然后再启动Relayer；
-- **交易转发**：Relayer会持续扫描每个比特币区块，找到跨链交易并从全节点获取交易的梅克尔证明，一同提交给中继链，对还没有足够确认数的交易，Relayer会存储下来，等到中继链维护的比特币区块头达到一定高度，有足够的确认后，再发送给中继链；
-- **区块头同步**：Relayer负责提交比特币区块头到中继链，能处理比特币常见的分叉情况，稳定并正确地向中继链提交区块头；
-- **广播交易**：中继链会构造比特币的返回交易，Relayer会把交易广播到比特币网络中。
+- **交易转发**：Relayer会持续扫描每个比特币区块，找到跨链交易并从全节点获取交易的梅克尔证明，一同提交给Polygon，对还没有足够确认数的交易，Relayer会存储下来，等到Polygon维护的比特币区块头达到一定高度，有足够的确认后，再发送给Polygon；
+- **区块头同步**：Relayer负责提交比特币区块头到Polygon，能处理比特币常见的分叉情况，稳定并正确地向Polygon提交区块头；
+- **广播交易**：Polygon会构造比特币的返回交易，Relayer会把交易广播到比特币网络中。
 
 ## 准备
 
 ### 1. 申请联盟链钱包
 
-申请一个中继链的钱包，如果有本体钱包直接使用即可，二者钱包是通用的。
+申请一个Polygon的钱包，如果有本体钱包直接使用即可，二者钱包是通用的。
 
 ### 2. 注册Relayer
 
@@ -51,10 +51,10 @@
     "start_height": 0 //监控比特币起始高度
   },
   "allia_ob_conf": {
-    "alliance_json_rpc_address": "http://ip:40336", //要连接的中继链地址*
-    "allia_ob_loop_wait_time": 3, //监听中继链的时间间隔
-    "watching_key": "btcTxToRelay", //监听中继链的事件关键词
-    "wallet_file": "relayer_btc/wallet.dat", //你中继链钱包的路径*
+    "alliance_json_rpc_address": "http://ip:40336", //要连接的Polygon地址*
+    "allia_ob_loop_wait_time": 3, //监听Polygon的时间间隔
+    "watching_key": "btcTxToRelay", //监听Polygon的事件关键词
+    "wallet_file": "relayer_btc/wallet.dat", //你Polygon钱包的路径*
     "wallet_pwd": "", //钱包的密码，也可以在运行时以flag的形式传入*
     "net_type": "testnet", //网络类型
     "waiting_cycle": 300 //每多少区块就记录一下高度，下次启动从该高度开始

@@ -1,4 +1,4 @@
-# Administrator Privilege System of the Relay Chain
+# Administrator Privilege System of Ploygon Chain
 
 The relay chain does not have a transaction fee setting, but there are certain permissions required to communicate with the relay chain. Permissions are granted to individual accounts and each account has a unique public-private key pairs. Each transaction is signed using the account's private key, and on the receiver's end the the signature is verified using the public key to determine the sender of the transaction. This puts in place a transaction system that can be managed conveniently and monitored. The account that can interact with the relay chain is referred to as the **relayer**.
 

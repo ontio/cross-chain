@@ -1,7 +1,7 @@
 <h1 align="center">Multi-Signature Signing Tool: Redeem Tool Guide</h1>
 <h4 align="center">Version 1.0 </h4>
 
-English | [中文](https://github.com/ontio/cross-chain/blob/master/btc/redeem_tool_guide_CN.md)
+English | [中文](./redeem_tool_guide_CN.md)
 
 ## Introduction
 
@@ -44,10 +44,10 @@ A sample configuration could look something like the following sample.
 > The default configuration settings can be used by only modifying the fields marked with an asterisk*
 
 
-The BTC and relay chain wallets use the same format. Private keys can be converted to wallets using this [tool](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md). The same conversion can be performed using the ORChain (relay chain). You can enter your WIF private key in the `priv` file which can then be used to generate a wallet. Please ensure that you delete the contents of the file after generating the wallet.
+The BTC and relay chain wallets use the same format. Private keys can be converted to wallets using this [tool](https://github.com/ontio/cross-chain/blob/master/btc/cross-chain_transaction_construction_tool_user_manual.md). The same conversion can be performed using the Polygon (relay chain). You can enter your WIF private key in the `priv` file which can then be used to generate a wallet. Please ensure that you delete the contents of the file after generating the wallet.
 
 ```shell
-./orchain account import -w btcprivk --source ./priv --wif
+./polygon account import -w btcprivk --source ./priv --wif
 ```
 
 ### 3. Enabling the tool
