@@ -24,10 +24,10 @@ Polygon Network基于侧链/中继模式，采用双层结构设计，使用Poly
 * 中继链为开放式准入公链
 
 ## 教程文档
-* [中继链介绍](polygon/How_to_join_cross_chain_cn.md)
-* [Bitcoin链介绍](btc/README_CN.md)
-* [Ethereum链介绍](eth/README_CN.md)
-* [Ontology链介绍](ont/README_CN.md)
+* [Polygon文档](polygon/How_to_join_cross_chain_cn.md)
+* [Bitcoin文档](btc/README_CN.md)
+* [Ethereum文档](eth/README_CN.md)
+* [Ontology文档](ont/README_CN.md)
 
 ## 贡献代码
 
