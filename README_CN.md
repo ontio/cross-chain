@@ -34,7 +34,7 @@ Polygon Network基于侧链/中继模式，采用双层结构设计，使用Poly
 请您以签过名的commit发送pull request请求，我们期待您的加入！
 您也可以通过邮件的方式发送你的代码到开发者邮件列表，欢迎加入Polygon Network邮件列表和开发者论坛。
 
-另外，在您想为本项目贡献代码时请提供详细的提交信息，格式参考如下：
+另外，在您想为Polygon贡献代码时请提供详细的提交信息，格式参考如下：
 
   Header line: explain the commit in one line (use the imperative)
 
