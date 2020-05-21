@@ -64,13 +64,13 @@ The two parameters used to run the relayer are as follows:
 
 ```
 --ethereum             -    Used to specify the starting height of Ethereum chain, generally set to current height
---alliance             -    Used to specify the starting height of relay chain, generally set to 0, for non zero values the particular block needs to contain verification node information
+--polygon             -    Used to specify the starting height of relay chain, generally set to 0, for non zero values the particular block needs to contain verification node information
 ```
 
 The command to run the relayer is of the form:
 
 ```shell
-./eth_relayer --ethereum 7318671 --alliance 0
+./eth_relayer --ethereum 7318671 --polygon 0
 ```
 
 The relayer can also be run in the background or run using the shell script (However, the starting parameters in the script would need to be modified)
