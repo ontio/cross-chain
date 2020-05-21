@@ -1,4 +1,4 @@
-<h1 align="center">Ontology Cross Chain - ethereum relayer manual</h1>
+<h1 align="center">Ethereum Relayer Manual</h1>
 <h4 align="center">Version 1.0 </h4>
 
 [English](ethereum_relayer_manual.md) | 中文

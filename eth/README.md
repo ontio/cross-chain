@@ -1,4 +1,4 @@
-<h1 align="center">Ontology Cross Chain - Ethereum Cross Chain Specifications</h1>
+<h1 align="center">Ethereum Cross Chain Specifications</h1>
 <h4 align="center">Version 1.0 </h4>
 
 English | [中文](ethereum_cross_chain_specification_CN.md)
@@ -59,7 +59,7 @@ Synchronizing relay chain block headers Ethereum also occurs in a similar manner
 
 Relay chain headers synchronized on Ethereum :
 
-<div align=center><img width="480" height="200" src="pic/orchain_hdrs.png"/></div>
+<div align=center><img width="480" height="200" src="pic/polygon_hdrs.png"/></div>
 
 However, in this case not all the blocks headers need to be synced on the Ethereum chain. The only blocks that need to be synced on the Ethereum chain are the cross chain block headers to Ethereum and the block headers wherein any changes occurred in the verification nodes of the relay chain. The relay chain, just as a typical blockchain, also has finality characteristics.
 
@@ -99,7 +99,3 @@ The process flow of cross chain transactions from Ethereum to other chains:
 6. The target chain relayer monitors the transactions on the relay chain and looks out for the transactions that need to be transferred to the target chain. It syncs the block header to the target chain and sends the transaction and the corresponding merkle proof along with it.
 
 7. When the target chain confirms the transaction's legitimacy, the target chain executes a final transaction that sends the 1 ETH to account B.
-
-## License
-
-The Ontology library is licensed under the GNU Lesser General Public License v3.0. Please refer to the LICENSE file in the root directory of the project for details.
