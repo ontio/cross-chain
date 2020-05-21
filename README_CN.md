@@ -57,4 +57,6 @@ Polygon Network基于侧链/中继模式，采用双层结构设计，使用Poly
 
 ## 开源社区
 
+## License
+The Polygon Network source code is available under the LGPL-3.0 license.
 

@@ -57,4 +57,5 @@ Polygon Network基于侧链/中继模式，采用双层结构设计，使用Poly
 
 ## 开源社区
 
-
+## 许可证
+Polygon Network遵守GNU Lesser General Public License, 版本3.0。 详细信息请查看项目根目录下的LICENSE文件。
