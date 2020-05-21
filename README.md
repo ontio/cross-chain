@@ -21,7 +21,7 @@ Polygon Network基于侧链/中继模式，采用双层结构设计，使用Poly
 * 资产跨链超级，同时支持资产跨链和任意信息跨链
 * 跨链协议安全可靠，以密码学为基石
 * 支持异构链协议范围广（BTC/ETH/NEO/Ontology/Cosmos）
-* 中继链是开放式准入的公链
+* 中继链为开放式准入公链
 
 ## 教程文档
 * [中继链介绍](orchain/How_to_join_cross_chain_cn.md)
