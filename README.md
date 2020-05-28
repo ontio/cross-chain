@@ -1,1 +1,1 @@
-move to [Polygon Network](https://github.com/PolygonNetwork/docs)
+move to [Poly Network](https://github.com/polynetworks/docs)
